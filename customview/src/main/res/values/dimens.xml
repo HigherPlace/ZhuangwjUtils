@@ -1,0 +1,19 @@
+<resources>
+
+    <!-- ================ 通用  start ================== -->
+
+
+    <!-- 导航栏高度 -->
+    <dimen name="height_titlebar">140px</dimen>
+
+    <!-- banner高度 -->
+    <dimen name="height_banner">450px</dimen>
+
+    <!-- 分割线大小（宽或高） -->
+    <dimen name="line_size">1dp</dimen>
+
+    <!-- ================ 通用  end ================== -->
+
+    <dimen name="offset_20">30px</dimen>
+    <dimen name="offset_24">36px</dimen>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_title"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white" >
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/TextSize40AndColor333333Style"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="@dimen/height_titlebar"
+        android:layout_height="@dimen/height_titlebar"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="3px"
+        android:paddingLeft="40px"
+        android:paddingRight="40px"
+        android:paddingTop="25px"
+        android:paddingBottom="25px"
+        android:scaleType="fitXY"
+        android:background="@drawable/selector_item_bg"
+        android:src="@drawable/ic_arrow_left" />
+
+    <TextView
+        android:id="@+id/tv_right"
+        android:layout_height="match_parent"
+        style="@style/TextSize30AndColor4c4c4cStyle"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/selector_item_bg"
+        android:gravity="center"
+        android:paddingLeft="24px"
+        android:paddingRight="24px"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_right"
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="3px"
+        android:background="@drawable/selector_item_bg"
+        android:padding="20px"
+        android:scaleType="fitXY"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_left"
+        style="@style/TextSize30AndColor4c4c4cStyle"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="30px"
+        android:gravity="center"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/botton_divider"
+        style="@style/HorizontalLineViewStyle"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

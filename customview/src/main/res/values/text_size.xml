@@ -1,0 +1,27 @@
+<resources>
+
+    <dimen name="text_size_12">30px</dimen>
+    <dimen name="text_size_14">32px</dimen>
+    <dimen name="text_size_16">34px</dimen>
+    <dimen name="text_size_18">36px</dimen>
+    <dimen name="text_size_20">38px</dimen>
+    <dimen name="text_size_22">40px</dimen>
+    <dimen name="text_size_24">42px</dimen>
+    <dimen name="text_size_26">44px</dimen>
+    <dimen name="text_size_28">46px</dimen>
+    <dimen name="text_size_30">48px</dimen>
+    <dimen name="text_size_32">50px</dimen>
+    <dimen name="text_size_33">51px</dimen>
+    <dimen name="text_size_34">52px</dimen>
+    <dimen name="text_size_36">54px</dimen>
+    <dimen name="text_size_38">56px</dimen>
+    <dimen name="text_size_40">58px</dimen>
+    <dimen name="text_size_42">60px</dimen>
+    <dimen name="text_size_44">62px</dimen>
+    <dimen name="text_size_46">64px</dimen>
+    <dimen name="text_size_48">66px</dimen>
+    <dimen name="text_size_50">68px</dimen>
+    <dimen name="text_size_52">70px</dimen>
+    <dimen name="text_size_54">72px</dimen>
+
+</resources>

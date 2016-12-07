@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MyCustomView</string>
+
+    <string name="cover_image">封面图片</string>
+    <string name="me_publish_hint">例：我一直很爱惜自己的车，每次保养都是在4S店保养，小刮擦在所难免但绝对没有大事故。加装了自动大灯，门灯，点火线圈，胎压监测。保险期还有9个月到期，可随时看车！</string>
+</resources>

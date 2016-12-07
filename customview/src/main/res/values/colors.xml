@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主题色 -->
+    <color name="theme_color">#df2626</color>
+    <color name="theme_color_press">#b21e1e</color>
+
+
+    <!-- 辅色 -->
+    <color name="sub_color">#ff8833</color>
+
+    <color name="gray_light_dedede">#DEDEDE</color>
+
+    <!-- 重要文字颜色:用于主要的文字、需要明显看到的段落 -->
+    <color name="text_import_color_333333">#333333</color>
+
+    <!-- 正文颜色 -->
+    <color name="text_mainbody_color_666666">#666666</color>
+
+    <!-- 弱化颜色 -->
+    <color name="text_subbody_color_999999">#999999</color>
+    <color name="text_color_4c4c4c">#4c4c4c</color>
+    <color name="text_color_4d4d4d">#4d4d4d</color>
+
+    <!-- 背景颜色 -->
+    <color name="bg_activity">#ededed</color>
+
+    <!-- item点击的颜色 -->
+    <color name="bg_item_press">#d9d9d9</color>
+
+    <color name="red">#ff0000</color>
+</resources>
