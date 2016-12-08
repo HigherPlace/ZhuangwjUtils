@@ -39,9 +39,9 @@ public class RequestBean {
     // 是否显示默认的加载图标
     private boolean isShowLoading;
     /**
-     * 是否需要对结果进行解析处理,默认会进行解析
+     * 是否需要对结果进行解析处理,默认不进行解析
      */
-    private boolean isNeedParse = true;
+    private boolean isNeedParse;
 
     // 回调接口
     private NetManager.RequestCallBack callback;
@@ -115,7 +115,7 @@ public class RequestBean {
     }
 
     /**
-     * 默认true
+     * 默认false
      * @param isNeedParse
      * @return
      */
