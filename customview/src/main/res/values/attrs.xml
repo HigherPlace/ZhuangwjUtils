@@ -23,4 +23,14 @@
         <attr name="progressLayoutProgressBackground" format="color" />
         <attr name="progressLayoutProgress" format="boolean" />
     </declare-styleable>
+
+    <!-- 滑动开关的属性 -->
+    <declare-styleable name="slideswitch">
+        <attr name="themeColor" format="color" />
+        <attr name="isOpen" format="boolean" />
+        <attr name="shape">
+            <enum name="rect" value="1" />
+            <enum name="circle" value="2" />
+        </attr>
+    </declare-styleable>
 </resources>
