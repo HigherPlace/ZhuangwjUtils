@@ -515,7 +515,7 @@ public class NetManager {
 //     * @param path 图片路径
 //     */
 //    public static void uploadImage(String URL, Context context, String path,
-//                                   UploadImageCallback uploadImageCallBack, boolean isShowLoading) {
+//                                   UploadImageCallBack uploadImageCallBack, boolean isShowLoading) {
 //
 //        ResponseBean responseBean = null;
 //        if (path == null) {

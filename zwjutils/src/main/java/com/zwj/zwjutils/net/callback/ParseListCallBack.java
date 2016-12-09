@@ -11,10 +11,10 @@ import java.util.List;
  * Created by zwj on 2016/12/9.
  */
 
-public abstract class ParseListCallback<T> extends SimpleCallBack{
+public abstract class ParseListCallBack<T> extends SimpleCallBack{
     private Class<T> clazz;
 
-    public ParseListCallback(Class<T> clazz) {
+    public ParseListCallBack(Class<T> clazz) {
         super();
         this.clazz = clazz;
     }

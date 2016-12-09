@@ -10,7 +10,7 @@ import com.zwj.zwjutils.LogUtils;
 import com.zwj.zwjutils.net.NetManager;
 import com.zwj.zwjutils.net.bean.RequestBean;
 import com.zwj.zwjutils.net.bean.ResponseBean;
-import com.zwj.zwjutils.net.callback.ParseBeanCallback;
+import com.zwj.zwjutils.net.callback.ParseBeanCallBack;
 import com.zwj.zwjutils.net.callback.SimpleCallBack;
 import com.zwj.zwjutils.net.callback.SimpleCommonCallback;
 
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void testParseBeanCallback(View view) {
         new RequestBean("http://10.111.24.21:8080/hch/debug/testParseBean", RequestBean.METHOD_GET)
-                .setCallback(new ParseBeanCallback<ParseBean>(ParseBean.class) {
+                .setCallback(new ParseBeanCallBack<ParseBean>(ParseBean.class) {
                     @Override
                     public void onSuccess(ResponseBean responseBean, ParseBean obj) {
                         LogUtils.sysout(obj.getName());

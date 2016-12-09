@@ -9,11 +9,11 @@ import com.zwj.zwjutils.net.bean.ResponseBean;
  * Created by zwj on 2016/12/9.
  */
 
-public abstract class ParseBeanCallback<T> extends SimpleCallBack {
+public abstract class ParseBeanCallBack<T> extends SimpleCallBack {
 
     private Class<T> clazz;
 
-    public ParseBeanCallback(Class<T> clazz) {
+    public ParseBeanCallBack(Class<T> clazz) {
         super();
         this.clazz = clazz;
     }

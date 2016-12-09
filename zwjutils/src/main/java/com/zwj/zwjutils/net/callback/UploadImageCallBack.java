@@ -8,8 +8,8 @@ import com.zwj.zwjutils.net.bean.ResponseBean;
 /**
  * Created by Administrator on 2016/5/26.
  */
-public abstract class UploadImageCallback implements NetManager.RequestCallBack {
-    private static final String TAG = "UploadImageCallback";
+public abstract class UploadImageCallBack implements NetManager.RequestCallBack {
+    private static final String TAG = "UploadImageCallBack";
 
     @Override
     public void onCancelled(ResponseBean responseBean) {
