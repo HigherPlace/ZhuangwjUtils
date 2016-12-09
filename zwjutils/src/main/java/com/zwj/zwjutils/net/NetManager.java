@@ -13,7 +13,6 @@ import com.zwj.zwjutils.net.bean.ResponseBean;
 import com.zwj.zwjutils.net.constant.Constant;
 import com.zwj.zwjutils.net.constant.ResponseStatus;
 import com.zwj.zwjutils.net.constant.Status;
-import com.zwj.zwjutils.net.constant.UrlConstant;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,8 +22,10 @@ import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.File;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -67,10 +68,14 @@ public class NetManager {
 
     private static Map<String, RequestBean> requestMap = new HashMap<>();
 
+
+    public static Cancelable request(@NonNull Context context, @NonNull RequestBean requestBean) {
+        return request(context, requestBean, null);
+    }
     /**
      * 需要重连的时候返回null
      */
-    public static Cancelable request(@NonNull final Context context, @NonNull final RequestBean requestBean) {
+    public static Cancelable request(@NonNull final Context context, @NonNull final RequestBean requestBean, final Parser parser) {
         final ResponseBean responseBean = new ResponseBean();
         responseBean.setUrl(requestBean.getUrl())
                 .setShowToast(requestBean.isShowErrorToast());
@@ -91,11 +96,6 @@ public class NetManager {
             return null;
         }
 
-        if (requestBean.isShowLoading()) {
-            //TODO
-//            ProgressUtil.startProgress(context, requestBean.getTipContent());
-        }
-
         RequestParams params = new RequestParams(requestBean.getUrl());
         params.setConnectTimeout(1000 * 10);  // 网络超时时间设置为10s
         if (!TextUtils.isEmpty(requestBean.getBodyContent())) {
@@ -103,22 +103,7 @@ public class NetManager {
             params.setAsJsonContent(true);
             params.setBodyContent(requestBean.getBodyContent());
         } else {
-            Map<String, String> paramMap = requestBean.getParamMap();
-            if (paramMap != null) {
-                Set<String> keySet = paramMap.keySet();
-                Iterator<String> iterator = keySet.iterator();
-                while (iterator.hasNext()) {
-                    String key = iterator.next();
-                    String value = paramMap.get(key);
-
-                    // 打印参数名称和值
-                    StringBuilder sbParam = new StringBuilder();
-                    sbParam.append("param: ").append(key).append(" ---> ").append(value);
-                    LogUtils.i(TAG, sbParam.toString());
-
-                    params.addBodyParameter(key, value);
-                }
-            }
+            addParamByMap(params, requestBean.getParamMap());
 
             // 添加数组参数
             Map<String, List<String>> paramArrayList = requestBean.getParamArrayMap();
@@ -142,48 +127,32 @@ public class NetManager {
         }
 
 
-        // 过期了就重新登陆
-//        String lastTimeStr = FileUtils.loadContentFromFiles(context.getApplicationContext(),
-//                Constant.FILE_TIME);
-//        long curTime = System.currentTimeMillis();
-//        FileUtils.writeContent2File(null, Constant.FILE_TIME, String.valueOf(curTime), false);
-//
-//        if (!TextUtils.isEmpty(lastTimeStr)) {
-//            LogUtils.i(TAG, "lastTimeStr --> " + lastTimeStr);
-//            long lastTimeL = Long.parseLong(lastTimeStr);
-//            User user = UserUtil.getInstance().getUser();
-//            //比后台的时间小于一小时就重连
-//            if ((curTime - lastTimeL) > (Constant.LOSE_EFFICICY_TIME - 10 * 60 * 1000)
-//                    && user != null) {
-//                reLoginWithPwd(context, user, requestBean);
-//                return null;
-//            }
-//        }
-
         // 添加Cookie
         if (requestBean.isNeedCookies()) {
-            if (!TextUtils.isEmpty(SPUtil.getString(context.getApplicationContext(), Constant.COOKIE_NAME))) {
-                StringBuilder sbCookie = new StringBuilder();
-                sbCookie.append(Constant.COOKIE_NAME)
-                        .append("=")
-                        .append(SPUtil.getString(context.getApplicationContext(),
-                                Constant.COOKIE_NAME)).append("; path=/; domain=")
-                        .append(UrlConstant.TEMP_DOMAIN);
-                LogUtils.e(TAG, "cookie------>" + sbCookie);
-                params.addHeader("Cookie", sbCookie.toString());
+            String cookie = SPUtil.getString(context.getApplicationContext(), Constant.COOKIE_NAME);
+            if (!TextUtils.isEmpty(cookie)) {
+//                StringBuilder sbCookie = new StringBuilder();
+//                sbCookie.append(Constant.COOKIE_NAME)
+//                        .append("=")
+//                        .append(SPUtil.getString(context.getApplicationContext(),
+//                                Constant.COOKIE_NAME)).append("; path=/; domain=")
+//                        .append(UrlConstant.TEMP_DOMAIN);
+                LogUtils.e(TAG, "cookie------>" + cookie);
+                params.addHeader("Cookie", cookie);
             }
 
-            if (!TextUtils.isEmpty(SPUtil.getString(
-                    context.getApplicationContext(), Constant.COOKIE_SESSION))) {
-                StringBuilder sbSession = new StringBuilder();
-                sbSession
-                        .append(Constant.COOKIE_SESSION)
-                        .append("=")
-                        .append(SPUtil.getString(context.getApplicationContext(),
-                                Constant.COOKIE_SESSION))
-                        .append("; path=/; domain=").append(UrlConstant.TEMP_DOMAIN);
-                LogUtils.e(TAG, "session------>" + sbSession);
-                params.addHeader("Cookie", sbSession.toString());
+            String session = SPUtil.getString(
+                    context.getApplicationContext(), Constant.COOKIE_SESSION);
+            if (!TextUtils.isEmpty(session)) {
+//                StringBuilder sbSession = new StringBuilder();
+//                sbSession
+//                        .append(Constant.COOKIE_SESSION)
+//                        .append("=")
+//                        .append(SPUtil.getString(context.getApplicationContext(),
+//                                Constant.COOKIE_SESSION))
+//                        .append("; path=/; domain=").append(UrlConstant.TEMP_DOMAIN);
+                LogUtils.e(TAG, "session------>" + session);
+                params.addHeader("Cookie", session);
             }
         }
 
@@ -251,14 +220,8 @@ public class NetManager {
 
             @Override
             public void onFinished() {
-                if (requestBean.isShowLoading() && (!isReLoading || !requestBean.isNeedReconnection())) {
-                    // TODO
-//                    ProgressUtil.hideProgress();
-                }
-
                 if (requestBean.isNeedReconnection() && requestBean.getCount() < 3) {
                     // 进行重连
-                    requestBean.setShowLoading(false);
                     requestBean.setNeedReconnection(false);
                     request(context, requestBean);
                 } else {
@@ -276,12 +239,18 @@ public class NetManager {
                     if (requestBean.getCallback() != null) {
                         responseBean.setStatus(ResponseStatus.SUCCESS)
                                 .setMessage("获取数据成功")
-                                .setResult(result)
-                                .setShowToast(false);
+                                .setResult(result);
                         requestBean.getCallback().onSuccess(responseBean);
                     }
                     return;
                 }
+
+                // 自定义解析(可参照下面的解析)
+                if(parser != null) {
+                    parser.parse(result);
+                    return;
+                }
+
                 JSONObject jsonObject;
                 try {
                     jsonObject = new JSONObject(result);
@@ -355,7 +324,7 @@ public class NetManager {
      */
     public static boolean isNetWorkReachable(Context context) {
         final ConnectivityManager mManager = (ConnectivityManager) context.getApplicationContext().getSystemService(
-                        Context.CONNECTIVITY_SERVICE);
+                Context.CONNECTIVITY_SERVICE);
 
         // 如果没有可用的数据网络会返回null
         NetworkInfo current = mManager.getActiveNetworkInfo();
@@ -366,6 +335,106 @@ public class NetManager {
         return (current.getState() == NetworkInfo.State.CONNECTED);
     }
 
+    /**
+     * 上传文件
+     * @param url
+     * @param uploadFile
+     * @param uploadCallBack
+     */
+    public static void uploadFile(String url, File uploadFile, CommonCallback<String> uploadCallBack) {
+        uploadFile(url, uploadFile, null, uploadCallBack);
+    }
+
+    /**
+     * 上传文件
+     * @param url
+     * @param uploadFile
+     * @param paramMap
+     * @param uploadCallBack
+     */
+    public static void uploadFile(String url, File uploadFile, Map<String, String> paramMap, CommonCallback<String> uploadCallBack) {
+        List<File> uplodFileList = new ArrayList<>();
+        uplodFileList.add(uploadFile);
+        uploadFile(url, uplodFileList, paramMap, uploadCallBack);
+    }
+
+    /**
+     * 上传多个文件
+     * @param url
+     * @param uploadFileList
+     * @param paramMap
+     * @param uploadCallBack
+     */
+    public static void uploadFile(String url, List<File> uploadFileList, Map<String, String> paramMap, CommonCallback<String> uploadCallBack) {
+
+        if(uploadFileList == null || uploadFileList.size() == 0) {
+            // TODO 抛出异常
+            return;
+        }
+
+        RequestParams params = new RequestParams(url);   // 上传文件的接口
+        params.setMultipart(true);
+        for(int i=0; i<uploadFileList.size(); i++) {
+            File file = uploadFileList.get(i);
+
+            if(i == 0) {
+                params.addBodyParameter("file", file);
+            }else {
+                params.addBodyParameter("file"+i, file);
+            }
+        }
+
+        addParamByMap(params, paramMap);
+        x.http().post(params, uploadCallBack);
+    }
+
+    public static void uploadFile(String url, Map<String, File> fileMap, Map<String, String> paramMap, CommonCallback<String> uploadCallBack) {
+
+        if(fileMap == null) {
+            // TODO 抛出异常
+            return;
+        }
+
+        RequestParams params = new RequestParams(url);   // 上传文件的接口
+        params.setMultipart(true);
+
+//        if (fileMap != null) {
+            Set<String> keySet = paramMap.keySet();
+            Iterator<String> iterator = keySet.iterator();
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                File value = fileMap.get(key);
+                params.addBodyParameter(key, value);
+            }
+//        }
+
+        addParamByMap(params, paramMap);
+        x.http().post(params, uploadCallBack);
+    }
+
+    /**
+     * 往RequestParams中添加请求参数
+     * @param params
+     * @param paramMap
+     */
+    public static void addParamByMap(RequestParams params, Map<String, String> paramMap) {
+        // 添加数组参数
+        if (paramMap != null) {
+            Set<String> keySet = paramMap.keySet();
+            Iterator<String> iterator = keySet.iterator();
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                String value = paramMap.get(key);
+
+                // 打印参数名称和值
+                StringBuilder sbParam = new StringBuilder();
+                sbParam.append("param: ").append(key).append(" ---> ").append(value);
+                LogUtils.i(TAG, sbParam.toString());
+
+                params.addBodyParameter(key, value);
+            }
+        }
+    }
     /**
      * 重新登录
      */
@@ -440,13 +509,13 @@ public class NetManager {
 //                .request(context);
 //    }
 
-    /**
-     * 上传车辆照片到服务器
-     *
-     * @param path 图片路径
-     */
+//    /**
+//     * 上传车辆照片到服务器
+//     *
+//     * @param path 图片路径
+//     */
 //    public static void uploadImage(String URL, Context context, String path,
-//                                   UploadImageCallBack uploadImageCallBack, boolean isShowLoading) {
+//                                   UploadImageCallback uploadImageCallBack, boolean isShowLoading) {
 //
 //        ResponseBean responseBean = null;
 //        if (path == null) {
@@ -476,6 +545,9 @@ public class NetManager {
 //                .setCallback(uploadImageCallBack).
 //                request(context);
 //    }
+    public static void uploadImage() {
+
+    }
 
     /**
      * 从后台获取城市数据

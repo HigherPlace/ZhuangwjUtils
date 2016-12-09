@@ -27,5 +27,37 @@
     <!-- item点击的颜色 -->
     <color name="bg_item_press">#d9d9d9</color>
 
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
     <color name="red">#ff0000</color>
+
+    <!-- 银灰色 -->
+    <color name="silver_gray">#C9C7C5</color>
+    <!-- 深灰色 -->
+    <color name="dark_grey">#666666</color>
+
+    <!-- 橙色 -->
+    <color name="orange">#fd8301</color>
+    <color name="green">#00ff00</color>
+    <color name="green_22AC38">#22AC38</color>
+    <color name="blue">#0000ff</color>
+
+    <!-- 咖啡色 -->
+    <color name="coffee">#82371E</color>
+
+    <!-- 紫色 -->
+    <color name="purple">#7D02BC</color>
+
+    <!-- 香槟色 -->
+    <color name="champagne">#B49766</color>
+
+    <!-- 黄色 -->
+    <color name="yellow">#FDD601</color>
+    <color name="pink">#F6C7C7</color>
+
+    <!-- 深绿色 -->
+    <color name="dark_green">#1F9925</color>
+
+    <!-- 淡橙色 -->
+    <color name="light_orange">#FEE3CE</color>
 </resources>

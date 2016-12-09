@@ -35,9 +35,6 @@ public class RequestBean {
     private Map<String, List<String>> paramArrayMap;    // 存数组的参数
     private String bodyContent; // 以json形式传递的参数
 
-    // private RequestParams par
-    // 是否显示默认的加载图标
-    private boolean isShowLoading;
     /**
      * 是否需要对结果进行解析处理,默认不进行解析
      */
@@ -51,6 +48,7 @@ public class RequestBean {
 
     /**
      * 是否需要添加cookies信息,默认true
+     * 使用cookie还需要在sp文件中保存cookie方会自动添加
      */
     private boolean isNeedCookies = true;
 
@@ -93,20 +91,6 @@ public class RequestBean {
 
     public RequestBean setParamMap(Map<String, String> paramMap) {
         this.paramMap = paramMap;
-        return this;
-    }
-
-    public boolean isShowLoading() {
-        return isShowLoading;
-    }
-
-    /**
-     * 默认false
-     * @param isShowLoading
-     * @return
-     */
-    public RequestBean setShowLoading(boolean isShowLoading) {
-        this.isShowLoading = isShowLoading;
         return this;
     }
 
