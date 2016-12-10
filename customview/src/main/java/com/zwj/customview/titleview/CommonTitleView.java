@@ -3,41 +3,51 @@ package com.zwj.customview.titleview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zwj.mycustomview.R;
+import com.zwj.zwjutils.DensityUtils;
 
 
 /**
  * 通用标题栏
- * 仅适用于
  */
-public class TitleView extends RelativeLayout implements OnClickListener {
+public class CommonTitleView extends RelativeLayout implements OnClickListener {
+    private static final int DEFAULT_TITLE_HEIGHT = 49;
+    private static final int DEFAULT_TITLE_SIZE = 23;
+    private static final int DEFAULT_ICON_SIZE = 25;
+    private static final int DEFAULT_MENU_SIZE = 17;
     private TextView tvTitle;
-    private ImageView ivBack;
+    private FrameLayout leftFrameLayou, rightFrameLayout;
+    private ImageView ivLeft;
     private TextView tvLeft;
     private TextView tvRight;
     private ImageView ivRight;
     private View bottomLine;
 
+    private int ivLeftWidth, ivLeftHeight;
+    private int ivRightWidth, ivRightHeight;
 
-    public TitleView(Context context) {
+
+    public CommonTitleView(Context context) {
         this(context, null);
     }
 
-    public TitleView(Context context, AttributeSet attrs) {
+    public CommonTitleView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public TitleView(Context context, AttributeSet attrs, int defStyle) {
+    public CommonTitleView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        LayoutInflater.from(context).inflate(R.layout.rl_title_bar, this, true);
+        LayoutInflater.from(context).inflate(R.layout.rl_common_title_bar, this, true);
 
         initView();
         setListener();
@@ -51,32 +61,79 @@ public class TitleView extends RelativeLayout implements OnClickListener {
             int attr = a.getIndex(i);
             if (attr == R.styleable.TitleViewAttr_rightIcon) {
                 setRightIcon(a.getResourceId(attr, 0));
+            } else if (attr == R.styleable.TitleViewAttr_leftIcon) {
+                setLeftIcon(a.getResourceId(attr, 0));
+            } else if (attr == R.styleable.TitleViewAttr_titleHeight) {
+                // 标题栏高度
+                int titleHeight = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_TITLE_HEIGHT));
+                // TODO 进行高度设置
+
             } else if (attr == R.styleable.TitleViewAttr_tvtitle) {
                 tvTitle.setText(a.getString(attr));
-
+            } else if (attr == R.styleable.TitleViewAttr_tvtitleSize) {
+                tvTitle.setTextSize(a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_TITLE_SIZE)));
+            } else if (attr == R.styleable.TitleViewAttr_leftIconSize) {
+                int leftIconSize = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
+                FrameLayout.LayoutParams ivLeftLp = new FrameLayout.LayoutParams(leftIconSize, leftIconSize);
+                ivLeftLp.gravity = Gravity.CENTER;
+                ivLeft.setLayoutParams(ivLeftLp);
+            } else if (attr == R.styleable.TitleViewAttr_leftIconWidth) {
+                ivLeftWidth = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
+            } else if (attr == R.styleable.TitleViewAttr_leftIconHeight) {
+                ivLeftHeight = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
+            } else if (attr == R.styleable.TitleViewAttr_rightIconSize) {
+                int rightIconSize = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
+                FrameLayout.LayoutParams ivRightLp = (FrameLayout.LayoutParams) ivRight.getLayoutParams();
+                ivRightLp.width = rightIconSize;
+                ivRightLp.height = rightIconSize;
+                ivRight.setLayoutParams(ivRightLp);
+            } else if (attr == R.styleable.TitleViewAttr_rightIconWidth) {
+                ivRightWidth = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
+            } else if (attr == R.styleable.TitleViewAttr_rightIconHeight) {
+                ivRightHeight = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
             } else if (attr == R.styleable.TitleViewAttr_rightMenu) {
                 setRightMenu(a.getString(attr));
-
+            } else if (attr == R.styleable.TitleViewAttr_rightMenuSize) {
+                tvRight.setTextSize(a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_MENU_SIZE)));
             } else if (attr == R.styleable.TitleViewAttr_leftMenu) {
                 setLeftMenu(a.getString(attr));
+            } else if (attr == R.styleable.TitleViewAttr_leftMenuSize) {
+                tvLeft.setTextSize(a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_MENU_SIZE)));
             }
         }
+
+        if(ivLeftWidth > 0 && ivLeftHeight > 0) {
+            FrameLayout.LayoutParams ivLeftLp = new FrameLayout.LayoutParams(ivLeftWidth, ivLeftHeight);
+            ivLeftLp.gravity = Gravity.CENTER;
+            ivLeft.setLayoutParams(ivLeftLp);
+        }
+
+        if(ivRightWidth > 0 && ivRightHeight > 0) {
+            FrameLayout.LayoutParams ivRightLp = (FrameLayout.LayoutParams) ivRight.getLayoutParams();
+            ivRightLp.width = ivRightWidth;
+            ivRightLp.height = ivRightHeight;
+            ivRight.setLayoutParams(ivRightLp);
+        }
+
+
         a.recycle();
     }
 
     private void initView() {
         tvTitle = (TextView) findViewById(R.id.tv_title);
-        ivBack = (ImageView) findViewById(R.id.iv_back);
+        ivLeft = (ImageView) findViewById(R.id.iv_left);
         tvLeft = (TextView) findViewById(R.id.tv_left);
         tvRight = (TextView) findViewById(R.id.tv_right);
         ivRight = (ImageView) findViewById(R.id.iv_right);
         bottomLine = findViewById(R.id.botton_divider);
+        leftFrameLayou = (FrameLayout) findViewById(R.id.fl_left);
+        rightFrameLayout = (FrameLayout) findViewById(R.id.fl_right);
     }
 
     private void setListener() {
-        ivBack.setOnClickListener(this);
+        leftFrameLayou.setOnClickListener(this);
         tvRight.setOnClickListener(this);
-        ivRight.setOnClickListener(this);
+        rightFrameLayout.setOnClickListener(this);
         tvLeft.setOnClickListener(this);
     }
 
@@ -93,7 +150,7 @@ public class TitleView extends RelativeLayout implements OnClickListener {
         /**
          * 回退
          */
-        void onClickBack();
+        void onClickImLeftListener();
 
         /**
          * 点击左边文字选项
@@ -116,12 +173,12 @@ public class TitleView extends RelativeLayout implements OnClickListener {
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.iv_back) {
+        if (i == R.id.fl_left) {
             if (mOnTitleMenuClickListener != null) {
-                mOnTitleMenuClickListener.onClickBack();
+                mOnTitleMenuClickListener.onClickImLeftListener();
             }
 
-        } else if (i == R.id.iv_right) {
+        } else if (i == R.id.fl_right) {
             if (mOnTitleMenuClickListener != null) {
                 mOnTitleMenuClickListener.onClickImRightListener();
             }
@@ -174,14 +231,14 @@ public class TitleView extends RelativeLayout implements OnClickListener {
 
     public void setIvBackVisibility(boolean isShow) {
         if (isShow) {
-            ivBack.setVisibility(View.VISIBLE);
+            ivLeft.setVisibility(View.VISIBLE);
         } else {
-            ivBack.setVisibility(View.GONE);
+            ivLeft.setVisibility(View.GONE);
         }
     }
 
     public void setLeftMenu(String leftMenu) {
-        ivBack.setVisibility(View.GONE);
+        ivLeft.setVisibility(View.GONE);
         tvLeft.setVisibility(View.VISIBLE);
         tvLeft.setText(leftMenu);
     }
@@ -194,6 +251,12 @@ public class TitleView extends RelativeLayout implements OnClickListener {
         tvRight.setVisibility(View.GONE);
         ivRight.setVisibility(View.VISIBLE);
         ivRight.setImageResource(imgResId);
+    }
+
+    public void setLeftIcon(int imgResId) {
+        tvLeft.setVisibility(View.GONE);
+        ivLeft.setVisibility(View.VISIBLE);
+        ivLeft.setImageResource(imgResId);
     }
 
     public void setOnTitleMenuClickListener(OnTitleMenuClickListener listener) {

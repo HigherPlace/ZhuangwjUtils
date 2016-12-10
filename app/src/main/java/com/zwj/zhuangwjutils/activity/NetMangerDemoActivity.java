@@ -1,10 +1,11 @@
-package com.zwj.zhuangwjutils;
+package com.zwj.zhuangwjutils.activity;
 
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.zwj.zhuangwjutils.R;
 import com.zwj.zhuangwjutils.bean.ParseBean;
 import com.zwj.zwjutils.LogUtils;
 import com.zwj.zwjutils.net.NetManager;
@@ -23,12 +24,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * NetManager网络工具的使用demo
+ */
+public class NetMangerDemoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_net_manger_demo);
     }
 
     public void testCookies(View view) {

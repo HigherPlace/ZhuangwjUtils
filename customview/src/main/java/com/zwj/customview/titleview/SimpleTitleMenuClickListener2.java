@@ -1,9 +1,9 @@
 package com.zwj.customview.titleview;
 
-public class SimpleTitleMenuClickListener implements CommonTitleView.OnTitleMenuClickListener {
+public class SimpleTitleMenuClickListener2 implements TitleView.OnTitleMenuClickListener {
 
 	@Override
-	public void onClickImLeftListener() {
+	public void onClickBack() {
 
 	}
 

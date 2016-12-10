@@ -10,14 +10,6 @@
         <attr name="round_radius" format="dimension" />
     </declare-styleable>
 
-    <!-- titleview属性 -->
-    <declare-styleable name="TitleViewAttr">
-        <attr name="tvtitle" format="string" />
-        <attr name="rightMenu" format="string" />
-        <attr name="rightIcon" format="reference" />
-        <attr name="leftMenu" format="string" />
-    </declare-styleable>
-
     <!-- 进度条的属性 -->
     <declare-styleable name="ProgressLayout">
         <attr name="progressLayoutProgressBackground" format="color" />

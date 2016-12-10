@@ -13,13 +13,25 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <!-- ******************** 自动适配配置 begin ******************** -->
+        <meta-data
+            android:name="design_width"
+            android:value="1080" />
+        <meta-data
+            android:name="design_height"
+            android:value="1920" />
+        <!-- ================= 自动适配配置 end ==================== -->
+
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.NetMangerDemoActivity" />
+        <activity android:name=".activity.TitleViewDemoActivity"></activity>
     </application>
 
 </manifest>
