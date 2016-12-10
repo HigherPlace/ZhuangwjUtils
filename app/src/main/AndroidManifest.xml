@@ -17,10 +17,10 @@
         <!-- ******************** 自动适配配置 begin ******************** -->
         <meta-data
             android:name="design_width"
-            android:value="1080" />
+            android:value="720" />
         <meta-data
             android:name="design_height"
-            android:value="1920" />
+            android:value="1280" />
         <!-- ================= 自动适配配置 end ==================== -->
 
         <activity android:name=".activity.MainActivity">

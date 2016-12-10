@@ -21,6 +21,9 @@
         <attr name="rightMenuSize" format="dimension" />
         <attr name="leftMenu" format="string" />
         <attr name="leftMenuSize" format="dimension" />
+
+        <!-- 是否使用了适配框架 -->
+        <attr name="isAuto" format="boolean" />
     </declare-styleable>
 
 </resources>

@@ -3,6 +3,7 @@ package com.zwj.customview.titleview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.zhy.autolayout.config.AutoLayoutConifg;
+import com.zhy.autolayout.utils.AutoUtils;
+import com.zhy.autolayout.utils.DimenUtils;
 import com.zwj.mycustomview.R;
 import com.zwj.zwjutils.DensityUtils;
+import com.zwj.zwjutils.LogUtils;
 
 
 /**
@@ -21,11 +26,16 @@ import com.zwj.zwjutils.DensityUtils;
  */
 public class CommonTitleView extends RelativeLayout implements OnClickListener {
     private static final int DEFAULT_TITLE_HEIGHT = 49;
-    private static final int DEFAULT_TITLE_SIZE = 23;
+    private static final int DEFAULT_TITLE_SIZE = 22;
     private static final int DEFAULT_ICON_SIZE = 25;
     private static final int DEFAULT_MENU_SIZE = 17;
+
+    private static final int DEFAULT_TITLE_SIZE_AUTO = 40;
+    private static final int DEFAULT_MENU_SIZE_AUTO = 30;
+    private static final int DEFAULT_ICON_SIZE_AUTO = 90;
+
     private TextView tvTitle;
-    private FrameLayout leftFrameLayou, rightFrameLayout;
+    private FrameLayout flLeft, flRight;
     private ImageView ivLeft;
     private TextView tvLeft;
     private TextView tvRight;
@@ -34,6 +44,9 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
 
     private int ivLeftWidth, ivLeftHeight;
     private int ivRightWidth, ivRightHeight;
+    private int maxFrameImgSize;
+
+    private boolean isAuto;
 
 
     public CommonTitleView(Context context) {
@@ -52,11 +65,20 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
         initView();
         setListener();
 
+        maxFrameImgSize = DensityUtils.dp2px(getContext(), 80);
+
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.TitleViewAttr, defStyle, 0);
 
-        int n = a.getIndexCount();
 
+        // 如果是使用自动适配框架则初始化配置
+        isAuto = a.getBoolean(R.styleable.TitleViewAttr_isAuto, false);
+        if(isAuto) {
+            AutoLayoutConifg.getInstance().init(getContext());
+            // TODO 将所有控件大小改为px的默认大小
+        }
+
+        int n = a.getIndexCount();
         for (int i = 0; i < n; i++) {
             int attr = a.getIndex(i);
             if (attr == R.styleable.TitleViewAttr_rightIcon) {
@@ -71,44 +93,44 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
             } else if (attr == R.styleable.TitleViewAttr_tvtitle) {
                 tvTitle.setText(a.getString(attr));
             } else if (attr == R.styleable.TitleViewAttr_tvtitleSize) {
-                tvTitle.setTextSize(a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_TITLE_SIZE)));
+                tvTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, getSize(a, attr, DEFAULT_TITLE_SIZE, DEFAULT_TITLE_SIZE_AUTO));
             } else if (attr == R.styleable.TitleViewAttr_leftIconSize) {
-                int leftIconSize = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
+                int leftIconSize = getSize(a, attr, DEFAULT_ICON_SIZE, DEFAULT_ICON_SIZE_AUTO);
                 FrameLayout.LayoutParams ivLeftLp = new FrameLayout.LayoutParams(leftIconSize, leftIconSize);
                 ivLeftLp.gravity = Gravity.CENTER;
                 ivLeft.setLayoutParams(ivLeftLp);
             } else if (attr == R.styleable.TitleViewAttr_leftIconWidth) {
-                ivLeftWidth = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
+                ivLeftWidth = getSize(a, attr, DEFAULT_ICON_SIZE, DEFAULT_ICON_SIZE_AUTO);
             } else if (attr == R.styleable.TitleViewAttr_leftIconHeight) {
-                ivLeftHeight = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
+                ivLeftHeight = getSize(a, attr, DEFAULT_ICON_SIZE, DEFAULT_ICON_SIZE_AUTO);
             } else if (attr == R.styleable.TitleViewAttr_rightIconSize) {
-                int rightIconSize = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
+                int rightIconSize = getSize(a, attr, DEFAULT_ICON_SIZE, DEFAULT_ICON_SIZE_AUTO);
                 FrameLayout.LayoutParams ivRightLp = (FrameLayout.LayoutParams) ivRight.getLayoutParams();
                 ivRightLp.width = rightIconSize;
                 ivRightLp.height = rightIconSize;
                 ivRight.setLayoutParams(ivRightLp);
             } else if (attr == R.styleable.TitleViewAttr_rightIconWidth) {
-                ivRightWidth = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
+                ivRightWidth = getSize(a, attr, DEFAULT_ICON_SIZE, DEFAULT_ICON_SIZE_AUTO);
             } else if (attr == R.styleable.TitleViewAttr_rightIconHeight) {
-                ivRightHeight = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_ICON_SIZE));
+                ivRightHeight = getSize(a, attr, DEFAULT_ICON_SIZE, DEFAULT_ICON_SIZE_AUTO);
             } else if (attr == R.styleable.TitleViewAttr_rightMenu) {
                 setRightMenu(a.getString(attr));
             } else if (attr == R.styleable.TitleViewAttr_rightMenuSize) {
-                tvRight.setTextSize(a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_MENU_SIZE)));
+                tvRight.setTextSize(TypedValue.COMPLEX_UNIT_PX, getSize(a, attr, DEFAULT_MENU_SIZE, DEFAULT_MENU_SIZE_AUTO));
             } else if (attr == R.styleable.TitleViewAttr_leftMenu) {
                 setLeftMenu(a.getString(attr));
             } else if (attr == R.styleable.TitleViewAttr_leftMenuSize) {
-                tvLeft.setTextSize(a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_MENU_SIZE)));
+                tvLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, getSize(a, attr, DEFAULT_MENU_SIZE, DEFAULT_MENU_SIZE_AUTO));
             }
         }
 
-        if(ivLeftWidth > 0 && ivLeftHeight > 0) {
+        if (ivLeftWidth > 0 && ivLeftHeight > 0) {
             FrameLayout.LayoutParams ivLeftLp = new FrameLayout.LayoutParams(ivLeftWidth, ivLeftHeight);
             ivLeftLp.gravity = Gravity.CENTER;
             ivLeft.setLayoutParams(ivLeftLp);
         }
 
-        if(ivRightWidth > 0 && ivRightHeight > 0) {
+        if (ivRightWidth > 0 && ivRightHeight > 0) {
             FrameLayout.LayoutParams ivRightLp = (FrameLayout.LayoutParams) ivRight.getLayoutParams();
             ivRightLp.width = ivRightWidth;
             ivRightLp.height = ivRightHeight;
@@ -119,6 +141,39 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
         a.recycle();
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+        LogUtils.sysout("title onMeasure --> " + height);
+        LogUtils.sysout("maxFrameImgSize --> " + maxFrameImgSize);
+        if (height > 0) {
+            LayoutParams flLeftLp = (LayoutParams) flLeft.getLayoutParams();
+
+            if (height > maxFrameImgSize) {
+                flLeftLp.width = maxFrameImgSize;
+            } else {
+                flLeftLp.width = height;
+            }
+
+            flLeftLp.height = height;
+            flLeft.setLayoutParams(flLeftLp);
+
+            LayoutParams flRightLp = (LayoutParams) flRight.getLayoutParams();
+            if (height > maxFrameImgSize) {
+                flRightLp.width = maxFrameImgSize;
+            } else {
+                flRightLp.width = height;
+            }
+            flRightLp.height = height;
+            flRight.setLayoutParams(flRightLp);
+        }
+
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+
     private void initView() {
         tvTitle = (TextView) findViewById(R.id.tv_title);
         ivLeft = (ImageView) findViewById(R.id.iv_left);
@@ -126,14 +181,14 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
         tvRight = (TextView) findViewById(R.id.tv_right);
         ivRight = (ImageView) findViewById(R.id.iv_right);
         bottomLine = findViewById(R.id.botton_divider);
-        leftFrameLayou = (FrameLayout) findViewById(R.id.fl_left);
-        rightFrameLayout = (FrameLayout) findViewById(R.id.fl_right);
+        flLeft = (FrameLayout) findViewById(R.id.fl_left);
+        flRight = (FrameLayout) findViewById(R.id.fl_right);
     }
 
     private void setListener() {
-        leftFrameLayou.setOnClickListener(this);
+        flLeft.setOnClickListener(this);
         tvRight.setOnClickListener(this);
-        rightFrameLayout.setOnClickListener(this);
+        flRight.setOnClickListener(this);
         tvLeft.setOnClickListener(this);
     }
 
@@ -277,5 +332,17 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
         } else {
             ivRight.setVisibility(View.GONE);
         }
+    }
+
+    private int getSize(TypedArray typedArray, int attr, int defaultSize, int defaultSizeAuto) {
+        int size = 0;
+        if(isAuto && DimenUtils.isPxVal(typedArray.peekValue(attr))) {
+            size = AutoUtils.getPercentWidthSize(typedArray.getDimensionPixelSize(attr, defaultSizeAuto));
+        }else {
+            size = typedArray.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), defaultSize));
+        }
+
+//        LogUtils.sysout("size --> "+size);
+        return size;
     }
 }
