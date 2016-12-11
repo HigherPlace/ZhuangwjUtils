@@ -5,7 +5,7 @@
 
     <!-- 导航栏高度 -->
     <dimen name="common_height_titlebar">49dp</dimen>
-    <dimen name="height_titlebar">140px</dimen>
+    <dimen name="height_titlebar">144px</dimen>
 
     <!-- banner高度 -->
     <dimen name="height_banner">450px</dimen>

@@ -6,6 +6,7 @@
         <attr name="titleHeight" format="dimension" />
         <attr name="tvtitle" format="string" />
         <attr name="tvtitleSize" format="dimension" />
+        <attr name="titleColor" format="color|reference" />
 
         <attr name="leftIcon" format="reference" />
         <attr name="leftIconSize" format="dimension" />

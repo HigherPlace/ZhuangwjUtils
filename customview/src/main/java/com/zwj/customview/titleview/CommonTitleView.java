@@ -60,10 +60,6 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
     public CommonTitleView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        LayoutInflater.from(context).inflate(R.layout.rl_common_title_bar, this, true);
-
-        initView();
-        setListener();
 
         maxFrameImgSize = DensityUtils.dp2px(getContext(), 80);
 
@@ -75,8 +71,13 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
         isAuto = a.getBoolean(R.styleable.TitleViewAttr_isAuto, false);
         if(isAuto) {
             AutoLayoutConifg.getInstance().init(getContext());
-            // TODO 将所有控件大小改为px的默认大小
+            LayoutInflater.from(context).inflate(R.layout.rl_common_title_bar_px, this, true);
+        }else {
+            LayoutInflater.from(context).inflate(R.layout.rl_common_title_bar, this, true);
         }
+
+        initView();
+        setListener();
 
         int n = a.getIndexCount();
         for (int i = 0; i < n; i++) {
@@ -85,6 +86,8 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
                 setRightIcon(a.getResourceId(attr, 0));
             } else if (attr == R.styleable.TitleViewAttr_leftIcon) {
                 setLeftIcon(a.getResourceId(attr, 0));
+            } else if (attr == R.styleable.TitleViewAttr_titleColor) {
+                setAllTextColor(a.getColor(attr, 0));
             } else if (attr == R.styleable.TitleViewAttr_titleHeight) {
                 // 标题栏高度
                 int titleHeight = a.getDimensionPixelSize(attr, DensityUtils.dp2px(getContext(), DEFAULT_TITLE_HEIGHT));
@@ -344,5 +347,18 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
 
 //        LogUtils.sysout("size --> "+size);
         return size;
+    }
+
+    private void setAllTextColor(int color) {
+        tvTitle.setTextColor(color);
+        tvLeft.setTextColor(color);
+        tvRight.setTextColor(color);
+    }
+
+    /**
+     * 将默认的dp改为px
+     */
+    private void changeSize() {
+
     }
 }

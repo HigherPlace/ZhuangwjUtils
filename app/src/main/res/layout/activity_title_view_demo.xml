@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_height_titlebar"
         android:background="@color/white"
-        app:tvtitle="标题"/>
+        app:titleColor="@color/theme_color"
+        app:isAuto="true"/>
 
 </RelativeLayout>
