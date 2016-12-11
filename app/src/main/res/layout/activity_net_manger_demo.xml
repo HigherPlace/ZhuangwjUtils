@@ -21,6 +21,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="testUpload"
-        android:text="testUpload" />
+        android:text="测试文件上传（单文件、多文件）" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="testJsonAndParamRequest"
+        android:text="testJsonAndParamRequest" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="testMuldParamRequest"
+        android:text="测试数组参数传递" />
 
 </LinearLayout>

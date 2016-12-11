@@ -97,20 +97,21 @@ public class NetManager {
         }
 
         RequestParams params = new RequestParams(requestBean.getUrl());
-        params.setConnectTimeout(1000 * 10);  // 网络超时时间设置为10s
+        if(requestBean.getTimeOut() > 0) {
+            params.setConnectTimeout(requestBean.getTimeOut());
+        }
+
         if (!TextUtils.isEmpty(requestBean.getBodyContent())) {
             // 以json数据格式提交
-            // TODO 以json格式提交时如何添加token参数
+            // json 必须以post方式提交,强制设为Post
+            requestBean.setRequestMethod(RequestBean.METHOD_POST);
+            addToken(context, requestBean, params);
             params.setAsJsonContent(true);
             params.setBodyContent(requestBean.getBodyContent());
         } else {
-
-            if(requestBean.isNeedToken()) {
-                requestBean.addParam(Constant.TOKEN, FileUtils.loadContentFromFiles(context.getApplicationContext(), Constant.FILE_TOKEN));
-            }
+            addToken(context, requestBean, params);
             addParamByMap(params, requestBean.getParamMap());
 
-            // TODO 数组形式的参数是否有效
             // 添加数组参数
             Map<String, List<String>> paramArrayList = requestBean.getParamArrayMap();
             if (paramArrayList != null) {
@@ -437,6 +438,21 @@ public class NetManager {
                 LogUtils.i(TAG, sbParam.toString());
 
                 params.addBodyParameter(key, value);
+            }
+        }
+    }
+
+    /**
+     * 若有设为了自动添加，则添加token
+     * @param context
+     * @param requestBean
+     */
+    private static void addToken(Context context, RequestBean requestBean, RequestParams params) {
+        if(requestBean.isNeedToken()) {
+            String token = FileUtils.loadContentFromFiles(context.getApplicationContext(), Constant.FILE_TOKEN);
+            if(!TextUtils.isEmpty(token)) {
+                LogUtils.sysout("token --> "+token);
+                params.addBodyParameter(Constant.TOKEN, token);
             }
         }
     }

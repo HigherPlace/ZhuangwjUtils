@@ -7,6 +7,8 @@ import android.view.View;
 
 import com.zwj.zhuangwjutils.R;
 import com.zwj.zhuangwjutils.bean.ParseBean;
+import com.zwj.zhuangwjutils.constant.UrlConstant;
+import com.zwj.zwjutils.JsonUtil;
 import com.zwj.zwjutils.LogUtils;
 import com.zwj.zwjutils.net.NetManager;
 import com.zwj.zwjutils.net.bean.RequestBean;
@@ -82,5 +84,28 @@ public class NetMangerDemoActivity extends AppCompatActivity {
                 LogUtils.sysout("reslut ---> "+result);
             }
         });
+    }
+
+    /**
+     * 测试json和token一起传递
+     * @param view
+     */
+    public void testJsonAndParamRequest(View view) {
+        ParseBean parseBean = new ParseBean();
+        parseBean.setName("aaa");
+        parseBean.setTestParse("bbb");
+        new RequestBean(UrlConstant.BASE_URL+"/debug/testJsonAndParamRequest", RequestBean.METHOD_POST)
+                .setBodyContent(JsonUtil.toJSONString(parseBean)).request(this);
+    }
+
+    public void testMuldParamRequest(View view) {
+        List<String> values = new ArrayList<>();
+        values.add("a");
+        values.add("c");
+        values.add("b");
+
+        new RequestBean(UrlConstant.BASE_URL+"/debug/testMuldParamRequest", RequestBean.METHOD_POST)
+                .addParamArray("mul", values)
+                .request(this);
     }
 }
