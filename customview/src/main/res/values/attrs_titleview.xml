@@ -9,6 +9,7 @@
         <attr name="titleColor" format="color|reference" />
 
         <attr name="leftIcon" format="reference" />
+        <attr name="showLeftIcon" format="boolean" />
         <attr name="leftIconSize" format="dimension" />
         <attr name="leftIconWidth" format="dimension" />
         <attr name="leftIconHeight" format="dimension" />

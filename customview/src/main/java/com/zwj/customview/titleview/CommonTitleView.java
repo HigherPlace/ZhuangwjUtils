@@ -60,7 +60,6 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
     public CommonTitleView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-
         maxFrameImgSize = DensityUtils.dp2px(getContext(), 80);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
@@ -102,7 +101,11 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
                 FrameLayout.LayoutParams ivLeftLp = new FrameLayout.LayoutParams(leftIconSize, leftIconSize);
                 ivLeftLp.gravity = Gravity.CENTER;
                 ivLeft.setLayoutParams(ivLeftLp);
-            } else if (attr == R.styleable.TitleViewAttr_leftIconWidth) {
+            } else if (attr == R.styleable.TitleViewAttr_showLeftIcon) {
+                if(!a.getBoolean(attr, true)) {
+                    ivLeft.setVisibility(View.GONE);
+                }
+            }else if (attr == R.styleable.TitleViewAttr_leftIconWidth) {
                 ivLeftWidth = getSize(a, attr, DEFAULT_ICON_SIZE, DEFAULT_ICON_SIZE_AUTO);
             } else if (attr == R.styleable.TitleViewAttr_leftIconHeight) {
                 ivLeftHeight = getSize(a, attr, DEFAULT_ICON_SIZE, DEFAULT_ICON_SIZE_AUTO);
