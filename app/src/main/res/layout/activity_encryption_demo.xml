@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_encryption_demo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入加密前的文本"
+        android:text="加密前的文本"/>
+
+    <Button
+        android:id="@+id/btn_encrypt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="encrypt"
+        android:text="加密"/>
+
+    <TextView
+        android:id="@+id/tv_encrypt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_dencrypt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="dencrypt"
+        android:text="解密"/>
+
+    <TextView
+        android:id="@+id/tv_dencrypt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

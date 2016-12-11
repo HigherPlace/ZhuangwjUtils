@@ -31,7 +31,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.NetMangerDemoActivity" />
-        <activity android:name=".activity.TitleViewDemoActivity"></activity>
+        <activity android:name=".activity.TitleViewDemoActivity" />
+        <activity android:name=".activity.EncryptionDemoActivity"></activity>
     </application>
 
 </manifest>

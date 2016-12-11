@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.zwj.zwjutils.FileUtils;
 import com.zwj.zwjutils.LogUtils;
 import com.zwj.zwjutils.SPUtil;
 import com.zwj.zwjutils.net.bean.RequestBean;
@@ -77,8 +78,7 @@ public class NetManager {
      */
     public static Cancelable request(@NonNull final Context context, @NonNull final RequestBean requestBean, final Parser parser) {
         final ResponseBean responseBean = new ResponseBean();
-        responseBean.setUrl(requestBean.getUrl())
-                .setShowToast(requestBean.isShowErrorToast());
+        responseBean.setUrl(requestBean.getUrl());
 
         // 重置为false
         requestBean.setNeedReconnection(false);
@@ -100,11 +100,17 @@ public class NetManager {
         params.setConnectTimeout(1000 * 10);  // 网络超时时间设置为10s
         if (!TextUtils.isEmpty(requestBean.getBodyContent())) {
             // 以json数据格式提交
+            // TODO 以json格式提交时如何添加token参数
             params.setAsJsonContent(true);
             params.setBodyContent(requestBean.getBodyContent());
         } else {
+
+            if(requestBean.isNeedToken()) {
+                requestBean.addParam(Constant.TOKEN, FileUtils.loadContentFromFiles(context.getApplicationContext(), Constant.FILE_TOKEN));
+            }
             addParamByMap(params, requestBean.getParamMap());
 
+            // TODO 数组形式的参数是否有效
             // 添加数组参数
             Map<String, List<String>> paramArrayList = requestBean.getParamArrayMap();
             if (paramArrayList != null) {
@@ -125,7 +131,6 @@ public class NetManager {
                 }
             }
         }
-
 
         // 添加Cookie
         if (requestBean.isNeedCookies()) {

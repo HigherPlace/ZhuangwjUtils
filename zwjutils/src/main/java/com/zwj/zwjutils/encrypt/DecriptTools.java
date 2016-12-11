@@ -1,4 +1,4 @@
-package com.zwj.zwjutils;
+package com.zwj.zwjutils.encrypt;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;

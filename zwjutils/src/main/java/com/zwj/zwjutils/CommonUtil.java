@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
@@ -87,10 +88,10 @@ public class CommonUtil {
      */
     public static void call(Activity activity, String phoneNum) {
 //        MobclickAgent.onEvent(activity, Constant.UM_EVENT_DIAL); // 统计拨打电话
-//        Intent intent = new Intent(Intent.ACTION_DIAL);
-//        Uri data = Uri.parse("tel:" + phoneNum);
-//        intent.setData(data);
-//        activity.startActivity(intent);
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + phoneNum);
+        intent.setData(data);
+        activity.startActivity(intent);
     }
 
     /***
@@ -189,7 +190,7 @@ public class CommonUtil {
      *
      * @param numberStr
      */
-    public static String formatCarNo(String numberStr) {
+    public static String formatNumberDiviveFour(String numberStr) {
         if(TextUtils.isEmpty(numberStr)) {
             return null;
         }
@@ -214,25 +215,6 @@ public class CommonUtil {
         return sbCarNo.toString();
     }
 
-
-    /**
-     * 生成城市数据库
-     * @param mContext
-     * @return
-     */
-//	public static boolean createCityDB(Context mContext) {
-//		boolean isSuccessful = false;
-//		String jsonString = FileUtils.loadContentFromAssets(mContext,
-//				Constant.FILE_CITY_NAME);
-//		List<CityBean> provinceList = JsonUtil.getObjects(jsonString,
-//				CityBean.class);
-//		if (provinceList != null) {
-//			CityDAO cityDAO = new CityDAO(mContext);
-//			isSuccessful = cityDAO.addAllData(provinceList);
-//		}
-//
-//		return isSuccessful;
-//	}
 
     /**
      * 是否可以往上滚动

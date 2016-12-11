@@ -52,10 +52,13 @@ public class RequestBean {
      */
     private boolean isNeedCookies = true;
 
+    /**
+     * 是否自动追加token参数，默认true
+     */
+    private boolean isNeedToken = true;
+
     private Callback.Cancelable cancelable;
     private String tag;
-    private String tipContent = "加载中...";
-    private boolean isShowErrorToast = true;    // 是否弹出错误信息，默认true
 
     private String sessionId;
 
@@ -158,6 +161,18 @@ public class RequestBean {
         return this;
     }
 
+    public boolean isNeedToken() {
+        return isNeedToken;
+    }
+
+    /**
+     * 是否自动追加token参数，默认true
+     */
+    public RequestBean setNeedToken(boolean needToken) {
+        isNeedToken = needToken;
+        return this;
+    }
+
     public RequestBean addParam(String name, String value) {
         if (!TextUtils.isEmpty(value)) {
             if (paramMap == null) {
@@ -232,27 +247,8 @@ public class RequestBean {
         return this;
     }
 
-    public RequestBean setTipContent(String pTipContent) {
-        this.tipContent = pTipContent;
-        return this;
-    }
-
-    public String getTipContent() {
-        return tipContent;
-    }
-
-
     public void download() {
 
-    }
-
-    public boolean isShowErrorToast() {
-        return isShowErrorToast;
-    }
-
-    public RequestBean setShowErrorToast(boolean showErrorToast) {
-        isShowErrorToast = showErrorToast;
-        return this;
     }
 
     public String getSessionId() {
