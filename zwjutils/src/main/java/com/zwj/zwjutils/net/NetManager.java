@@ -73,6 +73,7 @@ public class NetManager {
     public static Cancelable request(@NonNull Context context, @NonNull RequestBean requestBean) {
         return request(context, requestBean, null);
     }
+
     /**
      * 需要重连的时候返回null
      */
@@ -97,7 +98,7 @@ public class NetManager {
         }
 
         RequestParams params = new RequestParams(requestBean.getUrl());
-        if(requestBean.getTimeOut() > 0) {
+        if (requestBean.getTimeOut() > 0) {
             params.setConnectTimeout(requestBean.getTimeOut());
         }
 
@@ -210,9 +211,11 @@ public class NetManager {
                 ex.printStackTrace();
 
                 // 连接超时，重连(最多重连2次)
-                if ((ex instanceof SocketTimeoutException || ex instanceof UnknownHostException) && requestBean.getCount() < RequestBean.MAX_RECONNECTION_COUNT) {
+                if ((ex instanceof SocketTimeoutException || ex instanceof UnknownHostException)
+                        && requestBean.isNeedReconnection() && requestBean.getCount() < RequestBean.MAX_RECONNECTION_COUNT) {
                     // 连接超时，设置重连标志
-                    requestBean.setNeedReconnection(true).setCount(requestBean.getCount() + 1);
+//                    requestBean.setNeedReconnection(true).setCount(requestBean.getCount() + 1);
+                    requestBean.setCount(requestBean.getCount() + 1);
 
                     LogUtils.i(TAG, "重连 ---> ");
                     LogUtils.i(TAG, "url ---> " + requestBean.getUrl());
@@ -226,9 +229,9 @@ public class NetManager {
 
             @Override
             public void onFinished() {
-                if (requestBean.isNeedReconnection() && requestBean.getCount() < 3) {
+                if (requestBean.isNeedReconnection() && requestBean.getCount() <= RequestBean.MAX_RECONNECTION_COUNT) {
                     // 进行重连
-                    requestBean.setNeedReconnection(false);
+//                    requestBean.setNeedReconnection(false);
                     request(context, requestBean);
                 } else {
                     requestMap.remove(requestBean.toString());
@@ -252,7 +255,7 @@ public class NetManager {
                 }
 
                 // 自定义解析(可参照下面的解析)
-                if(parser != null) {
+                if (parser != null) {
                     parser.parse(result);
                     return;
                 }
@@ -343,6 +346,7 @@ public class NetManager {
 
     /**
      * 上传文件
+     *
      * @param url
      * @param uploadFile
      * @param uploadCallBack
@@ -353,6 +357,7 @@ public class NetManager {
 
     /**
      * 上传文件
+     *
      * @param url
      * @param uploadFile
      * @param paramMap
@@ -366,6 +371,7 @@ public class NetManager {
 
     /**
      * 上传多个文件
+     *
      * @param url
      * @param uploadFileList
      * @param paramMap
@@ -373,20 +379,20 @@ public class NetManager {
      */
     public static void uploadFile(String url, List<File> uploadFileList, Map<String, String> paramMap, CommonCallback<String> uploadCallBack) {
 
-        if(uploadFileList == null || uploadFileList.size() == 0) {
+        if (uploadFileList == null || uploadFileList.size() == 0) {
             // TODO 抛出异常
             return;
         }
 
         RequestParams params = new RequestParams(url);   // 上传文件的接口
         params.setMultipart(true);
-        for(int i=0; i<uploadFileList.size(); i++) {
+        for (int i = 0; i < uploadFileList.size(); i++) {
             File file = uploadFileList.get(i);
 
-            if(i == 0) {
+            if (i == 0) {
                 params.addBodyParameter("file", file);
-            }else {
-                params.addBodyParameter("file"+i, file);
+            } else {
+                params.addBodyParameter("file" + i, file);
             }
         }
 
@@ -396,7 +402,7 @@ public class NetManager {
 
     public static void uploadFile(String url, Map<String, File> fileMap, Map<String, String> paramMap, CommonCallback<String> uploadCallBack) {
 
-        if(fileMap == null) {
+        if (fileMap == null) {
             // TODO 抛出异常
             return;
         }
@@ -405,13 +411,13 @@ public class NetManager {
         params.setMultipart(true);
 
 //        if (fileMap != null) {
-            Set<String> keySet = paramMap.keySet();
-            Iterator<String> iterator = keySet.iterator();
-            while (iterator.hasNext()) {
-                String key = iterator.next();
-                File value = fileMap.get(key);
-                params.addBodyParameter(key, value);
-            }
+        Set<String> keySet = paramMap.keySet();
+        Iterator<String> iterator = keySet.iterator();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            File value = fileMap.get(key);
+            params.addBodyParameter(key, value);
+        }
 //        }
 
         addParamByMap(params, paramMap);
@@ -420,6 +426,7 @@ public class NetManager {
 
     /**
      * 往RequestParams中添加请求参数
+     *
      * @param params
      * @param paramMap
      */
@@ -444,18 +451,20 @@ public class NetManager {
 
     /**
      * 若有设为了自动添加，则添加token
+     *
      * @param context
      * @param requestBean
      */
     private static void addToken(Context context, RequestBean requestBean, RequestParams params) {
-        if(requestBean.isNeedToken()) {
+        if (requestBean.isNeedToken()) {
             String token = FileUtils.loadContentFromFiles(context.getApplicationContext(), Constant.FILE_TOKEN);
-            if(!TextUtils.isEmpty(token)) {
-                LogUtils.sysout("token --> "+token);
+            if (!TextUtils.isEmpty(token)) {
+                LogUtils.sysout("token --> " + token);
                 params.addBodyParameter(Constant.TOKEN, token);
             }
         }
     }
+
     /**
      * 重新登录
      */

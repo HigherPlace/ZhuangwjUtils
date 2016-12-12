@@ -1,10 +1,13 @@
 package com.zwj.zhuangwjutils.activity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.zwj.customview.titleview.CommonTitleView;
+import com.zwj.customview.titleview.SimpleTitleMenuClickListener;
 import com.zwj.zhuangwjutils.R;
 import com.zwj.zhuangwjutils.activity.base.BaseAutoLayoutCommonActivity;
+import com.zwj.zwjutils.ToastUtil;
 
 public class TitleViewDemoActivity extends BaseAutoLayoutCommonActivity {
     private CommonTitleView titleView;
@@ -26,6 +29,18 @@ public class TitleViewDemoActivity extends BaseAutoLayoutCommonActivity {
 
     @Override
     protected void setListener() {
+        titleView.setOnTitleMenuClickListener(new SimpleTitleMenuClickListener(){
+            @Override
+            public void onClickImLeftListener() {
+                ToastUtil.toast(mContext.getApplicationContext(), "onClickImLeftListener");
+            }
+        });
 
+        titleView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastUtil.toast(mContext.getApplicationContext(), "click title");
+            }
+        });
     }
 }

@@ -150,6 +150,7 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
+        // 拿到测量的实际高度，设置到左右两个包裹图标的fragment上
         int height = MeasureSpec.getSize(heightMeasureSpec);
         LogUtils.sysout("title onMeasure --> " + height);
         LogUtils.sysout("maxFrameImgSize --> " + maxFrameImgSize);
