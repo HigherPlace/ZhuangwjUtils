@@ -73,6 +73,7 @@ public class MainActivity extends BaseAutoLayoutCommonActivity {
         viewBeenList.add(new ViewBean(NetMangerDemoActivity.class));
         viewBeenList.add(new ViewBean(TitleViewDemoActivity.class));
         viewBeenList.add(new ViewBean(EncryptionDemoActivity.class));
+        viewBeenList.add(new ViewBean(LoadMoreDemoActivity.class));
     }
 
 }

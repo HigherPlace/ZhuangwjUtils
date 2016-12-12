@@ -32,7 +32,8 @@
         </activity>
         <activity android:name=".activity.NetMangerDemoActivity" />
         <activity android:name=".activity.TitleViewDemoActivity" />
-        <activity android:name=".activity.EncryptionDemoActivity"></activity>
+        <activity android:name=".activity.EncryptionDemoActivity" />
+        <activity android:name=".activity.LoadMoreDemoActivity"></activity>
     </application>
 
 </manifest>

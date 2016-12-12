@@ -27,7 +27,7 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     /**
      * 加载的状态
      */
-    public static enum LoadStatus{
+    public static enum LoadStatus {
         /**
          * 全部加载完成(没有数据了)
          */
@@ -39,14 +39,19 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
         LOADING,
 
         /**
-         * 处于加载完成，可以继续加载的正常状态(但并代表后台没有数据了)
+         * 处于加载完成，可以继续加载的正常状态(但并不代表后台没有数据了)
          */
         LOAD_NORMAL,
 
         /**
          * 空数据
          */
-        LOAD_EMPTY
+        LOAD_EMPTY,
+
+        /**
+         * 加载错误
+         */
+        LOAD_ERROR
     }
 
     public LoadMoreWrapper(RecyclerView.Adapter adapter) {
@@ -85,15 +90,31 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private void setLoadMoreContent(ViewHolder holder) {
-        if(isUseDefaultLoading) {
-            if(loadStatus == LoadStatus.LOAD_ALL) {
+        if (isUseDefaultLoading) {
+            if (loadStatus == LoadStatus.LOAD_ALL) {
                 holder.setVisibility(R.id.progress_wheel, false);
                 holder.setText(R.id.tv, "已经没有数据了！");
-            }else if(loadStatus == LoadStatus.LOAD_EMPTY) {
+            } else if (loadStatus == LoadStatus.LOAD_EMPTY) {
                 holder.setVisibility(R.id.progress_wheel, false);
                 holder.setText(R.id.tv, "");
                 // TODO
-            }else {
+            } else if (loadStatus == LoadStatus.LOAD_ERROR) {
+                holder.setVisibility(R.id.progress_wheel, false);
+                holder.setText(R.id.tv, "加载失败，点击重新加载");
+                View itemView = holder.getConvertView();
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // 第一次设置Listener之后Listener会一直存在，必须判断
+                        if(loadStatus == LoadStatus.LOAD_ERROR) {
+                            loadStatus = LoadStatus.LOAD_NORMAL;
+                            // 刷新最后一个
+                            notifyItemChanged(mInnerAdapter.getItemCount());
+                            onLoadMoreRequested();
+                        }
+                    }
+                });
+            } else {
                 holder.setVisibility(R.id.progress_wheel, true);
                 holder.setText(R.id.tv, "努力加载中...");
             }
@@ -103,17 +124,21 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (isShowLoadMore(position)) {
-            if(holder instanceof ViewHolder) {
+            if (holder instanceof ViewHolder) {
                 setLoadMoreContent((ViewHolder) holder);
             }
 
-            if (mOnLoadMoreListener != null && loadStatus == LoadStatus.LOAD_NORMAL) {
-                loadStatus = LoadStatus.LOADING;
-                mOnLoadMoreListener.onLoadMoreRequested();
-            }
+            onLoadMoreRequested();
             return;
         }
         mInnerAdapter.onBindViewHolder(holder, position);
+    }
+
+    private void onLoadMoreRequested() {
+        if (mOnLoadMoreListener != null && loadStatus == LoadStatus.LOAD_NORMAL) {
+            loadStatus = LoadStatus.LOADING;
+            mOnLoadMoreListener.onLoadMoreRequested();
+        }
     }
 
     @Override
@@ -155,7 +180,7 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return mInnerAdapter.getItemCount() + (hasLoadMore() ? 1 : 0);
+        return  mInnerAdapter.getItemCount() + (hasLoadMore() ? 1 : 0);
     }
 
 
@@ -203,8 +228,17 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
         loadStatus = loadStatus.LOAD_NORMAL;
     }
 
+    public void setLoadError() {
+        loadStatus = loadStatus.LOAD_ERROR;
+        // 刷新最后一个
+        notifyItemChanged(mInnerAdapter.getItemCount());
+    }
+
+    /**
+     * 数据添加完后才能重置状态
+     */
     public void onFinish() {
-        if(loadStatus == LoadStatus.LOADING) {
+        if (loadStatus == LoadStatus.LOADING) {
             loadStatus = loadStatus.LOAD_NORMAL;
         }
     }
