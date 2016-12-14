@@ -18,7 +18,6 @@ import com.zhy.autolayout.utils.AutoUtils;
 import com.zhy.autolayout.utils.DimenUtils;
 import com.zwj.mycustomview.R;
 import com.zwj.zwjutils.DensityUtils;
-import com.zwj.zwjutils.LogUtils;
 
 
 /**
@@ -152,8 +151,8 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
 
         // 拿到测量的实际高度，设置到左右两个包裹图标的fragment上
         int height = MeasureSpec.getSize(heightMeasureSpec);
-        LogUtils.sysout("title onMeasure --> " + height);
-        LogUtils.sysout("maxFrameImgSize --> " + maxFrameImgSize);
+//        LogUtils.sysout("title onMeasure --> " + height);
+//        LogUtils.sysout("maxFrameImgSize --> " + maxFrameImgSize);
         if (height > 0) {
             LayoutParams flLeftLp = (LayoutParams) flLeft.getLayoutParams();
 

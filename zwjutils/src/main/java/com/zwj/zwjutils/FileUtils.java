@@ -317,8 +317,8 @@ public class FileUtils {
     /**
      * 默认路径是sdcard下（SdCard/Android/data/packagename/files）
      */
-    public static void deleteFileFromDefaultPath(String fileName) {
-        File folder = getFolder(null);
+    public static void deleteFileFromDefaultPath(Context context, String fileName) {
+        File folder = getFolder(context);
         File file = new File(folder, fileName);
         deleteFile(file);
     }
