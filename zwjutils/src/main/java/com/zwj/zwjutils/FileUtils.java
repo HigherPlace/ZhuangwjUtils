@@ -315,6 +315,15 @@ public class FileUtils {
     }
 
     /**
+     * 默认路径是sdcard下（SdCard/Android/data/packagename/files）
+     */
+    public static void deleteFileFromDefaultPath(String fileName) {
+        File folder = getFolder(null);
+        File file = new File(folder, fileName);
+        deleteFile(file);
+    }
+
+    /**
      * 从assets文件夹里拷贝文件到sdcard上
      *
      * @param fileName 要拷贝的文件名
