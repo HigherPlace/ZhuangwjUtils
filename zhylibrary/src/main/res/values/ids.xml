@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- CommonSingleSelectionAdapter -->
+    <item name="iv" type="id"></item>
+    <item name="tv" type="id"></item>
+</resources>

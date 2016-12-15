@@ -79,7 +79,7 @@ public class MultiItemTypeAdapter<T> extends BaseAdapter {
 
     /**
      * 设置完数据会进行刷新
-     * @param dataList
+     * @param datas
      */
     public void setDatas(List<T> datas) {
         mDatas = datas;

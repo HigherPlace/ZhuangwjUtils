@@ -28,11 +28,11 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-def supportVersion = "25.0.1";
+def supportVersion = "25.1.0";
 
 project.ext {
     applicationId = "com.zwj.zhuangwjutils"
-    buildToolsVersion = "25.0.1"
+    buildToolsVersion = "25.0.2"
     compileSdkVersion = 25
     minSdkVersion = 14
     targetSdkVersion = 22

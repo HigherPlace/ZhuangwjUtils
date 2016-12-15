@@ -11,6 +11,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zwj.zhuangwjutils.R;
+import com.zwj.zhuangwjutils.activity.adapterdemo.CommonAdapterDemoActivity;
 import com.zwj.zhuangwjutils.activity.base.BaseAutoLayoutCommonActivity;
 import com.zwj.zhuangwjutils.bean.ViewBean;
 
@@ -74,6 +75,8 @@ public class MainActivity extends BaseAutoLayoutCommonActivity {
         viewBeenList.add(new ViewBean(TitleViewDemoActivity.class));
         viewBeenList.add(new ViewBean(EncryptionDemoActivity.class));
         viewBeenList.add(new ViewBean(LoadMoreDemoActivity.class));
+        viewBeenList.add(new ViewBean(ListPopWindowDemoActivity.class));
+        viewBeenList.add(new ViewBean(CommonAdapterDemoActivity.class));
     }
 
 }
