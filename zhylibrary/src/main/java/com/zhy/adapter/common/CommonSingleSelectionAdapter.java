@@ -21,6 +21,7 @@ import java.util.List;
 public class CommonSingleSelectionAdapter<T> extends CommonAdapter<T> {
     public static final int NO_IMAGE = -100;  // 表示没有图片
     public static final int NO_CHECKED = -101;  // 表示未选中
+    public static final int DEFAULT_IMAGE = 2002;  // 使用默认图标
     protected int currentCheckedPosition = 0; // 当前被选中的item位置,NO_CHECKED 为全未选中
     private int normalDrawableId = R.drawable.checkbox_default;        // 正常时显示的图片id
     private int selectedDrawableId = R.drawable.checkbox_checked;        // 选中时显示的图片id
@@ -35,7 +36,7 @@ public class CommonSingleSelectionAdapter<T> extends CommonAdapter<T> {
 
         // 设置完只能再刷新一遍
         isDefaultLayout = true;
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
     }
 
     public CommonSingleSelectionAdapter(Context context, int layoutId, List<T> datas) {
@@ -45,8 +46,14 @@ public class CommonSingleSelectionAdapter<T> extends CommonAdapter<T> {
     public CommonSingleSelectionAdapter(Context context, int layoutId, List<T> datas,
                                         int normalDrawableId, int selectedDrawableId) {
         super(context, layoutId, datas);
-        this.normalDrawableId = normalDrawableId;
-        this.selectedDrawableId = selectedDrawableId;
+
+        if(normalDrawableId != DEFAULT_IMAGE) {
+            this.normalDrawableId = normalDrawableId;
+        }
+
+        if(selectedDrawableId != DEFAULT_IMAGE) {
+            this.selectedDrawableId = selectedDrawableId;
+        }
     }
 
     public CommonSingleSelectionAdapter(Context context, int layoutId, List<T> datas,
