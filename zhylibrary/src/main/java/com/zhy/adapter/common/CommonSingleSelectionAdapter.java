@@ -22,6 +22,7 @@ public class CommonSingleSelectionAdapter<T> extends CommonAdapter<T> {
     public static final int NO_IMAGE = -100;  // 表示没有图片
     public static final int NO_CHECKED = -101;  // 表示未选中
     public static final int DEFAULT_IMAGE = 2002;  // 使用默认图标
+    public static final int DEFAULT_LAYOUT_ID = R.layout.item_common_single_selection;
     protected int currentCheckedPosition = 0; // 当前被选中的item位置,NO_CHECKED 为全未选中
     private int normalDrawableId = R.drawable.checkbox_default;        // 正常时显示的图片id
     private int selectedDrawableId = R.drawable.checkbox_checked;        // 选中时显示的图片id
@@ -31,21 +32,22 @@ public class CommonSingleSelectionAdapter<T> extends CommonAdapter<T> {
     private boolean isDefaultLayout; // 是否使用默认布局
     private int lastCheckedPostion = 0;     // 上一个选中的下标
 
-    public CommonSingleSelectionAdapter(Context context, List<T> datas) {
-        super(context, R.layout.item_common_single_selection, datas);
-
-        // 设置完只能再刷新一遍
-        isDefaultLayout = true;
-//        notifyDataSetChanged();
-    }
 
     public CommonSingleSelectionAdapter(Context context, int layoutId, List<T> datas) {
         super(context, layoutId, datas);
     }
 
+    public CommonSingleSelectionAdapter(Context context, List<T> datas) {
+        this(context, DEFAULT_LAYOUT_ID, datas);
+    }
+
     public CommonSingleSelectionAdapter(Context context, int layoutId, List<T> datas,
                                         int normalDrawableId, int selectedDrawableId) {
-        super(context, layoutId, datas);
+        this(context, layoutId, datas);
+
+        if(layoutId == DEFAULT_LAYOUT_ID) {
+            isDefaultLayout =true;
+        }
 
         if(normalDrawableId != DEFAULT_IMAGE) {
             this.normalDrawableId = normalDrawableId;
@@ -58,7 +60,7 @@ public class CommonSingleSelectionAdapter<T> extends CommonAdapter<T> {
 
     public CommonSingleSelectionAdapter(Context context, int layoutId, List<T> datas,
                                         int currentCheckedPosition) {
-        super(context, layoutId, datas);
+        this(context, layoutId, datas);
         this.currentCheckedPosition = currentCheckedPosition;
         lastCheckedPostion = currentCheckedPosition;
     }
