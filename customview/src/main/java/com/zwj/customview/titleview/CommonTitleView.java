@@ -126,6 +126,9 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
                 setLeftMenu(a.getString(attr));
             } else if (attr == R.styleable.TitleViewAttr_leftMenuSize) {
                 tvLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, getSize(a, attr, DEFAULT_MENU_SIZE, DEFAULT_MENU_SIZE_AUTO));
+            }else if (attr == R.styleable.TitleViewAttr_hideBottomLine) {
+                boolean hideBottomLine = a.getBoolean(attr, false);
+                setBottomLineVisible(!hideBottomLine);
             }
         }
 
@@ -186,7 +189,7 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
         tvLeft = (TextView) findViewById(R.id.tv_left);
         tvRight = (TextView) findViewById(R.id.tv_right);
         ivRight = (ImageView) findViewById(R.id.iv_right);
-        bottomLine = findViewById(R.id.botton_divider);
+        bottomLine = findViewById(R.id.bottom_divider);
         flLeft = (FrameLayout) findViewById(R.id.fl_left);
         flRight = (FrameLayout) findViewById(R.id.fl_right);
     }

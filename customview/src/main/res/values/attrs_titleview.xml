@@ -24,6 +24,9 @@
         <attr name="leftMenu" format="string" />
         <attr name="leftMenuSize" format="dimension" />
 
+        <!-- 是否隐藏底部的line -->
+        <attr name="hideBottomLine" format="boolean" />
+
         <!-- 是否使用了适配框架 -->
         <attr name="isAuto" format="boolean" />
     </declare-styleable>

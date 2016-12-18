@@ -62,7 +62,7 @@
         android:visibility="gone" />
 
     <View
-        android:id="@+id/botton_divider"
+        android:id="@+id/bottom_divider"
         style="@style/HorizontalLineViewStyle"
         android:layout_alignParentBottom="true" />
 
