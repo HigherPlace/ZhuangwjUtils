@@ -108,4 +108,15 @@ public class NetMangerDemoActivity extends AppCompatActivity {
                 .addParamArray("mul", values)
                 .request(this);
     }
+
+    public void getCar(View view) {
+        new RequestBean("http://120.24.6.87/ChetongxiangHCH/product/rental/getInfoByID", RequestBean.METHOD_GET)
+                .addParam("id", "1")
+                .setNeedParse(true)
+                .setCallback(new SimpleCallBack() {
+                    @Override
+                    public void onSuccess(ResponseBean responseBean) {
+                    }
+                }).request(this);
+    }
 }

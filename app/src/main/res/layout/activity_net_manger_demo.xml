@@ -35,4 +35,10 @@
         android:onClick="testMuldParamRequest"
         android:text="测试数组参数传递" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="getCar"
+        android:text="getCar" />
+
 </LinearLayout>

@@ -21,8 +21,9 @@ public abstract class SimpleCallBack implements NetManager.RequestCallBack {
     public void onError(ResponseBean responseBean) {
         LogUtils.e(TAG, "执行onError--------->");
 
+
         if (responseBean.isShowToast() && responseBean.getThrowable() != null) {
-            responseBean.getThrowable().printStackTrace();
+//            responseBean.getThrowable().printStackTrace();
 
             // 连接超时，重连
 //            if(responseBean.isShowToast() && !UrlConstant.GET_VERSION.equals(responseBean.getUrl()) && !UrlConstant.GET_OPEN_CITY_INFOS.equals(responseBean.getUrl())) {

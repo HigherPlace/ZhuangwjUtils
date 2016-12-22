@@ -81,8 +81,6 @@ public class NetManager {
         final ResponseBean responseBean = new ResponseBean();
         responseBean.setUrl(requestBean.getUrl());
 
-        // 重置为false
-        requestBean.setNeedReconnection(false);
         // 添加到网络访问列表里
         requestMap.put(requestBean.toString(), requestBean);
 

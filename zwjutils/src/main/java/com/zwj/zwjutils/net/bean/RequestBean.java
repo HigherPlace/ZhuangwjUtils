@@ -34,7 +34,7 @@ public class RequestBean {
     private Map<String, String> paramMap;
     private Map<String, List<String>> paramArrayMap;    // 存数组的参数
     private String bodyContent; // 以json形式传递的参数
-    private int timeOut;   // 连接超时时间，单位毫秒
+    private int timeOut = 10 * 10000;   // 连接超时时间，单位毫秒
 
     /**
      * 是否需要对结果进行解析处理,默认不进行解析
