@@ -13,7 +13,7 @@ public interface ResponseStatus {
     /** 未登录 */
     int UNLOGIN = -1;
 
-    /** 请求数据失败 */
+    /** 请求数据失败,数据为空 */
     int FAIL = 0;
 
     /** 超时 */
