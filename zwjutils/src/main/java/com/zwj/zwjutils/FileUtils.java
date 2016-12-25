@@ -63,6 +63,7 @@ public class FileUtils {
 
     /**
      * 获取sdcard /data/data/当前应用程序包名/files/ 的路径
+     *
      * @param context
      * @return
      */
@@ -91,6 +92,7 @@ public class FileUtils {
 
     /**
      * 获取内部文件（/data/data/应用包名/files 目录下的文件）
+     *
      * @return
      */
     public static File getInternalFile(Context context, String fileName) {
@@ -99,15 +101,16 @@ public class FileUtils {
 
     /**
      * 获取内部文件（/data/data/应用包名/files 目录下的文件）
+     *
      * @return
      */
     public static File getInternalFile(Context context, String folderPath, String fileName) {
         File file = null;
         if (sdcardIsEnable()) {
-            if(TextUtils.isEmpty(folderPath)) {
+            if (TextUtils.isEmpty(folderPath)) {
                 file = new File(context.getApplicationContext().getFilesDir(),
                         fileName);
-            }else {
+            } else {
                 File folder = new File(context.getApplicationContext().getFilesDir(),
                         folderPath);
                 if (!folder.exists()) {
@@ -136,6 +139,18 @@ public class FileUtils {
     }
 
     /**
+     * 保存文件到(内部)/data/data/当前应用程序包名/files/ 到目录下
+     *
+     * @param context
+     * @param fileName 文件名
+     * @param data     文件内容
+     * @return
+     */
+    public static boolean saveFile2Internal(Context context, String fileName, byte[] data) {
+        return saveFile(context, fileName, data, true);
+    }
+
+    /**
      * 保存文件 /data/data/当前应用程序包名/files/ 到目录下
      *
      * @param context
@@ -144,6 +159,19 @@ public class FileUtils {
      * @return
      */
     public static boolean saveFile(Context context, String fileName, byte[] data) {
+        return saveFile(context, fileName, data, false);
+    }
+
+    /**
+     * 保存文件 /data/data/当前应用程序包名/files/ 到目录下
+     *
+     * @param context
+     * @param fileName   文件名
+     * @param data       文件内容
+     * @param isInternal true,保存到内部存储；false，保存到外部存储
+     * @return
+     */
+    public static boolean saveFile(Context context, String fileName, byte[] data, boolean isInternal) {
         boolean flag = false;
 
         if (sdcardIsEnable()) {
@@ -151,8 +179,15 @@ public class FileUtils {
             FileOutputStream fos = null;
 
             try {
-                File file = new File(context.getExternalFilesDir(null),
-                        fileName);
+                File file = null;
+                if (isInternal) {
+                    file = new File(context.getApplicationContext().getFilesDir(),
+                            fileName);
+                } else {
+                    file = new File(context.getExternalFilesDir(null),
+                            fileName);
+                }
+
                 fos = new FileOutputStream(file);
                 fos.write(data, 0, data.length);
                 flag = true;
@@ -238,19 +273,50 @@ public class FileUtils {
      * @return
      */
     public static String loadContentFromFiles(Context context, String folderName, String fileName) {
+        return loadContentFromFiles(context, folderName, fileName, false);
+    }
+
+    /**
+     * 从文件夹（SdCard/Android/data/packagename/files）中提取数据
+     *
+     * @param folderName 文件夹的全名，没有就传null
+     * @param fileName   文件的名字
+     * @return
+     */
+    public static String loadContentFromInternalFiles(Context context, String folderName, String fileName) {
+        return loadContentFromFiles(context, folderName, fileName, true);
+    }
+
+    /**
+     * 从文件夹（SdCard/Android/data/packagename/files）中提取数据
+     *
+     * @param folderName 文件夹的全名，没有就传null
+     * @param fileName   文件的名字
+     * @return
+     */
+    public static String loadContentFromFiles(Context context, String folderName, String fileName, boolean isInternal) {
         if (sdcardIsEnable()) {
 
             FileInputStream fis = null;
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             try {
-                File folder;
+                File folder = null;
                 if (TextUtils.isEmpty(folderName)) {
-                    folder = new File(context.getApplicationContext()
-                            .getExternalFilesDir(null).getAbsolutePath());
+                    if (isInternal) {
+                        folder = context.getApplicationContext().getFilesDir();
+                    } else {
+                        folder = context.getApplicationContext()
+                                .getExternalFilesDir(null);
+                    }
                 } else {
-                    folder = new File(context.getApplicationContext()
-                            .getExternalFilesDir(null), folderName);
+                    if (isInternal) {
+                        folder = new File(context.getApplicationContext()
+                                .getFilesDir(), folderName);
+                    } else {
+                        folder = new File(context.getApplicationContext()
+                                .getExternalFilesDir(null), folderName);
+                    }
                 }
 
                 File file = new File(folder.getAbsolutePath(),
@@ -500,8 +566,8 @@ public class FileUtils {
             try {
                 File folder;
                 if (TextUtils.isEmpty(folderName)) {
-                    folder = new File(context.getApplicationContext()
-                            .getExternalFilesDir(null).getAbsolutePath());
+                    folder = context.getApplicationContext()
+                            .getExternalFilesDir(null);
                 } else {
                     folder = new File(context.getApplicationContext()
                             .getExternalFilesDir(null), folderName);
@@ -531,7 +597,6 @@ public class FileUtils {
     }
 
 
-
     /**
      * 获取文件的路径,若是不存在则返回null
      *
@@ -547,12 +612,13 @@ public class FileUtils {
 
     /**
      * 获取日志文件路径
+     *
      * @return
      */
     public static String getLogDirPath(Context context) {
         File logDir = getFolder(context.getApplicationContext(), "log");
         String path = null;
-        if(logDir != null)
+        if (logDir != null)
             path = logDir.getAbsolutePath();
 
         return path;
