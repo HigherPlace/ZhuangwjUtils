@@ -89,6 +89,38 @@ public class FileUtils {
         return folder;
     }
 
+    /**
+     * 获取内部文件（/data/data/应用包名/files 目录下的文件）
+     * @return
+     */
+    public static File getInternalFile(Context context, String fileName) {
+        return getInternalFile(context, null, fileName);
+    }
+
+    /**
+     * 获取内部文件（/data/data/应用包名/files 目录下的文件）
+     * @return
+     */
+    public static File getInternalFile(Context context, String folderPath, String fileName) {
+        File file = null;
+        if (sdcardIsEnable()) {
+            if(TextUtils.isEmpty(folderPath)) {
+                file = new File(context.getApplicationContext().getFilesDir(),
+                        fileName);
+            }else {
+                File folder = new File(context.getApplicationContext().getFilesDir(),
+                        folderPath);
+                if (!folder.exists()) {
+                    folder.mkdirs();
+                }
+
+                file = new File(folder, fileName);
+            }
+        }
+
+        return file;
+    }
+
     public static boolean deleteFileFromSdcard(File folder, String fileName) {
         boolean flag = false;
 
