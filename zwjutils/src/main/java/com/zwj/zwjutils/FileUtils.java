@@ -19,8 +19,12 @@ import java.nio.channels.FileChannel;
 
 /**
  * @author zwj 2015-5-22 12:52
+ *         <p>
+ *         内部存储以Internal表示  （）
+ *         外部ExternalFilesDir
  */
 public class FileUtils {
+    private static final String TAG = "FileUtils";
 
     /**
      * 判断sdcard是否可用
@@ -36,26 +40,42 @@ public class FileUtils {
     }
 
 
+    // ==================   获取文件夹及文件相关API begin ==============
+
     /**
-     * 获取文件(夹)对象，若该文件(夹)不存在，则创建
+     * 获取/data/data/当前应用程序包名/files/ 目录下的
+     * 文件(夹)对象，若该文件(夹)不存在，则创建
      *
-     * @param path 文件夹的绝对路径, path为null则获取sdcard /data/data/当前应用程序包名/files/ 目录下的文件夹
+     * @param path       文件夹的绝对路径, path为null则获取 /data/data/当前应用程序包名/files/ 目录下的文件夹
+     * @param isInternal true,保存到内部存储；false，保存到外部存储
      * @return
      */
-    public static File getFolder(Context context, String path) {
+    public static File getFolderFromFilesDir(Context context, String path, boolean isInternal) {
         File folder = null;
-        if (sdcardIsEnable()) {
+        if (isInternal) {
             if (TextUtils.isEmpty(path)) {
-                folder = context.getApplicationContext()
-                        .getExternalFilesDir(null);
+                folder = context.getApplicationContext().getFilesDir();
             } else {
                 folder = new File(context.getApplicationContext()
-                        .getExternalFilesDir(null), path);
+                        .getFilesDir(), path);
             }
 
-            if (!folder.exists()) {
-                folder.mkdirs();
+        } else {
+            if (sdcardIsEnable()) {
+                if (TextUtils.isEmpty(path)) {
+                    folder = context.getApplicationContext()
+                            .getExternalFilesDir(null);
+                } else {
+                    folder = new File(context.getApplicationContext()
+                            .getExternalFilesDir(null), path);
+                }
+            } else {
+                LogUtils.e(TAG, "sdcard不可用！");
             }
+        }
+
+        if (folder != null && !folder.exists()) {
+            folder.mkdirs();
         }
 
         return folder;
@@ -67,8 +87,8 @@ public class FileUtils {
      * @param context
      * @return
      */
-    public static File getFolder(Context context) {
-        return getFolder(context, null);
+    public static File getFolderFromExternalFilesDir(Context context, String path) {
+        return getFolderFromFilesDir(context, path, false);
     }
 
     /**
@@ -77,17 +97,8 @@ public class FileUtils {
      * @param path 文件夹的绝对路径
      * @return
      */
-    public static File getInternalFolder(Context context, String path) {
-        File folder = null;
-        if (sdcardIsEnable()) {
-            folder = new File(context.getApplicationContext().getFilesDir(),
-                    path);
-            if (!folder.exists()) {
-                folder.mkdirs();
-            }
-        }
-
-        return folder;
+    public static File getFolderFromInternalFilesDir(Context context, String path) {
+        return getFolderFromFilesDir(context, path, true);
     }
 
     /**
@@ -96,47 +107,58 @@ public class FileUtils {
      * @return
      */
     public static File getInternalFile(Context context, String fileName) {
-        return getInternalFile(context, null, fileName);
+        return getFileFromFilesDir(context, null, fileName, true);
+    }
+
+    public static File getExternalFile(Context context, String fileName) {
+        return getFileFromFilesDir(context, null, fileName, false);
     }
 
     /**
-     * 获取内部文件（/data/data/应用包名/files 目录下的文件）
+     * 获取（/data/data/应用包名/files 目录下的文件）
      *
      * @return
      */
-    public static File getInternalFile(Context context, String folderPath, String fileName) {
+    public static File getFileFromFilesDir(Context context, String folderPath, String fileName, boolean isInternal) {
         File file = null;
-        if (sdcardIsEnable()) {
-            if (TextUtils.isEmpty(folderPath)) {
-                file = new File(context.getApplicationContext().getFilesDir(),
-                        fileName);
-            } else {
-                File folder = new File(context.getApplicationContext().getFilesDir(),
-                        folderPath);
-                if (!folder.exists()) {
-                    folder.mkdirs();
-                }
-
-                file = new File(folder, fileName);
-            }
+        File folder = getFolderFromFilesDir(context, folderPath, isInternal);
+        if (folder != null) {
+            file = new File(folder, fileName);
         }
-
         return file;
     }
 
-    public static boolean deleteFileFromSdcard(File folder, String fileName) {
-        boolean flag = false;
 
-        if (Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) {
-            File file = new File(folder, fileName);
-            if (file.exists()) {
-                flag = file.delete();
+    public static File getFolderFromSdcard(Context context, String folderPath) {
+        File folder = null;
+        if (sdcardIsEnable()) {
+            if (TextUtils.isEmpty(folderPath)) {
+                folder = Environment.getExternalStorageDirectory();
+            } else {
+                folder = new File(Environment.getExternalStorageDirectory(), folderPath);
             }
+        } else {
+            LogUtils.e(TAG, "sdcard不可用！");
         }
 
-        return flag;
+        if (folder != null && !folder.exists()) {
+            folder.mkdirs();
+        }
+
+        return folder;
     }
+
+    public static File getFileFromSdcard(File folder, String fileName) {
+        File file = null;
+        if (folder != null) {
+            file = new File(folder, fileName);
+        }
+        return folder;
+    }
+    // ==================   获取文件夹及文件相关API end ==============
+
+
+    // ==================   保存文件相关API begin ==============
 
     /**
      * 保存文件到(内部)/data/data/当前应用程序包名/files/ 到目录下
@@ -146,48 +168,52 @@ public class FileUtils {
      * @param data     文件内容
      * @return
      */
-    public static boolean saveFile2Internal(Context context, String fileName, byte[] data) {
-        return saveFile(context, fileName, data, true);
+    public static boolean saveFile2FilesDir(Context context, String folderPath, String fileName, byte[] data, boolean isInternal) {
+        File folder = getFolderFromFilesDir(context, folderPath, isInternal);
+        return saveFile(folder, fileName, data);
+    }
+
+    public static boolean saveFile2ExternalFilesDir(Context context, String fileName, byte[] data) {
+        return saveFile2FilesDir(context, null, fileName, data, false);
+    }
+
+    public static boolean saveFile2ExternalFilesDir(Context context, String folderPath, String fileName, byte[] data) {
+        return saveFile2FilesDir(context, folderPath, fileName, data, false);
+    }
+
+    public static boolean saveFile2InternalFilesDir(Context context, String fileName, byte[] data) {
+        return saveFile2FilesDir(context, null, fileName, data, true);
+    }
+
+    public static boolean saveFile2InternalFilesDir(Context context, String folderPath, String fileName, byte[] data) {
+        return saveFile2FilesDir(context, folderPath, fileName, data, true);
+    }
+
+    public static boolean saveFile2Sdcard(Context context, String folderPath, String fileName, byte[] data) {
+        File folder = getFolderFromSdcard(context, folderPath);
+        return saveFile(folder, fileName, data);
+    }
+
+    public static boolean saveFile2Sdcard(Context context, String fileName, byte[] data) {
+        return saveFile2Sdcard(context, null, fileName, data);
     }
 
     /**
-     * 保存文件 /data/data/当前应用程序包名/files/ 到目录下
+     * 保存文件
      *
-     * @param context
      * @param fileName 文件名
      * @param data     文件内容
      * @return
      */
-    public static boolean saveFile(Context context, String fileName, byte[] data) {
-        return saveFile(context, fileName, data, false);
-    }
-
-    /**
-     * 保存文件 /data/data/当前应用程序包名/files/ 到目录下
-     *
-     * @param context
-     * @param fileName   文件名
-     * @param data       文件内容
-     * @param isInternal true,保存到内部存储；false，保存到外部存储
-     * @return
-     */
-    public static boolean saveFile(Context context, String fileName, byte[] data, boolean isInternal) {
+    public static boolean saveFile(File folder, String fileName, byte[] data) {
         boolean flag = false;
 
-        if (sdcardIsEnable()) {
-
+        if (folder != null) {
             FileOutputStream fos = null;
 
             try {
-                File file = null;
-                if (isInternal) {
-                    file = new File(context.getApplicationContext().getFilesDir(),
-                            fileName);
-                } else {
-                    file = new File(context.getExternalFilesDir(null),
-                            fileName);
-                }
-
+                File file = new File(folder,
+                        fileName);
                 fos = new FileOutputStream(file);
                 fos.write(data, 0, data.length);
                 flag = true;
@@ -202,124 +228,65 @@ public class FileUtils {
                     }
                 }
             }
-        } else {
-            ToastUtil.toast(context.getApplicationContext(), "sdcard 不可用!");
         }
-
         return flag;
     }
 
-    /**
-     * 保存文件 /data/data/当前应用程序包名/files/ 到目录下
-     *
-     * @param context
-     * @param folderPath 文件夹路径
-     * @param fileName   文件名
-     * @param data       文件内容
-     * @return
-     */
-    public static boolean saveFile2MyDir(Context context, String folderPath,
-                                         String fileName, byte[] data) {
-        boolean flag = false;
-        if (sdcardIsEnable()) {
+    // ==================   保存文件相关API end ==============
 
-            FileOutputStream fos = null;
 
-            try {
-                File floder = new File(context.getExternalFilesDir(null),
-                        folderPath);
-                if (!floder.exists()) { // 文件夹不存在
-                    floder.mkdirs();
-                }
-
-                fos = new FileOutputStream(floder.getAbsolutePath()
-                        + File.separator + fileName);
-                fos.write(data, 0, data.length);
-                flag = true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (fos != null) {
-                    try {
-                        fos.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } else {
-            ToastUtil.toast(context.getApplicationContext(), "sdcard 不可用!");
-        }
-
-        return flag;
-    }
+    // ==================   读取文件内容相关API begin ==============
 
     /**
      * 从 /data/data/当前应用程序包名/files/ 目录下读取相应文件的内容 若读取成功返回文件内容，失败则返回null
      *
-     * @param context
-     * @param fileName 文件名
+     * @param fileName 文件的名字
      * @return
      */
-    public static String loadContentFromFiles(Context context, String fileName) {
-        return loadContentFromFiles(context, null, fileName);
+    public static String loadContentFromFilesDir(Context context, String folderPath, String fileName, boolean isInternal) {
+        File folder = getFolderFromFilesDir(context, folderPath, isInternal);
+        return loadContentFromFile(folder, fileName);
+    }
+
+    public static String loadContentFromInternalFilesDir(Context context, String fileName) {
+        return loadContentFromFilesDir(context, null, fileName, true);
+    }
+
+    public static String loadContentFromInternalFilesDir(Context context, String folderPath, String fileName) {
+        return loadContentFromFilesDir(context, folderPath, fileName, true);
+    }
+
+    public static String loadContentFromExternalFilesDir(Context context, String fileName) {
+        return loadContentFromFilesDir(context, null, fileName, false);
+    }
+
+    public static String loadContentFromExternalFilesDir(Context context, String folderPath, String fileName) {
+        return loadContentFromFilesDir(context, folderPath, fileName, false);
+    }
+
+    public static String loadContentFromSdcard(Context context, String folderPath, String fileName) {
+        File folder = getFolderFromSdcard(context, folderPath);
+        return loadContentFromFile(folder, fileName);
+    }
+
+    public static String loadContentFromSdcard(Context context, String fileName) {
+        return loadContentFromSdcard(context, null, fileName);
     }
 
     /**
-     * 从文件夹（SdCard/Android/data/packagename/files）中提取数据
+     * 从文件中提取数据
      *
-     * @param folderName 文件夹的全名，没有就传null
-     * @param fileName   文件的名字
+     * @param fileName 文件的名字
      * @return
      */
-    public static String loadContentFromFiles(Context context, String folderName, String fileName) {
-        return loadContentFromFiles(context, folderName, fileName, false);
-    }
-
-    /**
-     * 从文件夹（SdCard/Android/data/packagename/files）中提取数据
-     *
-     * @param folderName 文件夹的全名，没有就传null
-     * @param fileName   文件的名字
-     * @return
-     */
-    public static String loadContentFromInternalFiles(Context context, String folderName, String fileName) {
-        return loadContentFromFiles(context, folderName, fileName, true);
-    }
-
-    /**
-     * 从文件夹（SdCard/Android/data/packagename/files）中提取数据
-     *
-     * @param folderName 文件夹的全名，没有就传null
-     * @param fileName   文件的名字
-     * @return
-     */
-    public static String loadContentFromFiles(Context context, String folderName, String fileName, boolean isInternal) {
-        if (sdcardIsEnable()) {
-
+    public static String loadContentFromFile(File folder, String fileName) {
+        if (folder != null) {
             FileInputStream fis = null;
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             try {
-                File folder = null;
-                if (TextUtils.isEmpty(folderName)) {
-                    if (isInternal) {
-                        folder = context.getApplicationContext().getFilesDir();
-                    } else {
-                        folder = context.getApplicationContext()
-                                .getExternalFilesDir(null);
-                    }
-                } else {
-                    if (isInternal) {
-                        folder = new File(context.getApplicationContext()
-                                .getFilesDir(), folderName);
-                    } else {
-                        folder = new File(context.getApplicationContext()
-                                .getExternalFilesDir(null), folderName);
-                    }
-                }
 
-                File file = new File(folder.getAbsolutePath(),
+                File file = new File(folder,
                         fileName);
                 fis = new FileInputStream(file);
                 byte[] data = new byte[1024];
@@ -341,30 +308,39 @@ public class FileUtils {
                 }
             }
         }
-
         return null;
     }
+    // ==================   读取文件内容相关API end ==============
 
-    public static byte[] fileToByteArray(File file) {
-        FileInputStream fis;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            fis = new FileInputStream(file);
-            byte[] data = new byte[1024];
 
-            int len = 0;
-            while ((len = fis.read(data)) != -1) {
-                baos.write(data, 0, len);
+    // ====== 其他需要重新整理的
+    // TODO
+
+    public static boolean deleteFileFromSdcard(Context context, String folderPath, String fileName) {
+        boolean flag = false;
+        File folder = getFolderFromSdcard(context, folderPath);
+        if(folder != null) {
+            File file = new File(folder, fileName);
+            if (file.exists()) {
+                flag = file.delete();
             }
-            return baos.toByteArray();
-        } catch (Exception e) {
-            return null;
         }
+        return flag;
     }
 
-    public static void listFileInMyDir(Context context) {
-        if (sdcardIsEnable()) {
-            listAllFile(context.getExternalFilesDir(null), 1);
+    /**
+     * 递归删除所有文件(传入的文件对象不能为空)
+     *
+     * @param file
+     */
+    public static void deleteFile(File file) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File file2 : files) {
+                deleteFile(file2);
+            }
+        } else {
+            file.delete();
         }
     }
 
@@ -396,30 +372,6 @@ public class FileUtils {
         }
     }
 
-    /**
-     * 递归删除所有文件(传入的文件对象不能为空)
-     *
-     * @param file
-     */
-    public static void deleteFile(File file) {
-        if (file.isDirectory()) {
-            File[] files = file.listFiles();
-            for (File file2 : files) {
-                deleteFile(file2);
-            }
-        } else {
-            file.delete();
-        }
-    }
-
-    /**
-     * 默认路径是sdcard下（SdCard/Android/data/packagename/files）
-     */
-    public static void deleteFileFromDefaultPath(Context context, String fileName) {
-        File folder = getFolder(context);
-        File file = new File(folder, fileName);
-        deleteFile(file);
-    }
 
     /**
      * 从assets文件夹里拷贝文件到sdcard上
@@ -615,12 +567,12 @@ public class FileUtils {
      *
      * @return
      */
-    public static String getLogDirPath(Context context) {
-        File logDir = getFolder(context.getApplicationContext(), "log");
-        String path = null;
-        if (logDir != null)
-            path = logDir.getAbsolutePath();
-
-        return path;
-    }
+//    public static String getLogDirPath(Context context) {
+//        File logDir = getFolder(context.getApplicationContext(), "log");
+//        String path = null;
+//        if (logDir != null)
+//            path = logDir.getAbsolutePath();
+//
+//        return path;
+//    }
 }
