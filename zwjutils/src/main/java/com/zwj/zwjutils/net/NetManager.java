@@ -455,7 +455,7 @@ public class NetManager {
      */
     private static void addToken(Context context, RequestBean requestBean, RequestParams params) {
         if (requestBean.isNeedToken()) {
-            String token = FileUtils.loadContentFromFiles(context.getApplicationContext(), Constant.FILE_TOKEN);
+            String token = FileUtils.loadContentFromInternalFilesDir(context.getApplicationContext(), Constant.FILE_TOKEN);
             if (!TextUtils.isEmpty(token)) {
                 LogUtils.sysout("token --> " + token);
                 params.addBodyParameter(Constant.TOKEN, token);
