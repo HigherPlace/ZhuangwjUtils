@@ -36,6 +36,10 @@ import java.util.Set;
 public class NetManager {
 
     public static final String TAG = "NetManager";
+
+
+    public static String TOKEN; // 全局的token
+
     /**
      * 是否正在重连
      */
@@ -455,7 +459,13 @@ public class NetManager {
      */
     private static void addToken(Context context, RequestBean requestBean, RequestParams params) {
         if (requestBean.isNeedToken()) {
-            String token = FileUtils.loadContentFromInternalFilesDir(context.getApplicationContext(), Constant.FILE_TOKEN);
+            String token = null;
+            if(TextUtils.isEmpty(TOKEN)) {
+                token = FileUtils.loadContentFromInternalFilesDir(context.getApplicationContext(), Constant.FILE_TOKEN);
+            }else {
+                token = TOKEN;
+            }
+
             if (!TextUtils.isEmpty(token)) {
                 LogUtils.sysout("token --> " + token);
                 params.addBodyParameter(Constant.TOKEN, token);
