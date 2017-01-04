@@ -16,6 +16,7 @@ import com.zwj.mycustomview.R;
  * @author chenlz
  */
 public class ProgressUtil {
+    private static final String TAG = "ProgressUtil";
 
     /**
      * 弹出dialog 不可取消
@@ -50,18 +51,38 @@ public class ProgressUtil {
      * @param loadingTip
      */
     public static void startProgress(Context context, String loadingTip) {
-        startProgress(context, loadingTip, true);
+        startProgress(context, loadingTip, true, null, null);
     }
 
-    public static void startProgress(Context context, String loadingTip, boolean cancelable) {
+//    public static void startProgress(Context context, String loadingTip, boolean cancelable,
+//                                     OnCancelListener cancelListener) {
+//        if (isLoading) {
+//            return;
+//        }
+//        isLoading = true;
+//        showLoading(context, loadingTip, cancelable, cancelListener, dismissListener);
+//    }
+
+    public static void startProgress(Context context, String loadingTip, boolean cancelable,
+                                     OnCancelListener cancelListener, DialogInterface.OnDismissListener dismissListener) {
         if (isLoading) {
             return;
         }
         isLoading = true;
-        showLoading(context, loadingTip, cancelable);
+        showLoading(context, loadingTip, cancelable, cancelListener, dismissListener);
     }
 
-    private static void showLoading(Context context, String loadingTip, boolean cancelable) {
+    public static void startProgress(Context context, ProgressBean progressBean) {
+        if (isLoading) {
+            return;
+        }
+        isLoading = true;
+        showLoading(context, progressBean.getLoadingTip(), progressBean.isCancelable(),
+                progressBean.getCancelListener(), progressBean.getDismissListener());
+    }
+
+    private static void showLoading(Context context, String loadingTip, boolean cancelable,
+                                    OnCancelListener cancelListener, DialogInterface.OnDismissListener dismissListener) {
         if (TextUtils.isEmpty(loadingTip)) {
             loadingTip = "请稍后...";
         }
@@ -77,6 +98,14 @@ public class ProgressUtil {
                 isLoading = false;
             }
         });
+
+        if (cancelListener != null) {
+            dialog.setOnCancelListener(cancelListener);
+        }
+
+        if (dismissListener != null) {
+            dialog.setOnDismissListener(dismissListener);
+        }
         dialog.show();
     }
 
