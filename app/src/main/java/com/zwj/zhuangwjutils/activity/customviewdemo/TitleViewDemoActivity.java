@@ -1,4 +1,4 @@
-package com.zwj.zhuangwjutils.activity;
+package com.zwj.zhuangwjutils.activity.customviewdemo;
 
 import android.os.Bundle;
 import android.view.View;

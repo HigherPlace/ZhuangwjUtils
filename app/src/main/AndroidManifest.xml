@@ -31,12 +31,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.NetMangerDemoActivity" />
-        <activity android:name=".activity.TitleViewDemoActivity" />
+        <activity android:name=".activity.customviewdemo.TitleViewDemoActivity" />
         <activity android:name=".activity.EncryptionDemoActivity" />
         <activity android:name=".activity.LoadMoreDemoActivity" />
-        <activity android:name=".activity.ListPopWindowDemoActivity" />
+        <activity android:name=".activity.customviewdemo.ListPopWindowDemoActivity" />
         <activity android:name=".activity.adapterdemo.CommonAdapterDemoActivity" />
-        <activity android:name=".activity.adapterdemo.CommonSingleSelectionAdapterDemoActivity"></activity>
+        <activity android:name=".activity.adapterdemo.CommonSingleSelectionAdapterDemoActivity" />
+        <activity android:name=".activity.customviewdemo.ProgressViewDemoActivity"></activity>
     </application>
 
 </manifest>

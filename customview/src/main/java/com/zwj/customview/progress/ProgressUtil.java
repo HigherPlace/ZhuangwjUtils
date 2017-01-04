@@ -50,14 +50,18 @@ public class ProgressUtil {
      * @param loadingTip
      */
     public static void startProgress(Context context, String loadingTip) {
+        startProgress(context, loadingTip, true);
+    }
+
+    public static void startProgress(Context context, String loadingTip, boolean cancelable) {
         if (isLoading) {
             return;
         }
         isLoading = true;
-        showLoading(context, loadingTip);
+        showLoading(context, loadingTip, cancelable);
     }
 
-    private static void showLoading(Context context, String loadingTip) {
+    private static void showLoading(Context context, String loadingTip, boolean cancelable) {
         if (TextUtils.isEmpty(loadingTip)) {
             loadingTip = "请稍后...";
         }
@@ -65,6 +69,7 @@ public class ProgressUtil {
         ProgressView view = new ProgressView(context);
         view.setTipContent(loadingTip);
         dialog.setContentView(view);
+        dialog.setCancelable(cancelable);
         dialog.setOnCancelListener(new OnCancelListener() {
 
             @Override
@@ -88,12 +93,4 @@ public class ProgressUtil {
             dialog = null;
         }
     }
-
-//
-//    /***
-//     * 销毁进度狂
-//     */
-//    public static   void   destroyProgress(){
-//
-//    }
 }
