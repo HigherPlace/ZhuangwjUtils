@@ -1,5 +1,6 @@
 package com.zhy.adapter.recyclerview.wrapper;
 
+import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -94,10 +95,12 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
             if (loadStatus == LoadStatus.LOAD_ALL) {
                 holder.setVisibility(R.id.progress_wheel, false);
                 holder.setText(R.id.tv, "已经没有数据了！");
+                holder.getConvertView().setBackgroundColor(Color.WHITE);
             } else if (loadStatus == LoadStatus.LOAD_EMPTY) {
                 holder.setVisibility(R.id.progress_wheel, false);
                 holder.setText(R.id.tv, "");
                 // TODO
+                holder.getConvertView().setBackgroundColor(Color.TRANSPARENT);
             } else if (loadStatus == LoadStatus.LOAD_ERROR) {
                 holder.setVisibility(R.id.progress_wheel, false);
                 holder.setText(R.id.tv, "加载失败，点击重新加载");
@@ -114,9 +117,11 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
                         }
                     }
                 });
+                holder.getConvertView().setBackgroundColor(Color.WHITE);
             } else {
                 holder.setVisibility(R.id.progress_wheel, true);
                 holder.setText(R.id.tv, "努力加载中...");
+                holder.getConvertView().setBackgroundColor(Color.WHITE);
             }
         }
     }
