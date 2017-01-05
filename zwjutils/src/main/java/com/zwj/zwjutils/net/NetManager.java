@@ -9,8 +9,10 @@ import android.text.TextUtils;
 import com.zwj.zwjutils.FileUtils;
 import com.zwj.zwjutils.LogUtils;
 import com.zwj.zwjutils.SPUtil;
+import com.zwj.zwjutils.ToastUtil;
 import com.zwj.zwjutils.net.bean.RequestBean;
 import com.zwj.zwjutils.net.bean.ResponseBean;
+import com.zwj.zwjutils.net.callback.DownloadCallback;
 import com.zwj.zwjutils.net.constant.Constant;
 import com.zwj.zwjutils.net.constant.ResponseStatus;
 import com.zwj.zwjutils.net.constant.Status;
@@ -388,6 +390,8 @@ public class NetManager {
 
         RequestParams params = new RequestParams(url);   // 上传文件的接口
         params.setMultipart(true);
+
+        // 替上传的file设置参数名称，否则一样的参数名称无法上传多个文件
         for (int i = 0; i < uploadFileList.size(); i++) {
             File file = uploadFileList.get(i);
 
@@ -473,79 +477,6 @@ public class NetManager {
         }
     }
 
-    /**
-     * 重新登录
-     */
-//    public static void reLoginWithPwd(@NonNull final Context context, @NonNull final User user, @NonNull final RequestBean requestBean) {
-//
-//        LogUtils.e(TAG, "进行了重新登陆");
-//        FileUtils.writeContent2File(null, "login.txt",
-//                DateUtil.getMillon(System.currentTimeMillis())
-//                        + "------->进行了重新登陆", true);
-//
-//        String userName = user.getAccount();
-//        String passWd = user.getPwd();
-//        Map<String, String> loginParamMap = new HashMap<>();
-//        loginParamMap.put("Account", userName);
-//        loginParamMap.put("Pwd", passWd);
-//
-//        RequestBean loginRequestBean = new RequestBean(UrlConstant.LOGIN, RequestBean.METHOD_POST);
-//        loginRequestBean.setParamMap(loginParamMap).setNeedCookies(false).setCallback(new SimpleCallBack() {
-//            @Override
-//            public void onSuccess(ResponseBean responseBean) {
-//
-//                if (responseBean.getStatus() != ResponseStatus.UNLOGIN) {
-//                    // 保存cookie的值
-//                    DbCookieStore instance = DbCookieStore.INSTANCE;
-//                    List<HttpCookie> cookies = instance.getCookies();
-//                    for (int i = 0; i < cookies.size(); i++) {
-//                        HttpCookie cookie = cookies.get(i);
-//                        if (cookie.getName() != null
-//                                && cookie.getName().equals(Constant.COOKIE_NAME)) {
-//                            SPUtil.putString(context.getApplicationContext(),
-//                                    Constant.COOKIE_NAME, cookie.getValue());
-//                        }
-//
-//                        if (cookie.getName() != null
-//                                && cookie.getName().equals(Constant.COOKIE_SESSION)) {
-//                            SPUtil.putString(context.getApplicationContext(),
-//                                    Constant.COOKIE_SESSION, cookie.getValue());
-//                        }
-//                        LogUtils.sysout(TAG + ": cookie name --> "
-//                                + cookie.getName());
-//                        LogUtils.sysout(TAG + ": cookie value --> "
-//                                + cookie.getValue());
-//                    }
-//                    FileUtils.writeContent2File(null, "login.txt",
-//                            DateUtil.getMillon(System.currentTimeMillis())
-//                                    + "------->重新登陆成功", true);
-//
-//                    // 重新发起未登录前的请求
-//                    request(context, requestBean);
-//                }
-//            }
-//
-//            @Override
-//            public void onFinished(ResponseBean responseBean) {
-//                super.onFinished(responseBean);
-//                isReLoading = false;
-//            }
-//        }).request(context);
-//    }
-
-//    public static void deleteImgFromServer(@NonNull Context context, @NonNull String url,
-//                                           final boolean isNeedToast) {
-//        RequestBean deleteImgRequestBean = new RequestBean(UrlConstant.POST_DELETE_IMG, RequestBean.METHOD_POST);
-//        deleteImgRequestBean.addParam("fileName", url).setCallback(new SimpleCallBack() {
-//            @Override
-//            public void onSuccess(ResponseBean responseBean) {
-//                if (isNeedToast) {
-//                    ToastUtil.toast(context.getApplicationContext(), "删除成功");
-//                }
-//            }
-//        }).setShowLoading(false)
-//                .request(context);
-//    }
 
 //    /**
 //     * 上传车辆照片到服务器
@@ -582,41 +513,6 @@ public class NetManager {
 //                .setShowLoading(isShowLoading)
 //                .setCallback(uploadImageCallBack).
 //                request(context);
-//    }
-    public static void uploadImage() {
-
-    }
-
-    /**
-     * 从后台获取城市数据
-     *
-     * @param context
-     */
-//    public static void getCiytInfos(final Context context) {
-//        RequestBean requestBean = new RequestBean(UrlConstant.GET_OPEN_CITY_INFOS, RequestBean.METHOD_GET);
-//        requestBean.setNeedParse(false)
-//                .setShowErrorToast(false)
-//                .setCallback(new SimpleCallBack() {
-//                    @Override
-//                    public void onSuccess(ResponseBean responseBean) {
-//                        LogUtils.sysout(TAG + ": city info ---> " + responseBean.getResult());
-//
-//                        List<ProvinceBeanBaseOnServer> provinceList = CityDAO.setAresData(JsonUtil.getObjects(responseBean.getResult(), ProvinceBeanBaseOnServer.class));
-//                        if (provinceList != null) {
-////                            MyApplication.setExistCityData(true);
-//
-//                            String jsonString = JSON.toJSONString(provinceList);
-//                            LogUtils.sysout("jsonString ----> " + jsonString);
-//                            FileUtils.saveFile(context, Constant.FILE_CITY_NAME,
-//                                    jsonString.getBytes());
-//
-//                            // 把城市数据库中的数据取出
-//                            new Thread(() -> {
-//                                MyApplication.setProvinceList(CityDAO.getAllCities());
-//                            }).start();
-//                        }
-//                    }
-//                }).request(context);
 //    }
 
     /**
@@ -655,97 +551,23 @@ public class NetManager {
     /**
      * 下载
      */
-//    public static void download(String url, File destFolder, DownloadCallback downloadCallback) {
-//        if (destFolder != null && destFolder.exists()) {
-//            StringBuilder sbDownPath = new StringBuilder();
-//            sbDownPath.append(destFolder.getAbsolutePath()).append(File.separator).append(url.substring(url.lastIndexOf("/") + 1));
-//            LogUtils.sysout("downPath ----> " + sbDownPath.toString());
-//
-//            RequestParams params = new RequestParams(url);
-//            params.setAutoResume(true);
-//            params.setAutoRename(false);
-//            params.setSaveFilePath(sbDownPath.toString());
-////	        params.setExecutor(executor);
-//            // 为请求创建新的线程, 取消时请求线程被立即中断; false: 请求建立过程可能不被立即终止
-//            params.setCancelFast(true);
-//            x.http().get(params, downloadCallback);
-//        } else {
-//            Toast.makeText(context.getApplicationContext(), "找不到下载路径,请确认是否已安装sdcard", Toast.LENGTH_LONG).show();
-//        }
-//    }
+    public static void download(Context context, String url, File destFolder, DownloadCallback downloadCallback) {
+        if (destFolder != null && destFolder.exists()) {
+            StringBuilder sbDownPath = new StringBuilder();
+            sbDownPath.append(destFolder.getAbsolutePath()).append(File.separator).append(url.substring(url.lastIndexOf("/") + 1));
+            LogUtils.sysout("downPath ----> " + sbDownPath.toString());
 
-    /**
-     * 获取服务端一些文件的版本的信息
-     */
-//    public static void getVersion(Context context) {
-//        new RequestBean(UrlConstant.GET_VERSION, RequestBean.METHOD_GET)
-//                .setNeedParse(false)
-//                .setShowErrorToast(false)
-//                .setCallback(new SimpleCallBack() {
-//                    @Override
-//                    public void onSuccess(ResponseBean responseBean) {
-//                        LogUtils.sysout(TAG + " version ---> " + responseBean.getResult());
-//                        List<VersionBean> versionBeanList = JsonUtil.getObjects(responseBean.getResult(), VersionBean.class);
-//
-//                        VersionDAO versionDAO = VersionDAO.getInstance(context.getApplicationContext());
-//                        List<VersionBean> oldVersionBeanList = versionDAO.getVersionBeanList();
-//
-//                        List<VersionBean> newVersionBeanList = new ArrayList<VersionBean>();
-//                        for (int i = 0; i < versionBeanList.size(); i++) {
-//                            VersionBean versionBean = versionBeanList.get(i);
-//
-//                            // 还未有该条记录或者有更新则为true
-//                            boolean isNew = true;
-//                            for (int j = 0; j < oldVersionBeanList.size(); j++) {
-//                                if (versionBean.getObjectlID() == oldVersionBeanList.get(j).getObjectlID()) {
-//                                    if (versionBean.getObjectVersion().equals(oldVersionBeanList.get(j).getObjectVersion())) {
-//                                        isNew = false;
-//                                    }
-//                                }
-//                            }
-//
-//                            if (isNew) {
-//                                newVersionBeanList.add(versionBean);
-//                            }
-//                        }
-//
-//                        boolean isNeedUpdateCityDB = false; // 是否需要更新城市数据库
-//                        if (newVersionBeanList != null) {
-//                            for (int i = 0; i < newVersionBeanList.size(); i++) {
-//                                VersionBean newVersionBean = newVersionBeanList.get(i);
-//                                if (newVersionBean.getObjectlID() == 5) {
-//                                    isNeedUpdateCityDB = true;
-//                                }
-//
-//                                // 不下载city.json和apk
-//                                // 1为city.json；2为apk
-//                                if (newVersionBean.getObjectlID() > 2) {
-//                                    download(newVersionBean.getObjectURL(), FileUtils.getFolder(), new VersionFileDownloadCallback(newVersionBean) {
-//
-//                                        @Override
-//                                        public void onError(Throwable ex, boolean isOnCallback) {
-//                                            super.onError(ex, isOnCallback);
-//                                        }
-//                                    }.setmOnVersionFileDownloadSuccessListener(new VersionFileDownloadCallback.OnVersionFileDownloadSuccessListener() {
-//                                        @Override
-//                                        public void onSuccess(File result, VersionBean versionBean) {
-//                                            VersionDAO versionDAO = VersionDAO.getInstance(context.getApplicationContext());
-//                                            versionDAO.add(versionBean);
-//
-//                                            if (newVersionBean.getObjectlID() == 5) {    // 城市数据库
-//                                                // 每次启动就从后台获取城市数据
-//                                                NetManager.getCiytInfos(context.getApplicationContext());
-//                                            }
-//                                        }
-//                                    }));
-//                                }
-//                            }
-//                        }
-//
-//                        if (!isNeedUpdateCityDB) {
-//                            NetManager.getCiytInfos(context.getApplicationContext());
-//                        }
-//                    }
-//                }).request(context);
-//    }
+            RequestParams params = new RequestParams(url);
+            params.setAutoResume(true);
+            params.setAutoRename(false);
+            params.setSaveFilePath(sbDownPath.toString());
+//	        params.setExecutor(executor);
+            // 为请求创建新的线程, 取消时请求线程被立即中断; false: 请求建立过程可能不被立即终止
+            params.setCancelFast(true);
+            x.http().get(params, downloadCallback);
+        } else {
+            ToastUtil.toast(context, "找不到下载路径,请确认是否已安装sdcard");
+        }
+    }
+
 }
