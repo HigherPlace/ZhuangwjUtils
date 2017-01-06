@@ -123,6 +123,9 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
                 holder.setText(R.id.tv, "努力加载中...");
                 holder.getConvertView().setBackgroundColor(Color.WHITE);
             }
+        }else {
+            // TODO 提供回调接口，供使用者自己设置
+
         }
     }
 
@@ -211,6 +214,16 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     public LoadMoreWrapper setLoadMoreView(int layoutId) {
         mLoadMoreLayoutId = layoutId;
         notUseDefaultLoading();
+        return this;
+    }
+
+    /**
+     * 基本布局不变，其他一些细微的调整可调用该方法（如padding的调整）
+     * @param layoutId
+     * @return
+     */
+    public LoadMoreWrapper setLoadMoreViewWithDefalut(int layoutId) {
+        mLoadMoreLayoutId = layoutId;
         return this;
     }
 
