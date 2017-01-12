@@ -313,13 +313,38 @@ public class FileUtils {
     // ==================   读取文件内容相关API end ==============
 
 
-    // ====== 其他需要重新整理的
-    // TODO
+    // ==================   删除文件内容相关API begin ==============
+
+    public static boolean deleteFileFromInternalFilesDir(Context context, String fileName) {
+        return deleteFileFromInternalFilesDir(context, null, fileName);
+    }
+
+    public static boolean deleteFileFromInternalFilesDir(Context context, String folderPath, String fileName) {
+        File folder = getFolderFromInternalFilesDir(context, folderPath);
+        return deleteFile(folder, fileName);
+    }
+
+    public static boolean deleteFileFromExternalFilesDir(Context context, String fileName) {
+        return deleteFileFromExternalFilesDir(context, null, fileName);
+    }
+
+    public static boolean deleteFileFromExternalFilesDir(Context context, String folderPath, String fileName) {
+        File folder = getFolderFromExternalFilesDir(context, folderPath);
+        return deleteFile(folder, fileName);
+    }
+
+    public static boolean deleteFileFromSdcard(Context context, String fileName) {
+        return deleteFileFromSdcard(context, null, fileName);
+    }
 
     public static boolean deleteFileFromSdcard(Context context, String folderPath, String fileName) {
-        boolean flag = false;
         File folder = getFolderFromSdcard(context, folderPath);
-        if(folder != null) {
+        return deleteFile(folder, fileName);
+    }
+
+    public static boolean deleteFile(File folder, String fileName) {
+        boolean flag = false;
+        if (folder != null) {
             File file = new File(folder, fileName);
             if (file.exists()) {
                 flag = file.delete();
@@ -328,21 +353,29 @@ public class FileUtils {
         return flag;
     }
 
+
     /**
      * 递归删除所有文件(传入的文件对象不能为空)
      *
      * @param file
      */
-    public static void deleteFile(File file) {
+    public static void deleteFileWithRecursion(File file) {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             for (File file2 : files) {
-                deleteFile(file2);
+                deleteFileWithRecursion(file2);
             }
         } else {
             file.delete();
         }
     }
+
+    // ==================   删除文件内容相关API end ==============
+
+
+    // ====== 其他需要重新整理的
+    // TODO
+
 
     /**
      * 以树状遍历文件
