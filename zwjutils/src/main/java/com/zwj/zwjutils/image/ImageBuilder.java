@@ -1,4 +1,4 @@
-package com.zwj.zwjutils;
+package com.zwj.zwjutils.image;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,7 @@ import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.zwj.zwjutils.R;
 
 
 /**

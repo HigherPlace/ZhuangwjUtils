@@ -21,7 +21,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.zhy.autolayout.utils.AutoUtils;
-import com.zwj.zwjutils.ImageBuilder;
+import com.zwj.zwjutils.image.ImageBuilder;
 
 public class ViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> mViews;
