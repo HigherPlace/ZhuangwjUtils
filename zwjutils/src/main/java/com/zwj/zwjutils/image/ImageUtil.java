@@ -27,8 +27,10 @@ import android.util.Log;
 import com.zwj.zwjutils.LogUtils;
 import com.zwj.zwjutils.R;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -552,6 +554,26 @@ public class ImageUtil {
 			e.printStackTrace();
 		}
 		return image;
+	}
+
+	/**
+	 * 将Bitmap对象保存味图片文件
+	 * 保存成功返回true
+	 * @param bitmap
+     */
+	public boolean saveBitmapFile(Bitmap bitmap, Bitmap.CompressFormat format, String savePath){
+		File file = new File(savePath);//将要保存图片的路径
+		try {
+			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+			bitmap.compress(format, 100, bos);
+			bos.flush();
+			bos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
 	}
 
 
