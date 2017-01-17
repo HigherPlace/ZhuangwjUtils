@@ -561,7 +561,7 @@ public class ImageUtil {
 	 * 保存成功返回true
 	 * @param bitmap
      */
-	public boolean saveBitmapFile(Bitmap bitmap, Bitmap.CompressFormat format, String savePath){
+	public static boolean saveBitmapFile(Bitmap bitmap, Bitmap.CompressFormat format, String savePath){
 		File file = new File(savePath);//将要保存图片的路径
 		try {
 			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
