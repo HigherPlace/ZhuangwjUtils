@@ -14,7 +14,9 @@ import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.text.DecimalFormat;
@@ -297,5 +299,34 @@ public class CommonUtil {
 //        // params.height最后得到整个ListView完整显示需要的高度
 //        listView.setLayoutParams(params);
 //    }
+
+    /**
+     * 使EditText失去焦点并隐藏软键盘
+     * @param context
+     * @param et
+     */
+    public static void onInactive(Context context, EditText et) {
+        if (et == null)
+            return;
+
+        et.clearFocus();
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+    }
+
+    /**
+     * 使EditText得到焦点并显示软键盘
+     * @param context
+     * @param et
+     */
+    public static void onActive(Context context, EditText et) {
+        if (et == null)
+            return;
+
+        et.requestFocus();
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(et, 0);
+
+    }
 
 }

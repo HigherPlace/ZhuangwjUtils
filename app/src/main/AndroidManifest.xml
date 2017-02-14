@@ -37,7 +37,8 @@
         <activity android:name=".activity.customviewdemo.ListPopWindowDemoActivity" />
         <activity android:name=".activity.adapterdemo.CommonAdapterDemoActivity" />
         <activity android:name=".activity.adapterdemo.CommonSingleSelectionAdapterDemoActivity" />
-        <activity android:name=".activity.customviewdemo.ProgressViewDemoActivity"></activity>
+        <activity android:name=".activity.customviewdemo.ProgressViewDemoActivity" />
+        <activity android:name=".activity.customviewdemo.ClearWriteEditTextDemo"></activity>
     </application>
 
 </manifest>

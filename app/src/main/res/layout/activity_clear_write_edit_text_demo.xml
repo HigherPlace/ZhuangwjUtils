@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_clear_write_edit_text_demo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.zwj.customview.ClearWriteEditText
+        android:id="@+id/de_login_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rc_ed_public_service_search_selector"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="手机号"
+        android:inputType="phone"
+        android:maxLines="1"
+        android:maxLength="11" />
+
+</RelativeLayout>
