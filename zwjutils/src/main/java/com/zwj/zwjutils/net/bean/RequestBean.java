@@ -22,6 +22,16 @@ public class RequestBean {
     public static final int METHOD_GET = 2000;
     public static final int METHOD_POST = 2001;
 
+    /**
+     * 全局的参数，需要每次请求都传递的参数直接在里面设置
+     */
+    public static final Map<String, String> globalParamMap = new HashMap<>();
+
+    /**
+     * 全局的head参数，需要每次请求都传递的head直接在里面设置
+     */
+    public static final Map<String, String> globalHeadMap = new HashMap<>();
+
     //    private String key;        // 用于标记是否为同一个请求实体
     private String url;
     /**
@@ -35,6 +45,11 @@ public class RequestBean {
     private Map<String, List<String>> paramArrayMap;    // 存数组的参数
     private String bodyContent; // 以json形式传递的参数
     private int timeOut = 10 * 10000;   // 连接超时时间，单位毫秒
+
+    /**
+     * 请求头部的参数
+     */
+    private Map<String, String> headMap;
 
     /**
      * 是否需要对结果进行解析处理,默认不进行解析
@@ -56,7 +71,7 @@ public class RequestBean {
     /**
      * 是否自动追加token参数，默认true
      */
-    private boolean isNeedToken = true;
+//    private boolean isNeedToken = true;
 
     private Callback.Cancelable cancelable;
     private String tag;
@@ -66,7 +81,7 @@ public class RequestBean {
     public RequestBean() {
         super();
 
-        addParam("isMobile", "true");
+//        addParam("isMobile", "true");
     }
 
     public RequestBean(String url, int requestMethod) {
@@ -162,17 +177,17 @@ public class RequestBean {
         return this;
     }
 
-    public boolean isNeedToken() {
-        return isNeedToken;
-    }
-
-    /**
-     * 是否自动追加token参数，默认true
-     */
-    public RequestBean setNeedToken(boolean needToken) {
-        isNeedToken = needToken;
-        return this;
-    }
+//    public boolean isNeedToken() {
+//        return isNeedToken;
+//    }
+//
+//    /**
+//     * 是否自动追加token参数，默认true
+//     */
+//    public RequestBean setNeedToken(boolean needToken) {
+//        isNeedToken = needToken;
+//        return this;
+//    }
 
     public RequestBean addParam(String name, String value) {
         if (!TextUtils.isEmpty(value)) {
@@ -180,6 +195,66 @@ public class RequestBean {
                 paramMap = new HashMap<>();
             }
             paramMap.put(name, value);
+        }
+        return this;
+    }
+
+    /**
+     * 添加全局参数
+     * @param name
+     * @param value
+     * @return
+     */
+    public RequestBean addGlobalParam(String name, String value) {
+        if (!TextUtils.isEmpty(value)) {
+            globalParamMap.put(name, value);
+        }
+        return this;
+    }
+
+    public static Map<String, String> getGlobalParamMap() {
+        return globalParamMap;
+    }
+
+    public static Map<String, String> getGlobalHeadMap() {
+        return globalHeadMap;
+    }
+
+    public static void clearGlobalParamMap() {
+        globalParamMap.clear();
+    }
+
+    public static void clearGlobalHeadMap() {
+        globalHeadMap.clear();
+    }
+
+    public static void clearGlobalMap() {
+        globalParamMap.clear();
+        globalHeadMap.clear();
+    }
+
+
+    public RequestBean addHead(String name, String value) {
+        if (!TextUtils.isEmpty(value)) {
+            if (headMap == null) {
+                headMap = new HashMap<>();
+            }
+            headMap.put(name, value);
+        }
+        return this;
+    }
+
+    public void setHeadMap(Map<String, String> headMap) {
+        this.headMap = headMap;
+    }
+
+    public Map<String, String> getHeadMap() {
+        return headMap;
+    }
+
+    public RequestBean addGlobalHead(String name, String value) {
+        if (!TextUtils.isEmpty(value)) {
+            globalHeadMap.put(name, value);
         }
         return this;
     }

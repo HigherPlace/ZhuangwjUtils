@@ -6,7 +6,6 @@ import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.zwj.zwjutils.FileUtils;
 import com.zwj.zwjutils.LogUtils;
 import com.zwj.zwjutils.SPUtil;
 import com.zwj.zwjutils.ToastUtil;
@@ -110,32 +109,12 @@ public class NetManager {
             // 以json数据格式提交
             // json 必须以post方式提交,强制设为Post
             requestBean.setRequestMethod(RequestBean.METHOD_POST);
-            addToken(context, requestBean, params);
+//            addToken(context, requestBean, params);
             params.setAsJsonContent(true);
             params.setBodyContent(requestBean.getBodyContent());
         } else {
-            addToken(context, requestBean, params);
-            addParamByMap(params, requestBean.getParamMap());
-
-            // 添加数组参数
-            Map<String, List<String>> paramArrayList = requestBean.getParamArrayMap();
-            if (paramArrayList != null) {
-                Set<String> keySet = paramArrayList.keySet();
-                Iterator<String> iterator = keySet.iterator();
-                while (iterator.hasNext()) {
-                    String key = iterator.next();
-                    List<String> valueList = paramArrayList.get(key);
-
-                    // 打印参数名称和值
-                    for (int i = 0; i < valueList.size(); i++) {
-                        StringBuilder sbParam = new StringBuilder();
-                        sbParam.append("param: ").append(key).append(" ---> ").append(valueList.get(i));
-                        LogUtils.i(TAG, sbParam.toString());
-
-                        params.addBodyParameter(key, valueList.get(i));
-                    }
-                }
-            }
+//            addToken(context, requestBean, params);
+            addParamsAndHeaders(params, requestBean);
         }
 
         // 添加Cookie
@@ -402,7 +381,7 @@ public class NetManager {
             }
         }
 
-        addParamByMap(params, paramMap);
+        addParamsOrHeaders(params, paramMap, true);
         x.http().post(params, uploadCallBack);
     }
 
@@ -426,31 +405,73 @@ public class NetManager {
         }
 //        }
 
-        addParamByMap(params, paramMap);
+        addParamsOrHeaders(params, paramMap, true);
         x.http().post(params, uploadCallBack);
     }
 
     /**
-     * 往RequestParams中添加请求参数
+     * 往RequestParams中添加请求参数以及head
      *
      * @param params
-     * @param paramMap
+     * @param requestBean
      */
-    public static void addParamByMap(RequestParams params, Map<String, String> paramMap) {
+    public static void addParamsAndHeaders(RequestParams params, RequestBean requestBean) {
+        // 添加参数
+        addParamsOrHeaders(params, requestBean.getParamMap(), true);
+        // 添加全局参数
+        addParamsOrHeaders(params, RequestBean.getGlobalParamMap(), true);
+        // 添加head
+        addParamsOrHeaders(params, requestBean.getHeadMap(), false);
+        // 添加全局head
+        addParamsOrHeaders(params, RequestBean.getGlobalHeadMap(), false);
+
         // 添加数组参数
-        if (paramMap != null) {
-            Set<String> keySet = paramMap.keySet();
+        Map<String, List<String>> paramArrayList = requestBean.getParamArrayMap();
+        if (paramArrayList != null) {
+            Set<String> keySet = paramArrayList.keySet();
             Iterator<String> iterator = keySet.iterator();
             while (iterator.hasNext()) {
                 String key = iterator.next();
-                String value = paramMap.get(key);
+                List<String> valueList = paramArrayList.get(key);
 
                 // 打印参数名称和值
-                StringBuilder sbParam = new StringBuilder();
-                sbParam.append("param: ").append(key).append(" ---> ").append(value);
-                LogUtils.i(TAG, sbParam.toString());
+                for (int i = 0; i < valueList.size(); i++) {
+                    StringBuilder sbParam = new StringBuilder();
+                    sbParam.append("param: ").append(key).append(" ---> ").append(valueList.get(i));
+                    LogUtils.i(TAG, sbParam.toString());
 
-                params.addBodyParameter(key, value);
+                    params.addBodyParameter(key, valueList.get(i));
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     * @param params
+     * @param map
+     * @param isParam      添加参数
+     */
+    public static void addParamsOrHeaders(RequestParams params,  Map<String, String> map, boolean isParam) {
+        if (map != null) {
+            Set<String> keySet = map.keySet();
+            Iterator<String> iterator = keySet.iterator();
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                String value = map.get(key);
+
+                // 打印参数名称和值
+
+                StringBuilder sbTemp = new StringBuilder();
+                if(isParam) {
+                    sbTemp.append("param: ");
+                    params.addBodyParameter(key, value);
+                }else {
+                    sbTemp.append("head: ");
+                    params.addHeader(key, value);
+                }
+                sbTemp.append(key).append(" ---> ").append(value);
+                LogUtils.i(TAG, sbTemp.toString());
             }
         }
     }
@@ -461,21 +482,21 @@ public class NetManager {
      * @param context
      * @param requestBean
      */
-    private static void addToken(Context context, RequestBean requestBean, RequestParams params) {
-        if (requestBean.isNeedToken()) {
-            String token = null;
-            if(TextUtils.isEmpty(TOKEN)) {
-                token = FileUtils.loadContentFromInternalFilesDir(context.getApplicationContext(), Constant.FILE_TOKEN);
-            }else {
-                token = TOKEN;
-            }
-
-            if (!TextUtils.isEmpty(token)) {
-                LogUtils.sysout("token --> " + token);
-                params.addBodyParameter(Constant.TOKEN, token);
-            }
-        }
-    }
+//    private static void addToken(Context context, RequestBean requestBean, RequestParams params) {
+//        if (requestBean.isNeedToken()) {
+//            String token = null;
+//            if(TextUtils.isEmpty(TOKEN)) {
+//                token = FileUtils.loadContentFromInternalFilesDir(context.getApplicationContext(), Constant.FILE_TOKEN);
+//            }else {
+//                token = TOKEN;
+//            }
+//
+//            if (!TextUtils.isEmpty(token)) {
+//                LogUtils.sysout("token --> " + token);
+//                params.addBodyParameter(Constant.TOKEN, token);
+//            }
+//        }
+//    }
 
 
 //    /**
