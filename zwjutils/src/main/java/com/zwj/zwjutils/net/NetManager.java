@@ -7,12 +7,10 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.zwj.zwjutils.LogUtils;
-import com.zwj.zwjutils.SPUtil;
 import com.zwj.zwjutils.ToastUtil;
 import com.zwj.zwjutils.net.bean.RequestBean;
 import com.zwj.zwjutils.net.bean.ResponseBean;
 import com.zwj.zwjutils.net.callback.DownloadCallback;
-import com.zwj.zwjutils.net.constant.Constant;
 import com.zwj.zwjutils.net.constant.ResponseStatus;
 import com.zwj.zwjutils.net.constant.Status;
 
@@ -117,35 +115,6 @@ public class NetManager {
             addParamsAndHeaders(params, requestBean);
         }
 
-        // 添加Cookie
-        if (requestBean.isNeedCookies()) {
-            String cookie = SPUtil.getString(context.getApplicationContext(), Constant.COOKIE_NAME);
-            if (!TextUtils.isEmpty(cookie)) {
-//                StringBuilder sbCookie = new StringBuilder();
-//                sbCookie.append(Constant.COOKIE_NAME)
-//                        .append("=")
-//                        .append(SPUtil.getString(context.getApplicationContext(),
-//                                Constant.COOKIE_NAME)).append("; path=/; domain=")
-//                        .append(UrlConstant.TEMP_DOMAIN);
-                LogUtils.e(TAG, "cookie------>" + cookie);
-                params.addHeader("Cookie", cookie);
-            }
-
-            String session = SPUtil.getString(
-                    context.getApplicationContext(), Constant.COOKIE_SESSION);
-            if (!TextUtils.isEmpty(session)) {
-//                StringBuilder sbSession = new StringBuilder();
-//                sbSession
-//                        .append(Constant.COOKIE_SESSION)
-//                        .append("=")
-//                        .append(SPUtil.getString(context.getApplicationContext(),
-//                                Constant.COOKIE_SESSION))
-//                        .append("; path=/; domain=").append(UrlConstant.TEMP_DOMAIN);
-                LogUtils.e(TAG, "session------>" + session);
-                params.addHeader("Cookie", session);
-            }
-        }
-
         CommonCallback<String> commonCallback = new CommonCallback<String>() {
 
             @Override
@@ -227,6 +196,7 @@ public class NetManager {
             @Override
             public void onSuccess(String result) {
                 LogUtils.e(TAG, result);
+
                 if (!requestBean.isNeedParse()) {
                     if (requestBean.getCallback() != null) {
                         responseBean.setStatus(ResponseStatus.SUCCESS)
@@ -247,12 +217,13 @@ public class NetManager {
                 try {
                     jsonObject = new JSONObject(result);
                     int status = jsonObject.optInt(Status.STATUS, 1000);
+                    String message = jsonObject.optString(Status.MESSAGE);
                     switch (status) {
                         case ResponseStatus.SUCCESS:// 成功获取数据
                             String datas = jsonObject.optString(Status.DATA);
                             if (requestBean.getCallback() != null) {
                                 responseBean.setStatus(ResponseStatus.SUCCESS)
-                                        .setMessage("获取数据成功")
+                                        .setMessage(message != null ? message : "获取数据成功")
                                         .setResult(datas);
                                 requestBean.getCallback().onSuccess(responseBean);
                             }
@@ -260,7 +231,7 @@ public class NetManager {
                         case ResponseStatus.SUCCESS_ONLY_DATA:// 成功获取数据，没有返回状态字直接返回数据的情况
                             if (requestBean.getCallback() != null) {
                                 responseBean.setStatus(ResponseStatus.SUCCESS_ONLY_DATA)
-                                        .setMessage("获取数据成功")
+                                        .setMessage(message != null ? message : "获取数据成功")
                                         .setResult(result);
                                 requestBean.getCallback().onSuccess(responseBean);
                             }
@@ -277,10 +248,9 @@ public class NetManager {
 //                            }
                             break;
                         case ResponseStatus.FAIL:// 获取数据异常(+已拉去玩全部数据的情况)
-                            String msg = jsonObject.optString(Status.MESSAGE);
                             if (requestBean.getCallback() != null) {
                                 responseBean.setStatus(ResponseStatus.FAIL)
-                                        .setMessage(msg)
+                                        .setMessage(message != null ? message : "获取数据失败")
                                         .setThrowable(new Throwable("fail"))
                                         .setResult(result);
 

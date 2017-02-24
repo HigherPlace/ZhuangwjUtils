@@ -17,10 +17,7 @@ import com.zwj.zwjutils.net.callback.ParseBeanCallBack;
 import com.zwj.zwjutils.net.callback.SimpleCallBack;
 import com.zwj.zwjutils.net.callback.SimpleCommonCallback;
 
-import org.xutils.http.cookie.DbCookieStore;
-
 import java.io.File;
-import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,20 +35,30 @@ public class NetMangerDemoActivity extends AppCompatActivity {
     }
 
     public void testCookies(View view) {
-        new RequestBean("http://10.111.24.21:8080/hch/debug/testRequest", RequestBean.METHOD_GET)
+//        new RequestBean("http://10.111.24.21:8080/hch/debug/testRequest", RequestBean.METHOD_GET)
+//                .setCallback(new SimpleCallBack() {
+//                    @Override
+//                    public void onSuccess(ResponseBean responseBean) {
+//                        LogUtils.sysout("result ---> "+responseBean.getResult());
+//                        DbCookieStore dbCookieStore = DbCookieStore.INSTANCE;
+//                        List<HttpCookie> cookies = dbCookieStore.getCookies();
+//                        for(HttpCookie cookie : cookies) {
+//                            LogUtils.sysout("name ---> "+cookie.getName());
+//                            LogUtils.sysout("coment ---> "+cookie.getComment());
+//                            LogUtils.sysout("comenturl ---> "+cookie.getCommentURL());
+//                            LogUtils.sysout("domain ---> "+cookie.getDomain());
+//                            LogUtils.sysout("path ---> "+cookie.getPath());
+//                        }
+//                    }
+//                }).request(this);
+
+        new RequestBean("http://139.224.27.154:8080/iqCloud/api/account/getValidCode", RequestBean.METHOD_GET)
+                .addParam("phone", "18650187931")
+                .setNeedParse(true)
                 .setCallback(new SimpleCallBack() {
                     @Override
                     public void onSuccess(ResponseBean responseBean) {
-                        LogUtils.sysout("result ---> "+responseBean.getResult());
-                        DbCookieStore dbCookieStore = DbCookieStore.INSTANCE;
-                        List<HttpCookie> cookies = dbCookieStore.getCookies();
-                        for(HttpCookie cookie : cookies) {
-                            LogUtils.sysout("name ---> "+cookie.getName());
-                            LogUtils.sysout("coment ---> "+cookie.getComment());
-                            LogUtils.sysout("comenturl ---> "+cookie.getCommentURL());
-                            LogUtils.sysout("domain ---> "+cookie.getDomain());
-                            LogUtils.sysout("path ---> "+cookie.getPath());
-                        }
+                        LogUtils.d(TAG, responseBean.getMessage());
                     }
                 }).request(this);
     }

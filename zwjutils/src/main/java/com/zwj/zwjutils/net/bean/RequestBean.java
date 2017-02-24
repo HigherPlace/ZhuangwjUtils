@@ -52,9 +52,9 @@ public class RequestBean {
     private Map<String, String> headMap;
 
     /**
-     * 是否需要对结果进行解析处理,默认不进行解析
+     * 是否需要对结果进行解析处理,默认不进行解析(全局)
      */
-    private boolean isNeedParse;
+    public static boolean isNeedParse = true;
 
     // 回调接口
     private NetManager.RequestCallBack callback;
@@ -62,26 +62,31 @@ public class RequestBean {
     private int count;    // 超时重连次数
     private boolean isNeedReconnection; // 是否需要重连，true需要；
 
-    /**
-     * 是否需要添加cookies信息,默认true
-     * 使用cookie还需要在sp文件中保存cookie方会自动添加
-     */
-    private boolean isNeedCookies = true;
-
-    /**
-     * 是否自动追加token参数，默认true
-     */
-//    private boolean isNeedToken = true;
 
     private Callback.Cancelable cancelable;
     private String tag;
 
-    private String sessionId;
+    /**
+     * 设置解析模式
+     */
+    public enum ParseMode {
+        /** 跟随全局设定 */
+        GLOBAL,
+        /** 解析*/
+        TRUE,
+        /** 不解析 */
+        FALSE
+    }
+
+    /**
+     * 默认跟随全局
+     */
+    private ParseMode parseMode = ParseMode.GLOBAL;
+
+
 
     public RequestBean() {
         super();
-
-//        addParam("isMobile", "true");
     }
 
     public RequestBean(String url, int requestMethod) {
@@ -114,17 +119,27 @@ public class RequestBean {
     }
 
     public boolean isNeedParse() {
-        return isNeedParse;
+        switch (parseMode) {
+            case GLOBAL:
+                return RequestBean.isNeedParse;
+
+            case TRUE:
+                return true;
+
+            case FALSE:
+                return false;
+        }
+
+        return RequestBean.isNeedParse;
     }
 
     /**
-     * 默认false
+     * 设置全局解析，默认true
      * @param isNeedParse
      * @return
      */
-    public RequestBean setNeedParse(boolean isNeedParse) {
-        this.isNeedParse = isNeedParse;
-        return this;
+    public static void setGlobalParse(boolean isNeedParse) {
+        RequestBean.isNeedParse = isNeedParse;
     }
 
     public NetManager.RequestCallBack getCallback() {
@@ -162,32 +177,6 @@ public class RequestBean {
         isNeedReconnection = needReconnection;
         return this;
     }
-
-    public boolean isNeedCookies() {
-        return isNeedCookies;
-    }
-
-    /**
-     * 默认true
-     * @param needCookies
-     * @return
-     */
-    public RequestBean setNeedCookies(boolean needCookies) {
-        isNeedCookies = needCookies;
-        return this;
-    }
-
-//    public boolean isNeedToken() {
-//        return isNeedToken;
-//    }
-//
-//    /**
-//     * 是否自动追加token参数，默认true
-//     */
-//    public RequestBean setNeedToken(boolean needToken) {
-//        isNeedToken = needToken;
-//        return this;
-//    }
 
     public RequestBean addParam(String name, String value) {
         if (!TextUtils.isEmpty(value)) {
@@ -332,16 +321,16 @@ public class RequestBean {
         return this;
     }
 
+    public ParseMode getParseMode() {
+        return parseMode;
+    }
+
+    public void setParseMode(ParseMode parseMode) {
+        this.parseMode = parseMode;
+    }
+
     public void download() {
 
     }
 
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public RequestBean setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-        return this;
-    }
 }
