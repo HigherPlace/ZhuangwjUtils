@@ -194,11 +194,10 @@ public class RequestBean {
      * @param value
      * @return
      */
-    public RequestBean addGlobalParam(String name, String value) {
+    public static void addGlobalParam(String name, String value) {
         if (!TextUtils.isEmpty(value)) {
             globalParamMap.put(name, value);
         }
-        return this;
     }
 
     public static Map<String, String> getGlobalParamMap() {
@@ -241,11 +240,10 @@ public class RequestBean {
         return headMap;
     }
 
-    public RequestBean addGlobalHead(String name, String value) {
+    public static void addGlobalHead(String name, String value) {
         if (!TextUtils.isEmpty(value)) {
             globalHeadMap.put(name, value);
         }
-        return this;
     }
 
     public String getBodyContent() {
