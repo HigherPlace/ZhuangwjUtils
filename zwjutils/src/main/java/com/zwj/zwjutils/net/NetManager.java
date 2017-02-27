@@ -108,6 +108,7 @@ public class NetManager {
             // json 必须以post方式提交,强制设为Post
             requestBean.setRequestMethod(RequestBean.METHOD_POST);
 //            addToken(context, requestBean, params);
+            adddHeaders(params, requestBean);
             params.setAsJsonContent(true);
             params.setBodyContent(requestBean.getBodyContent());
         } else {
@@ -379,6 +380,13 @@ public class NetManager {
         x.http().post(params, uploadCallBack);
     }
 
+    public static void adddHeaders(RequestParams params, RequestBean requestBean) {
+        // 添加head
+        addParamsOrHeaders(params, requestBean.getHeadMap(), false);
+        // 添加全局head
+        addParamsOrHeaders(params, RequestBean.getGlobalHeadMap(), false);
+    }
+
     /**
      * 往RequestParams中添加请求参数以及head
      *
@@ -386,14 +394,13 @@ public class NetManager {
      * @param requestBean
      */
     public static void addParamsAndHeaders(RequestParams params, RequestBean requestBean) {
+
+        adddHeaders(params, requestBean);
+
         // 添加参数
         addParamsOrHeaders(params, requestBean.getParamMap(), true);
         // 添加全局参数
         addParamsOrHeaders(params, RequestBean.getGlobalParamMap(), true);
-        // 添加head
-        addParamsOrHeaders(params, requestBean.getHeadMap(), false);
-        // 添加全局head
-        addParamsOrHeaders(params, RequestBean.getGlobalHeadMap(), false);
 
         // 添加数组参数
         Map<String, List<String>> paramArrayList = requestBean.getParamArrayMap();
@@ -417,12 +424,11 @@ public class NetManager {
     }
 
     /**
-     *
      * @param params
      * @param map
-     * @param isParam      添加参数
+     * @param isParam 添加参数
      */
-    public static void addParamsOrHeaders(RequestParams params,  Map<String, String> map, boolean isParam) {
+    public static void addParamsOrHeaders(RequestParams params, Map<String, String> map, boolean isParam) {
         if (map != null) {
             Set<String> keySet = map.keySet();
             Iterator<String> iterator = keySet.iterator();
@@ -433,10 +439,10 @@ public class NetManager {
                 // 打印参数名称和值
 
                 StringBuilder sbTemp = new StringBuilder();
-                if(isParam) {
+                if (isParam) {
                     sbTemp.append("param: ");
                     params.addBodyParameter(key, value);
-                }else {
+                } else {
                     sbTemp.append("head: ");
                     params.addHeader(key, value);
                 }
