@@ -97,6 +97,13 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public ViewHolder setImageByUrl(int viewId, String url, int defaultImgId) {
+        ImageView view = getView(viewId);
+        new ImageBuilder(mContext, view, url, ImageBuilder.LoadMode.URL)
+                .setDefaultImageId(defaultImgId).build();
+        return this;
+    }
+
     public ViewHolder setImageBitmap(int viewId, Bitmap bitmap) {
         ImageView view = getView(viewId);
         view.setImageBitmap(bitmap);
