@@ -34,6 +34,9 @@ public class ImageBuilder {
         DRAWABLE
     }
 
+    // 默认的全局占位图片
+    public static int globalDefaultImgId = R.drawable.pictures_no;
+
     private Context context;
     private Fragment fragment;
     private ImageView iv;
@@ -42,7 +45,7 @@ public class ImageBuilder {
     private boolean isDrawabId; // true,加载drawable里的文件
     private LoadMode loadMode;      // 图片加载模式
     private boolean isCircle;       // 是否要裁切成圆形
-    private int defaultImageId = R.drawable.pictures_no;     // 默认占位图片
+    private int defaultImageId = -1;     // 默认占位图片
     private boolean noDefault;      // true,不需要默认图片
     /**
      * 图片缩放模式
@@ -143,6 +146,9 @@ public class ImageBuilder {
     }
 
     public int getDefaultImageId() {
+        if(defaultImageId == -1) {
+            return globalDefaultImgId;
+        }
         return defaultImageId;
     }
 
