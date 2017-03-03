@@ -323,8 +323,9 @@ public class RequestBean {
         return parseMode;
     }
 
-    public void setParseMode(ParseMode parseMode) {
+    public RequestBean setParseMode(ParseMode parseMode) {
         this.parseMode = parseMode;
+        return this;
     }
 
     public void download() {

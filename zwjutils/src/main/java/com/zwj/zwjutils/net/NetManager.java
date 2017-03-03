@@ -106,8 +106,8 @@ public class NetManager {
         if (!TextUtils.isEmpty(requestBean.getBodyContent())) {
             // 以json数据格式提交
             // json 必须以post方式提交,强制设为Post
+            LogUtils.i(TAG, "bodyparam ====> "+requestBean.getBodyContent());
             requestBean.setRequestMethod(RequestBean.METHOD_POST);
-//            addToken(context, requestBean, params);
             adddHeaders(params, requestBean);
             params.setAsJsonContent(true);
             params.setBodyContent(requestBean.getBodyContent());
