@@ -59,7 +59,7 @@ public class ImageBuilder {
     // 默认的全局占位图片
     public static int globalDefaultImgId = R.drawable.pictures_no;
     // 默认全局加载错误占位图片
-    public static int globalDefaultErrorImgId = R.drawable.ic_error;
+    public static int globalDefaultErrorImgId = IMAGE_NULL;
 
     private Context context;
     private Fragment fragment;
@@ -339,6 +339,7 @@ public class ImageBuilder {
             requestManager = Glide.with(imageBuilder.getFragment());
         } else {
             // ImageLoader.getInstance().displayImage(url, iv);
+            // TODO 其他情况
             return;
         }
 
@@ -381,11 +382,11 @@ public class ImageBuilder {
                     imageBuilder.addBitmapTransform(new RoundedCornersTransformation(imageBuilder.getContext(), imageBuilder.getRadius(), 0));
                 }
 
-                if (!imageBuilder.isNoDefault()) {
+                if (!imageBuilder.isNoDefault() && imageBuilder.getDefaultImageId() != IMAGE_NULL) {
                     drawableTypeRequest.placeholder(imageBuilder.getDefaultImageId());
                 }
 
-                if (!imageBuilder.isNoErrorImg()) {
+                if (!imageBuilder.isNoErrorImg() && imageBuilder.getErrorImgId() != IMAGE_NULL) {
                     drawableTypeRequest.error(imageBuilder.getErrorImgId());
                 }
 
