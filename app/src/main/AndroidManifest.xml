@@ -30,7 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.NetMangerDemoActivity" />
+        <activity android:name=".activity.network.NetMangerDemoActivity" />
         <activity android:name=".activity.customviewdemo.TitleViewDemoActivity" />
         <activity android:name=".activity.EncryptionDemoActivity" />
         <activity android:name=".activity.LoadMoreDemoActivity" />
@@ -38,7 +38,8 @@
         <activity android:name=".activity.adapterdemo.CommonAdapterDemoActivity" />
         <activity android:name=".activity.adapterdemo.CommonSingleSelectionAdapterDemoActivity" />
         <activity android:name=".activity.customviewdemo.ProgressViewDemoActivity" />
-        <activity android:name=".activity.customviewdemo.ClearWriteEditTextDemo"></activity>
+        <activity android:name=".activity.customviewdemo.ClearWriteEditTextDemo" />
+        <activity android:name=".activity.ImageBuilderDemoActivity"></activity>
     </application>
 
 </manifest>

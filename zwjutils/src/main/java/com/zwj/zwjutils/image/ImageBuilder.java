@@ -12,30 +12,54 @@ import android.widget.ImageView;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.zwj.zwjutils.LogUtils;
 import com.zwj.zwjutils.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 
 /**
  * Created by Administrator on 2016/6/2.
  */
 public class ImageBuilder {
+
     /**
      * 加载图片的模式
      */
     public static enum LoadMode {
-        /** 网络加载 */
+        /**
+         * 网络加载
+         */
         URL,
-        /** 加载图片文件*/
+        /**
+         * 加载图片文件
+         */
         FILE,
-        /** 从assets文件夹中加载图片 */
+        /**
+         * 从assets文件夹中加载图片
+         */
         ASSETS,
-        /** 从drawable文件夹中加载 */
+        /**
+         * 从drawable文件夹中加载
+         */
         DRAWABLE
     }
 
+    // 标识该资源不是图片资源
+    public static final int IMAGE_NULL = -1;
     // 默认的全局占位图片
     public static int globalDefaultImgId = R.drawable.pictures_no;
+    // 默认全局加载错误占位图片
+    public static int globalDefaultErrorImgId = R.drawable.ic_error;
 
     private Context context;
     private Fragment fragment;
@@ -45,14 +69,46 @@ public class ImageBuilder {
     private boolean isDrawabId; // true,加载drawable里的文件
     private LoadMode loadMode;      // 图片加载模式
     private boolean isCircle;       // 是否要裁切成圆形
-    private int defaultImageId = -1;     // 默认占位图片
-    private boolean noDefault;      // true,不需要默认图片
+    private int radius;         // 圆角矩形的弧度, 如果isCircle为true，则圆角不起作用
+
+    private int defaultImageId = IMAGE_NULL;     // 默认占位图片
+    private boolean noDefault;                   // true,不需要默认图片
+
+    private int errorImgId = IMAGE_NULL;
+    private boolean noErrorImg;                 // ture，不需要错误图片
+
+    // 指定的宽、高（px）
+    private int width;
+    private int height;
+
+    private List<Transformation<Bitmap>> transformationList = new ArrayList<>();
+
+    // 图片加载监听
+    private RequestListener<String, GlideDrawable> requestListener = new RequestListener<String, GlideDrawable>() {
+        @Override
+        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+            LogUtils.e("ImageBuilder onException", e.toString() + "  model:" + model + " isFirstResource: " + isFirstResource);
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+            LogUtils.e("ImageBuilder onResourceReady", "isFromMemoryCache:" + isFromMemoryCache + "  model:" + model + " isFirstResource: " + isFirstResource);
+            return false;
+        }
+    };
+
+
     /**
      * 图片缩放模式
      */
     private ImageView.ScaleType scaleType = ImageView.ScaleType.CENTER_CROP;
 //    /** true,滑动不加载图片 */
 //    private boolean isPauseOnSrcoll;
+
+    public ImageBuilder(Context context, ImageView iv, String url) {
+        this(context, iv, url, LoadMode.URL);
+    }
 
     public ImageBuilder(Context context, ImageView iv, String url, LoadMode loadMode) {
         this.context = context;
@@ -146,7 +202,7 @@ public class ImageBuilder {
     }
 
     public int getDefaultImageId() {
-        if(defaultImageId == -1) {
+        if (defaultImageId == -1) {
             return globalDefaultImgId;
         }
         return defaultImageId;
@@ -184,6 +240,83 @@ public class ImageBuilder {
         return this;
     }
 
+    public int getErrorImgId() {
+        if (errorImgId == IMAGE_NULL) {
+            return globalDefaultErrorImgId;
+        }
+        return errorImgId;
+    }
+
+    public ImageBuilder setErrorImgId(int errorImgId) {
+        this.errorImgId = errorImgId;
+        return this;
+    }
+
+    public boolean isNoErrorImg() {
+        return noErrorImg;
+    }
+
+    public ImageBuilder setNoErrorImg(boolean noErrorImg) {
+        this.noErrorImg = noErrorImg;
+        return this;
+    }
+
+    public RequestListener<String, GlideDrawable> getRequestListener() {
+        return requestListener;
+    }
+
+    public ImageBuilder setRequestListener(RequestListener<String, GlideDrawable> requestListener) {
+        this.requestListener = requestListener;
+        return this;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public ImageBuilder setWidth(int width) {
+        this.width = width;
+        return this;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public ImageBuilder setHeight(int height) {
+        this.height = height;
+        return this;
+    }
+
+    public ImageBuilder setSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+        return this;
+    }
+
+    public ImageBuilder addBitmapTransform(Transformation<Bitmap> bitmapTransformation){
+        transformationList.add(bitmapTransformation);
+        return this;
+    }
+
+    public ImageBuilder addBitmapTransform(Transformation<Bitmap> bitmapTransformation, int index){
+        transformationList.add(index, bitmapTransformation);
+        return this;
+    }
+
+    public List<Transformation<Bitmap>> getTransformationList() {
+        return transformationList;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public ImageBuilder setRadius(int radius) {
+        this.radius = radius;
+        return this;
+    }
+
     public void build() {
         load(this);
     }
@@ -193,8 +326,6 @@ public class ImageBuilder {
         if (imageBuilder.getIv() == null) {
             return;
         }
-
-        imageBuilder.getIv().setScaleType(imageBuilder.getScaleType());
 
         RequestManager requestManager = null;
         if (imageBuilder.getContext() != null) {
@@ -245,45 +376,64 @@ public class ImageBuilder {
 
             if (drawableTypeRequest != null) {
                 if (imageBuilder.isCircle()) {
-                    if (imageBuilder.isNoDefault()) {
-                        drawableTypeRequest.asBitmap()
-                                .into(new BitmapImageViewTarget(imageBuilder.getIv()) {
-                                    @Override
-                                    protected void setResource(
-                                            Bitmap resource) {
-                                        // 圆形
-                                        // iv.setImageBitmap(BitmapUtil.getRoundBitmap(
-                                        // resource, 0, 30,
-                                        // Color.parseColor("#ffeeeeee")));
-                                        imageBuilder.getIv().setImageBitmap(resource);
-                                    }
-                                });
-                    } else {
-                        drawableTypeRequest.asBitmap()
-                                .placeholder(imageBuilder.getDefaultImageId()).centerCrop()
-                                .into(new BitmapImageViewTarget(imageBuilder.getIv()) {
-                                    @Override
-                                    protected void setResource(
-                                            Bitmap resource) {
-                                        // 圆形
-                                        // iv.setImageBitmap(BitmapUtil.getRoundBitmap(
-                                        // resource, 0, 30,
-                                        // Color.parseColor("#ffeeeeee")));
-                                        imageBuilder.getIv().setImageBitmap(resource);
-                                    }
-                                });
-                    }
-                } else {
-                    if (imageBuilder.isNoDefault()) {
-                        drawableTypeRequest.into(imageBuilder.getIv());
-                    } else {
-                        drawableTypeRequest
-                                .placeholder(imageBuilder.getDefaultImageId()).into(imageBuilder.getIv());
-                    }
+                    imageBuilder.addBitmapTransform(new CropCircleTransformation(imageBuilder.getContext()));
+                }else if(imageBuilder.getRadius() > 0) {
+                    imageBuilder.addBitmapTransform(new RoundedCornersTransformation(imageBuilder.getContext(), imageBuilder.getRadius(), 0));
                 }
+
+                if (!imageBuilder.isNoDefault()) {
+                    drawableTypeRequest.placeholder(imageBuilder.getDefaultImageId());
+                }
+
+                if (!imageBuilder.isNoErrorImg()) {
+                    drawableTypeRequest.error(imageBuilder.getErrorImgId());
+                }
+
+                if(imageBuilder.getWidth() > 0 && imageBuilder.getHeight() > 0) {
+                    drawableTypeRequest.override(imageBuilder.getWidth(), imageBuilder.getHeight());
+                }
+
+                if(imageBuilder.getTransformationList().size() > 0) {
+                    // 使用裁切的时候，只有fit_center和center_crop起作用
+                    // 注意：必须放在数组第一位
+                    if(imageBuilder.getRadius() > 0 ) {
+                        if(imageBuilder.getScaleType() != ImageView.ScaleType.FIT_CENTER) {
+                            imageBuilder.addBitmapTransform(new CenterCrop(imageBuilder.getContext()), 0);
+                        }
+                    }else {
+                        imageBuilder.getIv().setScaleType(imageBuilder.getScaleType());
+                    }
+
+                    int size = imageBuilder.getTransformationList().size();
+                    Transformation<Bitmap>[] transformations = new Transformation[size];
+                    for(int i=0; i<size; i++) {
+                        transformations[i] = imageBuilder.getTransformationList().get(i);
+                    }
+
+                    drawableTypeRequest.bitmapTransform(transformations);
+                }else {
+                    imageBuilder.getIv().setScaleType(imageBuilder.getScaleType());
+                }
+
+                drawableTypeRequest.listener(imageBuilder.getRequestListener())
+                        .crossFade()
+                        .into(imageBuilder.getIv());
             }
         }
     }
+
+//    public DrawableRequestBuilder<Bitmap> bitmapTransform(List<Transformation<Bitmap>> transformationList) {
+//        if(transformationList == null || transformationList.size() == 0) {
+//            return null;
+//        }
+//        GifBitmapWrapperTransformation[] transformations =
+//                new GifBitmapWrapperTransformation[transformationList.size()];
+//        for (int i = 0; i < transformationList.size(); i++) {
+//            transformations[i] = new GifBitmapWrapperTransformation(context, transformationList.get(i));
+//        }
+//        return transform(transformations);
+//    }
+
 
     /**
      * 设置滚动不加载图片的监听
@@ -295,6 +445,7 @@ public class ImageBuilder {
 
     /**
      * 设置滑动不加载图片的监听
+     *
      * @param context
      */
     public static void setOnSlidePauseLoadListener(final Context context, RecyclerView recyclerView) {
@@ -309,6 +460,7 @@ public class ImageBuilder {
 
     /**
      * 设置滑动不加载图片
+     *
      * @param context
      * @param newState
      */

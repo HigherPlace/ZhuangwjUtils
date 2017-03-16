@@ -11,7 +11,7 @@ public interface ResponseStatus {
     int SUCCESS_ONLY_DATA = 1000;
 
     /** 未登录 */
-    int UNLOGIN = -1;
+    int UNLOGIN = 1001;
 
     /** 请求数据失败,数据为空 */
     int FAIL = 0;

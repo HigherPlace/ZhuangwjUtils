@@ -239,20 +239,32 @@ public class NetManager {
                             break;
                         case ResponseStatus.UNLOGIN:// 当前未登录
                             // TODO
-//                            User user = UserUtil.getInstance().getUser();
-//                            if (user != null) {
-//                                isReLoading = true;
-//                                responseBean.setStatus(ResponseStatus.UNLOGIN)
-//                                        .setMessage("获取数据成功")
-//                                        .setResult(result);
-//                                reLoginWithPwd(context, user, requestBean);
-//                            }
+                            if(requestBean.getCallback() != null) {
+
+                                responseBean.setStatus(ResponseStatus.UNLOGIN)
+                                        .setMessage(message != null ? message : "未登录")
+                                        .setThrowable(new Throwable("UNLOGIN"))
+                                        .setResult(result);
+                                requestBean.getCallback().onError(responseBean);
+                            }
+
                             break;
                         case ResponseStatus.FAIL:// 获取数据异常(+已拉去玩全部数据的情况)
                             if (requestBean.getCallback() != null) {
                                 responseBean.setStatus(ResponseStatus.FAIL)
                                         .setMessage(message != null ? message : "获取数据失败")
                                         .setThrowable(new Throwable("fail"))
+                                        .setResult(result);
+
+                                requestBean.getCallback().onError(responseBean);
+                            }
+                            break;
+
+                        default:
+                            if (requestBean.getCallback() != null) {
+                                responseBean.setStatus(status)
+                                        .setMessage(message != null ? message : "访问出错")
+                                        .setThrowable(new Throwable("访问出错"))
                                         .setResult(result);
 
                                 requestBean.getCallback().onError(responseBean);

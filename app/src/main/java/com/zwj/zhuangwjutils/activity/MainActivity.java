@@ -16,6 +16,7 @@ import com.zwj.zhuangwjutils.activity.base.BaseAutoLayoutCommonActivity;
 import com.zwj.zhuangwjutils.activity.customviewdemo.ListPopWindowDemoActivity;
 import com.zwj.zhuangwjutils.activity.customviewdemo.ProgressViewDemoActivity;
 import com.zwj.zhuangwjutils.activity.customviewdemo.TitleViewDemoActivity;
+import com.zwj.zhuangwjutils.activity.network.NetMangerDemoActivity;
 import com.zwj.zhuangwjutils.bean.ViewBean;
 
 import java.util.ArrayList;
@@ -81,6 +82,7 @@ public class MainActivity extends BaseAutoLayoutCommonActivity {
         viewBeenList.add(new ViewBean(ListPopWindowDemoActivity.class));
         viewBeenList.add(new ViewBean(CommonAdapterDemoActivity.class));
         viewBeenList.add(new ViewBean(ProgressViewDemoActivity.class));
+        viewBeenList.add(new ViewBean(ImageBuilderDemoActivity.class, "图片加载工具demo"));
     }
 
 }

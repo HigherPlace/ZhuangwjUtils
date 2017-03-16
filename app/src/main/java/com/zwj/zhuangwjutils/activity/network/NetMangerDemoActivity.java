@@ -1,4 +1,4 @@
-package com.zwj.zhuangwjutils.activity;
+package com.zwj.zhuangwjutils.activity.network;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -54,7 +54,6 @@ public class NetMangerDemoActivity extends AppCompatActivity {
 
         new RequestBean("http://139.224.27.154:8080/iqCloud/api/account/getValidCode", RequestBean.METHOD_GET)
                 .addParam("phone", "18650187931")
-                .setNeedParse(true)
                 .setCallback(new SimpleCallBack() {
                     @Override
                     public void onSuccess(ResponseBean responseBean) {
@@ -119,7 +118,6 @@ public class NetMangerDemoActivity extends AppCompatActivity {
     public void getCar(View view) {
         new RequestBean("http://120.24.6.87/ChetongxiangHCH/product/rental/getInfoByID", RequestBean.METHOD_GET)
                 .addParam("id", "1")
-                .setNeedParse(true)
                 .setCallback(new SimpleCallBack() {
                     @Override
                     public void onSuccess(ResponseBean responseBean) {

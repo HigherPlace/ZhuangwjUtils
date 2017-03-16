@@ -1,7 +1,5 @@
 package com.zwj.zhuangwjutils.bean;
 
-import com.zwj.zwjutils.LogUtils;
-
 /**
  * Created by zwj on 2016/12/10.
  */
@@ -14,10 +12,13 @@ public class ViewBean {
 
     }
 
-    public ViewBean(Class clazz) {
+    public ViewBean(Class clazz, String name) {
         this.clazz = clazz;
-        name = clazz.getSimpleName().toLowerCase();
-        LogUtils.sysout("name --> "+name);
+        this.name = name;
+    }
+
+    public ViewBean(Class clazz) {
+        this(clazz, clazz.getSimpleName().toLowerCase());
     }
 
     public String getName() {
