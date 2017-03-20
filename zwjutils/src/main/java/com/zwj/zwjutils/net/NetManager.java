@@ -164,19 +164,24 @@ public class NetManager {
                 ex.printStackTrace();
 
                 // 连接超时，重连(最多重连2次)
-                if ((ex instanceof SocketTimeoutException || ex instanceof UnknownHostException)
-                        && requestBean.isNeedReconnection() && requestBean.getCount() < RequestBean.MAX_RECONNECTION_COUNT) {
-                    // 连接超时，设置重连标志
-//                    requestBean.setNeedReconnection(true).setCount(requestBean.getCount() + 1);
-                    requestBean.setCount(requestBean.getCount() + 1);
-
-                    LogUtils.i(TAG, "重连 ---> ");
-                    LogUtils.i(TAG, "url ---> " + requestBean.getUrl());
-                    LogUtils.i(TAG, "count ---> " + requestBean.getCount());
-                } else {
-                    if (requestBean.getCallback() != null) {
-                        requestBean.getCallback().onError(responseBean);
-                    }
+//                if ((ex instanceof SocketTimeoutException || ex instanceof UnknownHostException)
+//                        && requestBean.isNeedReconnection() && requestBean.getCount() < RequestBean.MAX_RECONNECTION_COUNT) {
+//                    // 连接超时，设置重连标志
+////                    requestBean.setNeedReconnection(true).setCount(requestBean.getCount() + 1);
+//                    requestBean.setCount(requestBean.getCount() + 1);
+//
+//                    LogUtils.i(TAG, "重连 ---> ");
+//                    LogUtils.i(TAG, "url ---> " + requestBean.getUrl());
+//                    LogUtils.i(TAG, "count ---> " + requestBean.getCount());
+//                } else {
+//                    if (requestBean.getCallback() != null) {
+//                        requestBean.getCallback().onError(responseBean);
+//                    }
+//                }
+                if (ex instanceof SocketTimeoutException || ex instanceof UnknownHostException) {
+                    responseBean.setStatus(ResponseStatus.ERROR_OTHER)
+                            .setMessage("网络超时")
+                            .setThrowable(ex);
                 }
             }
 

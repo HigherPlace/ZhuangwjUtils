@@ -20,7 +20,7 @@ public class ImageBuilderDemoActivity extends AppCompatActivity {
 
         iv = (ImageView) findViewById(R.id.iv);
 
-        new ImageBuilder(this, iv, imgUrl)
+        new ImageBuilder(this, iv, errorImgUrl)
                 .setRadius(30)
                 .build();
     }
