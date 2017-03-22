@@ -32,6 +32,11 @@ public class RequestBean {
      */
     public static final Map<String, String> globalHeadMap = new HashMap<>();
 
+    /**
+     * true - 未登录时会回调onUnlogin
+     */
+    public static boolean callbackUnlogin = false;
+
     //    private String key;        // 用于标记是否为同一个请求实体
     private String url;
     /**

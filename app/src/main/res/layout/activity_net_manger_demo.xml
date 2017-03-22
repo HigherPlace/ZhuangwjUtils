@@ -41,4 +41,10 @@
         android:onClick="getCar"
         android:text="getCar" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="testUnlogin"
+        android:text="测试未登录回调" />
+
 </LinearLayout>

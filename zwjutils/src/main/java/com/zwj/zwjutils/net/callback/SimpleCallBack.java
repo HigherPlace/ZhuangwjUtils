@@ -2,13 +2,12 @@ package com.zwj.zwjutils.net.callback;
 
 
 import com.zwj.zwjutils.LogUtils;
-import com.zwj.zwjutils.net.NetManager;
 import com.zwj.zwjutils.net.bean.ResponseBean;
 
 /**
  * 简单的网络请求回调类
  */
-public abstract class SimpleCallBack implements NetManager.RequestCallBack {
+public abstract class SimpleCallBack implements RequestCallBack2 {
 
     public static final String TAG = "SimpleCallBack";
 
@@ -45,4 +44,8 @@ public abstract class SimpleCallBack implements NetManager.RequestCallBack {
         LogUtils.e(TAG, "执行onFinished");
     }
 
+    @Override
+    public void onUnlogin(String msg) {
+
+    }
 }

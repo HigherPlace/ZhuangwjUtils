@@ -10,6 +10,7 @@ import com.zwj.zhuangwjutils.bean.ParseBean;
 import com.zwj.zhuangwjutils.constant.UrlConstant;
 import com.zwj.zwjutils.JsonUtil;
 import com.zwj.zwjutils.LogUtils;
+import com.zwj.zwjutils.ToastUtil;
 import com.zwj.zwjutils.net.NetManager;
 import com.zwj.zwjutils.net.bean.RequestBean;
 import com.zwj.zwjutils.net.bean.ResponseBean;
@@ -121,6 +122,23 @@ public class NetMangerDemoActivity extends AppCompatActivity {
                 .setCallback(new SimpleCallBack() {
                     @Override
                     public void onSuccess(ResponseBean responseBean) {
+                    }
+                }).request(this);
+    }
+
+    public void testUnlogin(View view) {
+        RequestBean.callbackUnlogin = true;
+        RequestBean.addGlobalHead("deviceTag", "1");
+        new RequestBean("http://139.224.27.154:8080/api/enterprise/insertEnterprise", RequestBean.METHOD_GET)
+                .setCallback(new SimpleCallBack() {
+                    @Override
+                    public void onSuccess(ResponseBean responseBean) {
+                    }
+
+                    @Override
+                    public void onUnlogin(String msg) {
+                        super.onUnlogin(msg);
+                        ToastUtil.toast(NetMangerDemoActivity.this, msg);
                     }
                 }).request(this);
     }

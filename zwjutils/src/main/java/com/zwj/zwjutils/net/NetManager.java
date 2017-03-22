@@ -11,6 +11,7 @@ import com.zwj.zwjutils.ToastUtil;
 import com.zwj.zwjutils.net.bean.RequestBean;
 import com.zwj.zwjutils.net.bean.ResponseBean;
 import com.zwj.zwjutils.net.callback.DownloadCallback;
+import com.zwj.zwjutils.net.callback.RequestCallBack2;
 import com.zwj.zwjutils.net.constant.ResponseStatus;
 import com.zwj.zwjutils.net.constant.Status;
 
@@ -35,9 +36,6 @@ import java.util.Set;
 public class NetManager {
 
     public static final String TAG = "NetManager";
-
-
-    public static String TOKEN; // 全局的token
 
     /**
      * 是否正在重连
@@ -68,6 +66,7 @@ public class NetManager {
          * 不管如何结束后都会调用该方法
          */
         void onFinished(ResponseBean responseBean);
+
     }
 
     private static Map<String, RequestBean> requestMap = new HashMap<>();
@@ -112,7 +111,6 @@ public class NetManager {
             params.setAsJsonContent(true);
             params.setBodyContent(requestBean.getBodyContent());
         } else {
-//            addToken(context, requestBean, params);
             addParamsAndHeaders(params, requestBean);
         }
 
@@ -246,11 +244,15 @@ public class NetManager {
                             // TODO
                             if(requestBean.getCallback() != null) {
 
-                                responseBean.setStatus(ResponseStatus.UNLOGIN)
-                                        .setMessage(message != null ? message : "未登录")
-                                        .setThrowable(new Throwable("UNLOGIN"))
-                                        .setResult(result);
-                                requestBean.getCallback().onError(responseBean);
+                                if(RequestBean.callbackUnlogin && requestBean.getCallback() instanceof RequestCallBack2) {
+                                    ((RequestCallBack2) requestBean.getCallback()).onUnlogin(message != null ? message : "未登录");
+                                }else {
+                                    responseBean.setStatus(ResponseStatus.UNLOGIN)
+                                            .setMessage(message != null ? message : "未登录")
+                                            .setThrowable(new Throwable("UNLOGIN"))
+                                            .setResult(result);
+                                    requestBean.getCallback().onError(responseBean);
+                                }
                             }
 
                             break;
