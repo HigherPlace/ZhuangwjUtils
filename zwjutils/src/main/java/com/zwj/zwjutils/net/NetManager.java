@@ -180,6 +180,10 @@ public class NetManager {
                     responseBean.setStatus(ResponseStatus.ERROR_OTHER)
                             .setMessage("网络超时")
                             .setThrowable(ex);
+
+                    if (requestBean.getCallback() != null) {
+                        requestBean.getCallback().onError(responseBean);
+                    }
                 }
             }
 
