@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import java.util.List;
 
 public class CenterViewPagerAdapter<T extends View> extends PagerAdapter {
-
     Context mContext;
     List<T> views;
 

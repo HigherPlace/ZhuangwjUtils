@@ -40,8 +40,9 @@
         <activity android:name=".activity.customviewdemo.ProgressViewDemoActivity" />
         <activity android:name=".activity.customviewdemo.ClearWriteEditTextDemo" />
         <activity android:name=".activity.ImageBuilderDemoActivity" />
-        <activity android:name=".activity.customviewdemo.CustomViewDemoActivity"></activity>
-        <activity android:name=".activity.customviewdemo.CenterPagerDemoActivity"/>
+        <activity android:name=".activity.customviewdemo.CustomViewDemoActivity" />
+        <activity android:name=".activity.customviewdemo.CenterPagerDemoActivity" />
+        <activity android:name=".activity.customviewdemo.CenterPagerDemoActivity2"></activity>
     </application>
 
 </manifest>

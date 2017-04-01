@@ -1,20 +1,18 @@
 package com.zwj.zhuangwjutils.activity.customviewdemo;
 
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
+import com.zwj.customview.centerviewpager.CenterFragmentPageAdapter;
 import com.zwj.customview.centerviewpager.CenterViewPager;
-import com.zwj.customview.centerviewpager.CenterViewPagerAdapter;
 import com.zwj.customview.centerviewpager.ZoomOutPageTransformer;
 import com.zwj.zhuangwjutils.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class CenterPagerDemoActivity extends AppCompatActivity {
+public class CenterPagerDemoActivity2 extends AppCompatActivity {
     private CenterViewPager viewPager;
 
     @Override
@@ -26,21 +24,15 @@ public class CenterPagerDemoActivity extends AppCompatActivity {
     }
 
     private void initPager() {
-        List<View> views = new ArrayList<>();
+        List<Fragment> views = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            View card = new View(this);
-            card.setBackgroundColor(getRandomColor());
-            card.setTag(i);
-            views.add(card);
+            CenterPagerFragment centerPagerFragment = new CenterPagerFragment();
+            views.add(centerPagerFragment);
         }
-        CenterViewPagerAdapter adapter = new CenterViewPagerAdapter(this, views);
+        CenterFragmentPageAdapter adapter = new CenterFragmentPageAdapter(getSupportFragmentManager(), views, 0.7f);
         viewPager.setAdapter(adapter);
         viewPager.enableCenterLockOfChilds();
-        viewPager.setPageTransformer(true, new ZoomOutPageTransformer(0.8f));
+        viewPager.setPageTransformer(true, new ZoomOutPageTransformer(adapter.getWidthSacle()));
     }
 
-    private int getRandomColor() {
-        Random rnd = new Random();
-        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-    }
 }

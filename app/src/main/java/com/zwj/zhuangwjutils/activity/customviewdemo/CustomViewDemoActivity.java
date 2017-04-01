@@ -74,5 +74,6 @@ public class CustomViewDemoActivity extends BaseAutoLayoutCommonActivity {
         viewBeenList.add(new ViewBean(ListPopWindowDemoActivity.class, "ListPopWindow"));
         viewBeenList.add(new ViewBean(ProgressViewDemoActivity.class, "进度条"));
         viewBeenList.add(new ViewBean(CenterPagerDemoActivity.class, "CenterPager"));
+        viewBeenList.add(new ViewBean(CenterPagerDemoActivity2.class, "CenterPager2"));
     }
 }

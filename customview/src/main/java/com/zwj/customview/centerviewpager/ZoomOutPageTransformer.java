@@ -6,19 +6,32 @@ package com.zwj.customview.centerviewpager;
 import android.annotation.SuppressLint;
 import android.view.View;
 
+import com.zwj.zwjutils.LogUtils;
+
 /**
  * viewpager过场动画，扩放效果
  */
 public class ZoomOutPageTransformer implements CenterViewPager.PageTransformer {
     private static float MIN_SCALE = 0.85f;
-
     private static float MIN_ALPHA = 0.5f;
+    private float widthScale;
+
+    public ZoomOutPageTransformer(float widthScale) {
+        super();
+        this.widthScale = widthScale;
+    }
 
     @SuppressLint("NewApi")
     @Override
     public void transformPage(View view, float position) {
         int pageWidth = view.getWidth();
         int pageHeight = view.getHeight();
+
+        LogUtils.sysout("pageWidth ---> "+pageWidth);
+
+        if(position > -1 && position < 0) {
+            position -= (1 - widthScale);
+        }
 
         if (position < -1) { // [-Infinity,-1)
             // This page is way off-screen to the left.
@@ -27,13 +40,19 @@ public class ZoomOutPageTransformer implements CenterViewPager.PageTransformer {
             // Modify the default slide transition to
             // shrink the page as well
             //float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
+
+            LogUtils.sysout("position ---> "+position);
             float scaleFactor = MIN_SCALE
                     + (1 - MIN_SCALE) * (1 - Math.abs(position));
+            LogUtils.sysout("scaleFactor ---> "+scaleFactor);
+
             float vertMargin = pageHeight * (1 - scaleFactor) / 2;
             float horzMargin = pageWidth * (1 - scaleFactor) / 2;
             if (position < 0) {
+                LogUtils.sysout("<<0 ---> "+(horzMargin - vertMargin / 2));
                 view.setTranslationX(horzMargin - vertMargin / 2);
             } else {
+                LogUtils.sysout(">>0 ---> "+(-horzMargin + vertMargin / 2));
                 view.setTranslationX(-horzMargin + vertMargin / 2);
             }
             // Scale the page down (between MIN_SCALE and 1)
