@@ -129,10 +129,12 @@ public class NetMangerDemoActivity extends AppCompatActivity {
     public void testUnlogin(View view) {
         RequestBean.callbackUnlogin = true;
         RequestBean.addGlobalHead("deviceTag", "1");
-        new RequestBean("http://139.224.27.154:8080/api/enterprise/insertEnterprise", RequestBean.METHOD_GET)
+        RequestBean.addGlobalHead("token", "aad5cebe86ee4db6b30a5e724c8b883b00dc0275");
+        new RequestBean("http://192.168.31.180:8080/iqCloud/debug2/testCheckRole", RequestBean.METHOD_GET)
                 .setCallback(new SimpleCallBack() {
                     @Override
                     public void onSuccess(ResponseBean responseBean) {
+                        LogUtils.sysout("result ---> "+responseBean.getResult());
                     }
 
                     @Override

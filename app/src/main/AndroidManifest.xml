@@ -39,7 +39,9 @@
         <activity android:name=".activity.adapterdemo.CommonSingleSelectionAdapterDemoActivity" />
         <activity android:name=".activity.customviewdemo.ProgressViewDemoActivity" />
         <activity android:name=".activity.customviewdemo.ClearWriteEditTextDemo" />
-        <activity android:name=".activity.ImageBuilderDemoActivity"></activity>
+        <activity android:name=".activity.ImageBuilderDemoActivity" />
+        <activity android:name=".activity.customviewdemo.CustomViewDemoActivity"></activity>
+        <activity android:name=".activity.customviewdemo.CenterPagerDemoActivity"/>
     </application>
 
 </manifest>

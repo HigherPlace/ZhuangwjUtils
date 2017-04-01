@@ -35,6 +35,6 @@ dependencies {
 
     compile project(':customview')
     compile libConstraintLaout
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+//    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }

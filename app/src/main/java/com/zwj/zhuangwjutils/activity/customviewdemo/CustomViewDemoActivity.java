@@ -1,4 +1,4 @@
-package com.zwj.zhuangwjutils.activity;
+package com.zwj.zhuangwjutils.activity.customviewdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,16 +11,13 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zwj.zhuangwjutils.R;
-import com.zwj.zhuangwjutils.activity.adapterdemo.CommonAdapterDemoActivity;
 import com.zwj.zhuangwjutils.activity.base.BaseAutoLayoutCommonActivity;
-import com.zwj.zhuangwjutils.activity.customviewdemo.CustomViewDemoActivity;
-import com.zwj.zhuangwjutils.activity.network.NetMangerDemoActivity;
 import com.zwj.zhuangwjutils.bean.ViewBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseAutoLayoutCommonActivity {
+public class CustomViewDemoActivity extends BaseAutoLayoutCommonActivity {
     private RecyclerView rv;
     private CommonAdapter<ViewBean> adapter;
     private List<ViewBean> viewBeenList;
@@ -73,12 +70,9 @@ public class MainActivity extends BaseAutoLayoutCommonActivity {
 
     private void initViewBeenList() {
         viewBeenList = new ArrayList<>();
-        viewBeenList.add(new ViewBean(NetMangerDemoActivity.class));
-        viewBeenList.add(new ViewBean(CustomViewDemoActivity.class, "自定义控件demo"));
-        viewBeenList.add(new ViewBean(EncryptionDemoActivity.class));
-        viewBeenList.add(new ViewBean(LoadMoreDemoActivity.class));
-        viewBeenList.add(new ViewBean(CommonAdapterDemoActivity.class));
-        viewBeenList.add(new ViewBean(ImageBuilderDemoActivity.class, "图片加载工具demo"));
+        viewBeenList.add(new ViewBean(TitleViewDemoActivity.class, "通用标题栏"));
+        viewBeenList.add(new ViewBean(ListPopWindowDemoActivity.class, "ListPopWindow"));
+        viewBeenList.add(new ViewBean(ProgressViewDemoActivity.class, "进度条"));
+        viewBeenList.add(new ViewBean(CenterPagerDemoActivity.class, "CenterPager"));
     }
-
 }
