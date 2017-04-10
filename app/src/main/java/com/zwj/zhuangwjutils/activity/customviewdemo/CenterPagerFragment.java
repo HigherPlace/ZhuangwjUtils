@@ -2,7 +2,7 @@ package com.zwj.zhuangwjutils.activity.customviewdemo;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.zwj.zhuangwjutils.R;
 import com.zwj.zhuangwjutils.fragment.base.BaseFragment;
@@ -10,7 +10,7 @@ import com.zwj.zhuangwjutils.fragment.base.BaseFragment;
 import java.util.Random;
 
 public class CenterPagerFragment extends BaseFragment {
-    private FrameLayout flContent;
+    private RelativeLayout flContent;
 
     @Override
     protected int getContentViewId() {

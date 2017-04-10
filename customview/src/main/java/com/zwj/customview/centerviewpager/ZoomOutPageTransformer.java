@@ -6,15 +6,27 @@ package com.zwj.customview.centerviewpager;
 import android.annotation.SuppressLint;
 import android.view.View;
 
-import com.zwj.zwjutils.LogUtils;
-
 /**
  * viewpager过场动画，扩放效果
  */
 public class ZoomOutPageTransformer implements CenterViewPager.PageTransformer {
-    private static float MIN_SCALE = 0.85f;
+    private static float MIN_SCALE = 0.84f;
     private static float MIN_ALPHA = 0.5f;
     private float widthScale;
+
+    /**
+     * 缩放界面时回调接口
+     */
+    public interface ScaleCallBack {
+        /**
+         * 当界面缩放时进行回调
+         * @param view
+         * @param scaleFactor
+         */
+        void onScale(View view, float scaleFactor);
+    }
+
+    private ScaleCallBack scaleCallBack;
 
     public ZoomOutPageTransformer(float widthScale) {
         super();
@@ -26,8 +38,6 @@ public class ZoomOutPageTransformer implements CenterViewPager.PageTransformer {
     public void transformPage(View view, float position) {
         int pageWidth = view.getWidth();
         int pageHeight = view.getHeight();
-
-        LogUtils.sysout("pageWidth ---> "+pageWidth);
 
         if(position > -1 && position < 0) {
             position -= (1 - widthScale);
@@ -41,23 +51,24 @@ public class ZoomOutPageTransformer implements CenterViewPager.PageTransformer {
             // shrink the page as well
             //float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
 
-            LogUtils.sysout("position ---> "+position);
             float scaleFactor = MIN_SCALE
                     + (1 - MIN_SCALE) * (1 - Math.abs(position));
-            LogUtils.sysout("scaleFactor ---> "+scaleFactor);
 
             float vertMargin = pageHeight * (1 - scaleFactor) / 2;
             float horzMargin = pageWidth * (1 - scaleFactor) / 2;
             if (position < 0) {
-                LogUtils.sysout("<<0 ---> "+(horzMargin - vertMargin / 2));
                 view.setTranslationX(horzMargin - vertMargin / 2);
             } else {
-                LogUtils.sysout(">>0 ---> "+(-horzMargin + vertMargin / 2));
                 view.setTranslationX(-horzMargin + vertMargin / 2);
             }
             // Scale the page down (between MIN_SCALE and 1)
             view.setScaleX(scaleFactor);
             view.setScaleY(scaleFactor);
+
+            if(scaleCallBack != null) {
+                scaleCallBack.onScale(view, scaleFactor);
+            }
+
             // Fade the page relative to its size.
             view.setAlpha(MIN_ALPHA + (scaleFactor - MIN_SCALE)
                     / (1 - MIN_SCALE) * (1 - MIN_ALPHA));
@@ -65,5 +76,9 @@ public class ZoomOutPageTransformer implements CenterViewPager.PageTransformer {
             // This page is way off-screen to the right.
             view.setAlpha(0);
         }
+    }
+
+    public void setScaleCallBack(ScaleCallBack scaleCallBack) {
+        this.scaleCallBack = scaleCallBack;
     }
 }
