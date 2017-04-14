@@ -20,8 +20,11 @@ public class ImageBuilderDemoActivity extends AppCompatActivity {
 
         iv = (ImageView) findViewById(R.id.iv);
 
-        new ImageBuilder(this, iv, errorImgUrl)
-                .setRadius(30)
+//        new ImageBuilder(this, iv, errorImgUrl)
+//                .setRadius(30)
+//                .build();
+
+        new ImageBuilder(this, iv, null, ImageBuilder.LoadMode.FILE)
                 .build();
     }
 }

@@ -98,6 +98,19 @@ public class ImageBuilder {
         }
     };
 
+    private RequestListener<Integer, GlideDrawable> requestListener2 = new RequestListener<Integer, GlideDrawable>() {
+        @Override
+        public boolean onException(Exception e, Integer model, Target<GlideDrawable> target, boolean isFirstResource) {
+            LogUtils.e("ImageBuilder onException", e.toString() + "  model:" + model + " isFirstResource: " + isFirstResource);
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(GlideDrawable resource, Integer model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+            LogUtils.e("ImageBuilder onResourceReady", "isFromMemoryCache:" + isFromMemoryCache + "  model:" + model + " isFirstResource: " + isFirstResource);
+            return false;
+        }
+    };
 
     /**
      * 图片缩放模式
@@ -317,6 +330,15 @@ public class ImageBuilder {
         return this;
     }
 
+    public RequestListener<Integer, GlideDrawable> getRequestListener2() {
+        return requestListener2;
+    }
+
+    public ImageBuilder setRequestListener2(RequestListener<Integer, GlideDrawable> requestListener2) {
+        this.requestListener2 = requestListener2;
+        return this;
+    }
+
     public void build() {
         load(this);
     }
@@ -344,6 +366,7 @@ public class ImageBuilder {
         }
 
         if (requestManager != null) {
+            // TODO
             DrawableTypeRequest drawableTypeRequest = null;
 
             if (imageBuilder.isDrawabId()) {
@@ -371,6 +394,7 @@ public class ImageBuilder {
                     drawableTypeRequest = requestManager.load(sbUrl.toString());
                 } else {
                     imageBuilder.setNoDefault(true);
+                    imageBuilder.setDrawabId(true);
                     drawableTypeRequest = requestManager.load(imageBuilder.getDefaultImageId());
                 }
             }
@@ -416,8 +440,12 @@ public class ImageBuilder {
                     imageBuilder.getIv().setScaleType(imageBuilder.getScaleType());
                 }
 
-                drawableTypeRequest.listener(imageBuilder.getRequestListener())
-                        .crossFade()
+                if(imageBuilder.isDrawabId()) {
+                    drawableTypeRequest.listener(imageBuilder.getRequestListener2());
+                }else {
+                    drawableTypeRequest.listener(imageBuilder.getRequestListener());
+                }
+                drawableTypeRequest.crossFade()
                         .into(imageBuilder.getIv());
             }
         }
