@@ -33,6 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
 public class NetManager {
 
     public static final String TAG = "NetManager";
@@ -77,6 +80,16 @@ public class NetManager {
     }
 
     /**
+     * 设置不验证主机
+     */
+    private static final HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+        public boolean verify(String hostname, SSLSession session) {
+            return true;
+        }
+    };
+
+
+    /**
      * 需要重连的时候返回null
      */
     public static Cancelable request(@NonNull final Context context, @NonNull final RequestBean requestBean, final Parser parser) {
@@ -98,6 +111,8 @@ public class NetManager {
         }
 
         RequestParams params = new RequestParams(requestBean.getUrl());
+        params.setHostnameVerifier(DO_NOT_VERIFY);
+
         if (requestBean.getTimeOut() > 0) {
             params.setConnectTimeout(requestBean.getTimeOut());
         }
@@ -105,7 +120,7 @@ public class NetManager {
         if (!TextUtils.isEmpty(requestBean.getBodyContent())) {
             // 以json数据格式提交
             // json 必须以post方式提交,强制设为Post
-            LogUtils.i(TAG, "bodyparam ====> "+requestBean.getBodyContent());
+            LogUtils.i(TAG, "bodyparam ====> " + requestBean.getBodyContent());
             requestBean.setRequestMethod(RequestBean.METHOD_POST);
             adddHeaders(params, requestBean);
             params.setAsJsonContent(true);
@@ -246,11 +261,11 @@ public class NetManager {
                             break;
                         case ResponseStatus.UNLOGIN:// 当前未登录
                             // TODO
-                            if(requestBean.getCallback() != null) {
+                            if (requestBean.getCallback() != null) {
 
-                                if(RequestBean.callbackUnlogin && requestBean.getCallback() instanceof RequestCallBack2) {
+                                if (RequestBean.callbackUnlogin && requestBean.getCallback() instanceof RequestCallBack2) {
                                     ((RequestCallBack2) requestBean.getCallback()).onUnlogin(message != null ? message : "未登录");
-                                }else {
+                                } else {
                                     responseBean.setStatus(ResponseStatus.UNLOGIN)
                                             .setMessage(message != null ? message : "未登录")
                                             .setThrowable(new Throwable("UNLOGIN"))

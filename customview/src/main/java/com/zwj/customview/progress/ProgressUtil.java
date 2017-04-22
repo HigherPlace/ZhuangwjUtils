@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.zwj.mycustomview.R;
@@ -54,22 +53,14 @@ public class ProgressUtil {
         startProgress(context, loadingTip, true, null, null);
     }
 
-//    public static void startProgress(Context context, String loadingTip, boolean cancelable,
-//                                     OnCancelListener cancelListener) {
-//        if (isLoading) {
-//            return;
-//        }
-//        isLoading = true;
-//        showLoading(context, loadingTip, cancelable, cancelListener, dismissListener);
-//    }
-
     public static void startProgress(Context context, String loadingTip, boolean cancelable,
                                      OnCancelListener cancelListener, DialogInterface.OnDismissListener dismissListener) {
         if (isLoading) {
             return;
         }
         isLoading = true;
-        showLoading(context, loadingTip, cancelable, cancelListener, dismissListener);
+        showLoading(context, new ProgressBean().setLoadingTip(loadingTip).setCancelable(cancelable)
+                        .setCancelListener(cancelListener).setDismissListener(dismissListener));
     }
 
     public static void startProgress(Context context, ProgressBean progressBean) {
@@ -77,20 +68,15 @@ public class ProgressUtil {
             return;
         }
         isLoading = true;
-        showLoading(context, progressBean.getLoadingTip(), progressBean.isCancelable(),
-                progressBean.getCancelListener(), progressBean.getDismissListener());
+        showLoading(context, progressBean);
     }
 
-    private static void showLoading(Context context, String loadingTip, boolean cancelable,
-                                    OnCancelListener cancelListener, DialogInterface.OnDismissListener dismissListener) {
-        if (TextUtils.isEmpty(loadingTip)) {
-            loadingTip = "请稍后...";
-        }
+    private static void showLoading(Context context, ProgressBean progressBean) {
         dialog = new Dialog(context, R.style.LoadingStyle);
-        ProgressView view = new ProgressView(context);
-        view.setTipContent(loadingTip);
+        ProgressView view = new ProgressView(context, progressBean.getLoadingTip(), progressBean.getColor());
+//        view.setTipContent(progressBean.getLoadingTip()).setColor(progressBean.getColor());
         dialog.setContentView(view);
-        dialog.setCancelable(cancelable);
+        dialog.setCancelable(progressBean.isCancelable());
         dialog.setOnCancelListener(new OnCancelListener() {
 
             @Override
@@ -99,12 +85,12 @@ public class ProgressUtil {
             }
         });
 
-        if (cancelListener != null) {
-            dialog.setOnCancelListener(cancelListener);
+        if (progressBean.getCancelListener() != null) {
+            dialog.setOnCancelListener(progressBean.getCancelListener());
         }
 
-        if (dismissListener != null) {
-            dialog.setOnDismissListener(dismissListener);
+        if (progressBean.getDismissListener() != null) {
+            dialog.setOnDismissListener(progressBean.getDismissListener());
         }
         dialog.show();
     }

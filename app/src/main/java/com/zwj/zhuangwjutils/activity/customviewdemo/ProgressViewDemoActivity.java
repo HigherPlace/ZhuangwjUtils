@@ -1,6 +1,7 @@
 package com.zwj.zhuangwjutils.activity.customviewdemo;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,7 +31,7 @@ public class ProgressViewDemoActivity extends AppCompatActivity {
     public void startProgressView(View view) {
 //        ProgressUtil.startProgress(this, "正在加载...");
 
-        new ProgressBean().setLoadingTip("正在加载...")
+        new ProgressBean().setLoadingTip("正在加载...").setColor(Color.BLUE)
                 .setCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {

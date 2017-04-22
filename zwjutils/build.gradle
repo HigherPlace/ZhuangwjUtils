@@ -35,7 +35,7 @@ dependencies {
     compile rootProject.ext.libGlide
 
     compile files('libs/fastjson-1.2.5.jar')
-    compile 'org.xutils:xutils:3.3.42'
+    compile 'org.xutils:xutils:3.5.0'
 //    compile 'com.github.ybq:Android-SpinKit:1.1.0'
 
     compile 'jp.wasabeef:glide-transformations:2.0.1'

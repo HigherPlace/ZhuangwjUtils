@@ -144,4 +144,17 @@ public class NetMangerDemoActivity extends AppCompatActivity {
                     }
                 }).request(this);
     }
+
+    public void testHttps(View view) {
+        new RequestBean("https://139.224.27.154:8443/MeetingRoomManagement/api/qrCode/generate", RequestBean.METHOD_GET)
+                .addParam("deviceId", "fdfsfdsfds")
+//                .addParam("tk", "aa")
+//                .addParam("uid", "xxx")
+                .setCallback(new SimpleCallBack() {
+                    @Override
+                    public void onSuccess(ResponseBean responseBean) {
+                        LogUtils.sysout("result ---> "+responseBean.getResult());
+                    }
+                }).request(this);
+    }
 }

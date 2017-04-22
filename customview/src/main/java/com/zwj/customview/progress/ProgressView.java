@@ -21,6 +21,8 @@ public class ProgressView extends RelativeLayout {
     //加载动画
     private Sprite mCircleDrawable;
     private SpinKitView spnite;
+    private String tipStr;
+    private int color;
 
     public ProgressView(Context context) {
         this(context, null);
@@ -35,20 +37,45 @@ public class ProgressView extends RelativeLayout {
         init(context);
     }
 
+    public ProgressView(Context context, String tipStr, int color) {
+        super(context);
+        this.tipStr = tipStr;
+        this.color = color;
+        init(context);
+    }
+
     private void init(Context context) {
 
         inflate(context, R.layout.view_loading, this);
         spnite= (SpinKitView) findViewById(R.id.spin_kit);
+        if(color != 0) {
+            spnite.setColor(color);
+        }
         tvTip = (TextView) findViewById(R.id.tv_tip);
+        if (!TextUtils.isEmpty(tipStr)) {
+            tvTip.setText(tipStr);
+        }
+
         FadingCircle _circleDrawable = new FadingCircle();
         spnite.setIndeterminateDrawable(_circleDrawable);
 
     }
 
-    public void setTipContent(String tipStr) {
+    public ProgressView setTipContent(String tipStr) {
         if (!TextUtils.isEmpty(tipStr)) {
+            this.tipStr = tipStr;
             tvTip.setText(tipStr);
             invalidate();
         }
+        return this;
+    }
+
+    public ProgressView setColor(int color) {
+        this.color = color;
+        if(this.color != 0) {
+            spnite.setColor(this.color);
+            invalidate();
+        }
+        return this;
     }
 }

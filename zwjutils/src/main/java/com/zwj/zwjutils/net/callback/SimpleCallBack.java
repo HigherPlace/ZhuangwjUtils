@@ -18,9 +18,6 @@ public abstract class SimpleCallBack implements RequestCallBack2 {
 
     @Override
     public void onError(ResponseBean responseBean) {
-        LogUtils.e(TAG, "执行onError--------->");
-
-
         if (responseBean.isShowToast() && responseBean.getThrowable() != null) {
 //            responseBean.getThrowable().printStackTrace();
 

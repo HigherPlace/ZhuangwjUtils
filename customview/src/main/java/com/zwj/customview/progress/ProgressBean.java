@@ -9,10 +9,11 @@ import android.content.DialogInterface;
  */
 
 public class ProgressBean {
-    private String loadingTip;          // 提示信息
+    private String loadingTip = "请稍后...";          // 提示信息
     private boolean cancelable = true;         // true,点击回退键可取消；false,不可取消
     private DialogInterface.OnCancelListener cancelListener;    // 点击回退键取消时调用该监听类
     private DialogInterface.OnDismissListener dismissListener;  // 加载进度条消失时调用该监听类
+    private int color;
 
     public String getLoadingTip() {
         return loadingTip;
@@ -47,6 +48,15 @@ public class ProgressBean {
 
     public ProgressBean setDismissListener(DialogInterface.OnDismissListener dismissListener) {
         this.dismissListener = dismissListener;
+        return this;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public ProgressBean setColor(int color) {
+        this.color = color;
         return this;
     }
 
