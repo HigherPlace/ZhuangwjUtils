@@ -228,7 +228,7 @@ public class NetManager {
 
                 // 自定义解析(可参照下面的解析)
                 if (requestBean.getParser() != null) {
-                    requestBean.getParser().parse(result);
+                    requestBean.getParser().parse(result, requestBean);
                     return;
                 }
 
