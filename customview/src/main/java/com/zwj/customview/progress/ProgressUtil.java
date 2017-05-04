@@ -72,40 +72,48 @@ public class ProgressUtil {
     }
 
     private static void showLoading(Context context, ProgressBean progressBean) {
-        dialog = new Dialog(context, R.style.LoadingStyle);
-        ProgressView view = new ProgressView(context, progressBean.getLoadingTip(), progressBean.getColor());
+        try{
+            dialog = new Dialog(context, R.style.LoadingStyle);
+            ProgressView view = new ProgressView(context, progressBean.getLoadingTip(), progressBean.getColor());
 //        view.setTipContent(progressBean.getLoadingTip()).setColor(progressBean.getColor());
-        dialog.setContentView(view);
-        dialog.setCancelable(progressBean.isCancelable());
-        dialog.setOnCancelListener(new OnCancelListener() {
+            dialog.setContentView(view);
+            dialog.setCancelable(progressBean.isCancelable());
+            dialog.setOnCancelListener(new OnCancelListener() {
 
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                isLoading = false;
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    isLoading = false;
+                }
+            });
+
+            if (progressBean.getCancelListener() != null) {
+                dialog.setOnCancelListener(progressBean.getCancelListener());
             }
-        });
 
-        if (progressBean.getCancelListener() != null) {
-            dialog.setOnCancelListener(progressBean.getCancelListener());
+            if (progressBean.getDismissListener() != null) {
+                dialog.setOnDismissListener(progressBean.getDismissListener());
+            }
+            dialog.show();
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-
-        if (progressBean.getDismissListener() != null) {
-            dialog.setOnDismissListener(progressBean.getDismissListener());
-        }
-        dialog.show();
     }
 
     /***
      * 隐藏进度对话框
      */
     public static void hideProgress() {
-        if (!isLoading) {
-            return;
-        }
-        isLoading = false;
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-            dialog = null;
+        try{
+            if (!isLoading) {
+                return;
+            }
+            isLoading = false;
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+                dialog = null;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
