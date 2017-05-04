@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.zwj.zwjutils.net.NetManager;
+import com.zwj.zwjutils.net.Parser;
 
 import org.xutils.common.Callback;
 
@@ -70,6 +71,8 @@ public class RequestBean {
 
     private Callback.Cancelable cancelable;
     private String tag;
+
+    private Parser parser;
 
     /**
      * 设置解析模式
@@ -276,7 +279,7 @@ public class RequestBean {
      * @return
      */
     public Callback.Cancelable request(Context context) {
-        this.cancelable = NetManager.request(context, this);
+        this.cancelable = NetManager.request(context, this, parser);
         return cancelable;
     }
 
@@ -337,4 +340,12 @@ public class RequestBean {
 
     }
 
+    public Parser getParser() {
+        return parser;
+    }
+
+    public RequestBean setParser(Parser parser) {
+        this.parser = parser;
+        return this;
+    }
 }
