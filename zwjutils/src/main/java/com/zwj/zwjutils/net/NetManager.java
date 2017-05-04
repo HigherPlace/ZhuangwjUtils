@@ -75,10 +75,6 @@ public class NetManager {
     private static Map<String, RequestBean> requestMap = new HashMap<>();
 
 
-    public static Cancelable request(@NonNull Context context, @NonNull RequestBean requestBean) {
-        return request(context, requestBean, null);
-    }
-
     /**
      * 设置不验证主机
      */
@@ -92,7 +88,7 @@ public class NetManager {
     /**
      * 需要重连的时候返回null
      */
-    public static Cancelable request(@NonNull final Context context, @NonNull final RequestBean requestBean, final Parser parser) {
+    public static Cancelable request(@NonNull final Context context, @NonNull final RequestBean requestBean) {
         final ResponseBean responseBean = new ResponseBean();
         responseBean.setUrl(requestBean.getUrl());
 
@@ -231,8 +227,8 @@ public class NetManager {
                 }
 
                 // 自定义解析(可参照下面的解析)
-                if (parser != null) {
-                    parser.parse(result);
+                if (requestBean.getParser() != null) {
+                    requestBean.getParser().parse(result);
                     return;
                 }
 

@@ -279,7 +279,7 @@ public class RequestBean {
      * @return
      */
     public Callback.Cancelable request(Context context) {
-        this.cancelable = NetManager.request(context, this, parser);
+        this.cancelable = NetManager.request(context, this);
         return cancelable;
     }
 
