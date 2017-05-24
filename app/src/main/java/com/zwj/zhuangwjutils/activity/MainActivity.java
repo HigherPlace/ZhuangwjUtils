@@ -79,6 +79,7 @@ public class MainActivity extends BaseAutoLayoutCommonActivity {
         viewBeenList.add(new ViewBean(LoadMoreDemoActivity.class));
         viewBeenList.add(new ViewBean(CommonAdapterDemoActivity.class));
         viewBeenList.add(new ViewBean(ImageBuilderDemoActivity.class, "图片加载工具demo"));
+        viewBeenList.add(new ViewBean(FileUtilsDemoActivity.class, "文件读写工具demo"));
     }
 
 }

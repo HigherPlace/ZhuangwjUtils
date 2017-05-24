@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.zwj.zwjutils.LogUtils;
 
@@ -16,8 +15,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 
 
 /**
@@ -319,45 +316,6 @@ public class FileUtils {
         }
         return builder.toString();
     }
-
-    public static boolean copyFile(File sourceFile, File targetFile) {
-        // NIO中读取数据的步骤：1）从FileInputStream中得到Channel对象;2)创建一个buffer对象;3)从Channel中读数据到Buffer中;
-        FileInputStream fin = null;
-        FileOutputStream fout = null;
-        FileChannel fcin = null;
-        FileChannel fcout = null;
-        try {
-            fin = new FileInputStream(sourceFile);
-            fout = new FileOutputStream(targetFile);
-            fcin = fin.getChannel();
-            fcout = fout.getChannel();
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            int r = 0;
-            while ((r = fcin.read(buffer)) != -1) {
-                buffer.clear();
-                buffer.flip();// 反转一下，从写入状态变成读取状态
-                fcout.write(buffer);
-            }
-            return true;
-        } catch (Exception e) {
-            Log.i("FileUtils", "复制文件发生错误", e);
-        } finally {
-            if (fin != null)
-                try {
-                    fin.close();
-                    if (fout != null)
-                        fout.close();
-                    if (fcin != null)
-                        fcin.close();
-                    if (fcout != null)
-                        fcout.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-        }
-        return false;
-    }
-
 
     /**
      * 获取文件的路径,若是不存在则返回null

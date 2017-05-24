@@ -42,7 +42,8 @@
         <activity android:name=".activity.ImageBuilderDemoActivity" />
         <activity android:name=".activity.customviewdemo.CustomViewDemoActivity" />
         <activity android:name=".activity.customviewdemo.CenterPagerDemoActivity" />
-        <activity android:name=".activity.customviewdemo.CenterPagerDemoActivity2"></activity>
+        <activity android:name=".activity.customviewdemo.CenterPagerDemoActivity2" />
+        <activity android:name=".activity.FileUtilsDemoActivity"></activity>
     </application>
 
 </manifest>
