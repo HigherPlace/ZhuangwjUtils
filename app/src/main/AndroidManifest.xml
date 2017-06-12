@@ -44,6 +44,8 @@
         <activity android:name=".activity.customviewdemo.CenterPagerDemoActivity" />
         <activity android:name=".activity.customviewdemo.CenterPagerDemoActivity2" />
         <activity android:name=".activity.FileUtilsDemoActivity"></activity>
+
+        <activity android:name=".activity.customviewdemo.LimitInputTextActivity"></activity>
     </application>
 
 </manifest>

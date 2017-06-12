@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import com.zwj.zhuangwjutils.R;
 import com.zwj.zwjutils.image.ImageBuilder;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 public class ImageBuilderDemoActivity extends AppCompatActivity {
     private ImageView iv;
 
@@ -24,7 +26,11 @@ public class ImageBuilderDemoActivity extends AppCompatActivity {
 //                .setRadius(30)
 //                .build();
 
-        new ImageBuilder(this, iv, null, ImageBuilder.LoadMode.FILE)
+//        new ImageBuilder(this, iv, null, ImageBuilder.LoadMode.FILE)
+//                .build();
+
+        new ImageBuilder(this, iv, errorImgUrl)
+                .addBitmapTransform(new RoundedCornersTransformation(this, 10, 0, RoundedCornersTransformation.CornerType.TOP_LEFT))
                 .build();
     }
 }
