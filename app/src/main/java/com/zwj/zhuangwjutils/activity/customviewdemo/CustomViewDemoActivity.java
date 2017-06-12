@@ -76,5 +76,6 @@ public class CustomViewDemoActivity extends BaseAutoLayoutCommonActivity {
         viewBeenList.add(new ViewBean(CenterPagerDemoActivity.class, "CenterPager"));
         viewBeenList.add(new ViewBean(CenterPagerDemoActivity2.class, "CenterPager2"));
         viewBeenList.add(new ViewBean(LimitInputTextActivity.class, "LimitInputText(过滤的edittext)"));
+        viewBeenList.add(new ViewBean(ClearWriteEditTextDemo.class, "ClearWriteEditTextDemo"));
     }
 }

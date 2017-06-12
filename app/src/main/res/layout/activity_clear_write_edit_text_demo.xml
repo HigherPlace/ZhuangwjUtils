@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_clear_write_edit_text_demo"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,9 +9,10 @@
         android:id="@+id/de_login_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rc_ed_public_service_search_selector"
+        android:background="#bb000000"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        app:clearIcon="@drawable/ic_clear"
         android:hint="手机号"
         android:inputType="phone"
         android:maxLines="1"

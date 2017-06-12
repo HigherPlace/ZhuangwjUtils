@@ -1,6 +1,7 @@
 package com.zwj.customview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,7 +20,7 @@ import com.zwj.mycustomview.R;
  * Created by AMing on 15/11/2.
  * Company RongCloud
  */
-public class ClearWriteEditText extends EditText implements View.OnFocusChangeListener , TextWatcher {
+public class ClearWriteEditText extends EditText implements View.OnFocusChangeListener, TextWatcher {
 
     /**
      * 删除按钮的引用
@@ -32,16 +33,36 @@ public class ClearWriteEditText extends EditText implements View.OnFocusChangeLi
 
     public ClearWriteEditText(Context context, AttributeSet attrs) {
         //这里构造方法也很重要，不加这个很多属性不能再XML里面定义
-        this(context, attrs, android.R.attr.editTextStyle);
+//        this(context, attrs, android.R.attr.editTextStyle);
+        this(context, attrs, 0);
     }
 
     public ClearWriteEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
+                R.styleable.ClearWriteEditTextAtrr, defStyleAttr, 0);
+
+        int n = a.getIndexCount();
+
+        for (int i = 0; i < n; i++) {
+            int attr = a.getIndex(i);
+            if (attr == R.styleable.ClearWriteEditTextAtrr_clearIcon) {
+                int clearIconId = a.getResourceId(attr, 0);
+                if(clearIconId != 0) {
+                    mClearDrawable = getResources().getDrawable(clearIconId);
+                }
+            }
+        }
+        a.recycle();
+
         init();
     }
 
     private void init() {
-        mClearDrawable = getResources().getDrawable(R.drawable.search_clear_pressed_write);
+        if(mClearDrawable == null) {
+            mClearDrawable = getResources().getDrawable(R.drawable.search_clear_pressed_write);
+        }
         mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(), mClearDrawable.getIntrinsicHeight());
         setClearIconVisible(false);
         this.setOnFocusChangeListener(this);
@@ -59,12 +80,13 @@ public class ClearWriteEditText extends EditText implements View.OnFocusChangeLi
 
     /**
      * 设置清除图标的显示与隐藏，调用setCompoundDrawables为EditText绘制上去
+     *
      * @param visible
      */
     protected void setClearIconVisible(boolean visible) {
         Drawable right = visible ? mClearDrawable : null;
         setCompoundDrawables(getCompoundDrawables()[0],
-                             getCompoundDrawables()[1], right, getCompoundDrawables()[3]);
+                getCompoundDrawables()[1], right, getCompoundDrawables()[3]);
     }
 
     /**
@@ -77,8 +99,8 @@ public class ClearWriteEditText extends EditText implements View.OnFocusChangeLi
         if (getCompoundDrawables()[2] != null) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 boolean touchable = event.getX() > (getWidth()
-                                                    - getPaddingRight() - mClearDrawable.getIntrinsicWidth())
-                                    && (event.getX() < ((getWidth() - getPaddingRight())));
+                        - getPaddingRight() - mClearDrawable.getIntrinsicWidth())
+                        && (event.getX() < ((getWidth() - getPaddingRight())));
                 if (touchable) {
                     this.setText("");
                 }
@@ -118,9 +140,9 @@ public class ClearWriteEditText extends EditText implements View.OnFocusChangeLi
     }
 
 
-
     /**
      * 晃动动画
+     *
      * @param counts 半秒钟晃动多少下
      * @return
      */
