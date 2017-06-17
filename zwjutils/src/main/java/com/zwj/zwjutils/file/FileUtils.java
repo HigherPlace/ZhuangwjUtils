@@ -66,7 +66,7 @@ public class FileUtils {
                                 .getExternalFilesDir(null);
                     } else {
                         folder = new File(param.getContext().getApplicationContext()
-                                .getExternalFilesDir(null), param.getPath());
+                                .getExternalFilesDir(null), param.getFolderPath());
                     }
                 } else {
                     LogUtils.e(TAG, "sdcard不可用！");
@@ -90,7 +90,7 @@ public class FileUtils {
             folder.mkdirs();
         }
 
-        if (param.isFile) {
+        if (param.isFile()) {
             File file = null;
             if (folder != null) {
                 file = new File(folder, param.getFileName());
