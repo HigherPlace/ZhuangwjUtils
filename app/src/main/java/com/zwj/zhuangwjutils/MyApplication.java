@@ -17,6 +17,19 @@ public class MyApplication extends Application {
         // 初始化Xutils
         x.Ext.init(this);
         x.Ext.setDebug(true); // 是否输出debug日志
+
+//        Stetho.initializeWithDefaults(this);
+//        Stetho.initialize(Stetho.newInitializerBuilder(this)
+//                .enableDumpapp(new DumperPluginsProvider() {
+//                    @Override
+//                    public Iterable<DumperPlugin> get() {
+//                        return new Stetho.DefaultDumperPluginsBuilder(getApplicationContext())
+//                                .provide(new MyDumperPlugin())
+//                                .finish();
+//                    }
+//                })
+//                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
+//                .build());
     }
 
 

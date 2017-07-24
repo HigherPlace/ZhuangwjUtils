@@ -1,1 +1,1 @@
-include ':app', ':progresswheellibrary', ':zhylibrary', ':customview', ':zwjutils'
+include ':app', ':progresswheellibrary', ':zhylibrary', ':customview', ':zwjutils', ':QRCodeLibrary'

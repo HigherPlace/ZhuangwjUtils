@@ -34,9 +34,14 @@ dependencies {
     })
 
     compile project(':customview')
+    compile project(':QRCodeLibrary')
     compile libConstraintLaout
 //    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
+
+    // 谷歌浏览器调试
+//    compile 'com.facebook.stetho:stetho:1.5.0'
+//    compile 'com.facebook.stetho:stetho-urlconnection:1.5.0'
 }

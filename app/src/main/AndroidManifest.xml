@@ -6,6 +6,16 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+
+    <!-- ******************** 二维码权限 begin ******************** -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <!-- ================= 二维码权限 end ==================== -->
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -45,7 +55,10 @@
         <activity android:name=".activity.customviewdemo.CenterPagerDemoActivity2" />
         <activity android:name=".activity.FileUtilsDemoActivity" />
         <activity android:name=".activity.customviewdemo.LimitInputTextActivity" />
-        <activity android:name=".activity.customviewdemo.CustomToastActivity"></activity>
+        <activity android:name=".activity.customviewdemo.CustomToastActivity" />
+        <activity android:name=".activity.qrcode.QRCodeDemoActivity"></activity>
+
+        <activity android:name=".activity.qrcode.CaptureActivity"></activity>
     </application>
 
 </manifest>

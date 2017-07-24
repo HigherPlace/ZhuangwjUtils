@@ -4,4 +4,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_file_utils_demo">FileUtilsDemoActivity</string>
+
+
+    <string name="top_hint">将条形码/二维码放入框内，即可会自动扫描</string>
+    <string name="cancel">取消</string>
+    <string name="create">生成</string>
+    <string name="bottom_hint">建议与镜头保持10CM距离，尽量避免逆光和阴影</string>
+    <string name="msg_camera_framework_bug">抱歉，Android相机出现问题。您可能需要重启设备。</string>
+    <string name="button_ok">确定</string>
 </resources>
