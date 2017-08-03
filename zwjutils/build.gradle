@@ -32,6 +32,7 @@ dependencies {
 
     compile rootProject.ext.libSupportAppcompat
     compile rootProject.ext.libSupportRecyclerview
+    compile rootProject.ext.libSupportDesign
     compile rootProject.ext.libGlide
 
     compile files('libs/fastjson-1.2.5.jar')
