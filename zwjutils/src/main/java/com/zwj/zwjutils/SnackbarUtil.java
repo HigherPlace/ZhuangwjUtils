@@ -49,4 +49,8 @@ public class SnackbarUtil {
     public static void makeSnackbar(View view, String content, int duration) {
         makeSnackbar(view, content, duration, NON, NON, NON);
     }
+
+    public static void makeSnackbar(View view, String content) {
+        makeSnackbar(view, content, Snackbar.LENGTH_SHORT, NON, NON, NON);
+    }
 }
