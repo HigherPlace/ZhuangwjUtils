@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class CommonUtil {
 
@@ -345,5 +346,17 @@ public class CommonUtil {
             bytes[i] = (byte) (temp & 0xff);
         }
         return bytes;
+    }
+
+    /**
+     * 判断list是否有效
+     * @param list
+     * @return
+     */
+    public static boolean isValidList(List list) {
+        if(list != null && list.size() > 0) {
+            return true;
+        }
+        return false;
     }
 }
