@@ -14,6 +14,9 @@ import android.view.Window;
  * 对话框工具类
  */
 public class DialogUtils {
+
+	public static final int NON = -1;
+
 	public interface OnDialogClickListener{
 		public void onClickConfirmBtnListener();
 		public void onClickCancelBtnListener();
@@ -81,7 +84,7 @@ public class DialogUtils {
 			builder.setMessage(message);
 		}
 		
-		if(iconId != 1) {
+		if(iconId != NON) {
 			builder.setIcon(iconId);
 		}
 		
@@ -101,15 +104,15 @@ public class DialogUtils {
 	public static Builder createAlertDailog(Context context, int titleId, int messageId, int iconId, boolean cancelable){
 		Builder builder = new Builder(context);
 		
-		if(titleId != -1){
+		if(titleId != NON){
 			builder.setTitle(titleId);
 		}
 		
-		if(messageId != -1){
+		if(messageId != NON){
 			builder.setMessage(messageId);
 		}
 		
-		if(iconId != 1) {
+		if(iconId != NON) {
 			builder.setIcon(iconId);
 		}
 		
@@ -125,12 +128,12 @@ public class DialogUtils {
 	 * @return
 	 */
 	public static Dialog createCustomDialog(Context context, int layoutId, boolean cancelable){
-		return createCustomDialog(context, layoutId, cancelable, -1);
+		return createCustomDialog(context, layoutId, cancelable, NON);
 	}
 	
 	public static Dialog createCustomDialog(Context context, int layoutId, boolean cancelable, int style){
 		Dialog dialog = null;
-		if(style == -1) {
+		if(style == NON) {
 			dialog = new Dialog(context);
 		}else {
 			dialog = new Dialog(context, style);
