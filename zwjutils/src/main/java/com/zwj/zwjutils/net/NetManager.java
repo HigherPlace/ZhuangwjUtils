@@ -13,7 +13,7 @@ import com.zwj.zwjutils.net.bean.ResponseBean;
 import com.zwj.zwjutils.net.callback.DownloadCallback;
 import com.zwj.zwjutils.net.callback.RequestCallBack2;
 import com.zwj.zwjutils.net.constant.ResponseStatus;
-import com.zwj.zwjutils.net.constant.Status;
+import com.zwj.zwjutils.net.constant.ResponseConstant;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -235,11 +235,11 @@ public class NetManager {
                 JSONObject jsonObject;
                 try {
                     jsonObject = new JSONObject(result);
-                    int status = jsonObject.optInt(Status.STATUS, 1000);
-                    String message = jsonObject.optString(Status.MESSAGE);
+                    int status = jsonObject.optInt(ResponseConstant.TAG_CODE, 1000);
+                    String message = jsonObject.optString(ResponseConstant.TAG_MESSAGE);
                     switch (status) {
                         case ResponseStatus.SUCCESS:// 成功获取数据
-                            String datas = jsonObject.optString(Status.DATA);
+                            String datas = jsonObject.optString(ResponseConstant.TAG_DATA);
                             if (requestBean.getCallback() != null) {
                                 responseBean.setStatus(ResponseStatus.SUCCESS)
                                         .setMessage(message != null ? message : "获取数据成功")
