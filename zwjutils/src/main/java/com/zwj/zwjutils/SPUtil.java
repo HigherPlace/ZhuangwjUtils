@@ -56,8 +56,12 @@ public class SPUtil {
      * @return 返回key对应的String值，若没有则返回""
      */
     public static String getString(Context context, String key) {
+        return getString(context, key, "");
+    }
+
+    public static String getString(Context context, String key, String defaultValue) {
         SharedPreferences sp = context.getApplicationContext().getSharedPreferences(getSpName(context), Context.MODE_PRIVATE);
-        return sp.getString(key, "");
+        return sp.getString(key, defaultValue);
     }
 
     /**
@@ -68,8 +72,12 @@ public class SPUtil {
      * @return 返回key对应的boolen值，若没有则返回false
      */
     public static Boolean getBoolean(Context context, String key) {
+        return getBoolean(context, key, false);
+    }
+
+    public static Boolean getBoolean(Context context, String key, boolean defaultValue) {
         SharedPreferences sp = context.getApplicationContext().getSharedPreferences(getSpName(context), Context.MODE_PRIVATE);
-        return sp.getBoolean(key, false);
+        return sp.getBoolean(key, defaultValue);
     }
 
     /**
@@ -80,8 +88,12 @@ public class SPUtil {
      * @return 返回key对应的int值，若没有则返回0
      */
     public static int getInt(Context context, String key) {
+        return getInt(context, key, 0);
+    }
+
+    public static int getInt(Context context, String key, int defaultValue) {
         SharedPreferences sp = context.getApplicationContext().getSharedPreferences(getSpName(context), Context.MODE_PRIVATE);
-        return sp.getInt(key, 0);
+        return sp.getInt(key, defaultValue);
     }
 
     /**
