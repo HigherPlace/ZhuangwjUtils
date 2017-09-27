@@ -14,6 +14,7 @@ import com.zwj.zhuangwjutils.R;
 import com.zwj.zhuangwjutils.activity.adapterdemo.CommonAdapterDemoActivity;
 import com.zwj.zhuangwjutils.activity.base.BaseAutoLayoutCommonActivity;
 import com.zwj.zhuangwjutils.activity.customviewdemo.CustomViewDemoActivity;
+import com.zwj.zhuangwjutils.activity.gesturelock.SetPatternDemo2Activity;
 import com.zwj.zhuangwjutils.activity.network.NetMangerDemoActivity;
 import com.zwj.zhuangwjutils.activity.qrcode.QRCodeDemoActivity;
 import com.zwj.zhuangwjutils.bean.ViewBean;
@@ -82,6 +83,7 @@ public class MainActivity extends BaseAutoLayoutCommonActivity {
         viewBeenList.add(new ViewBean(ImageBuilderDemoActivity.class, "图片加载工具demo"));
         viewBeenList.add(new ViewBean(FileUtilsDemoActivity.class, "文件读写工具demo"));
         viewBeenList.add(new ViewBean(QRCodeDemoActivity.class, "二维码demo"));
+        viewBeenList.add(new ViewBean(SetPatternDemo2Activity.class, "手势密码demo"));
     }
 
 }

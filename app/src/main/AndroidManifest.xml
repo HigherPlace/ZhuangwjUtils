@@ -59,6 +59,10 @@
         <activity android:name=".activity.qrcode.QRCodeDemoActivity"></activity>
 
         <activity android:name=".activity.qrcode.CaptureActivity"></activity>
+
+        <activity android:name=".activity.gesturelock.SetPatternDemoActivity"></activity>
+        <activity android:name=".activity.gesturelock.SetPatternDemo2Activity"></activity>
+
     </application>
 
 </manifest>
