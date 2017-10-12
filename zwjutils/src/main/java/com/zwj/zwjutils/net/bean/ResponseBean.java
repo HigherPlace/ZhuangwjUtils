@@ -13,6 +13,9 @@ public class ResponseBean {
     private boolean isShowToast = true;
     private String url;
 
+    // ture - 已经处理完错误的相关业务
+    private boolean handleErrorFinish;
+
     public boolean isShowToast() {
         return isShowToast;
     }
@@ -82,5 +85,13 @@ public class ResponseBean {
     public ResponseBean setUrl(String url) {
         this.url = url;
         return this;
+    }
+
+    public boolean isHandleErrorFinish() {
+        return handleErrorFinish;
+    }
+
+    public void setHandleErrorFinish(boolean handleErrorFinish) {
+        this.handleErrorFinish = handleErrorFinish;
     }
 }
