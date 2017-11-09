@@ -30,8 +30,8 @@ public class MyApplication extends Application {
 //                })
 //                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
 //                .build());
-    }
 
+    }
 
 
     public static MyApplication getGlobalContext() {

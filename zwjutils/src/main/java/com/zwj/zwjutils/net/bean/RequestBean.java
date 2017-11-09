@@ -50,7 +50,7 @@ public class RequestBean {
     private Map<String, String> paramMap;
     private Map<String, List<String>> paramArrayMap;    // 存数组的参数
     private String bodyContent; // 以json形式传递的参数
-    private int timeOut = 10 * 10000;   // 连接超时时间，单位毫秒
+    private int timeOut = 8 * 10000;   // 连接超时时间，单位毫秒
 
     /**
      * 请求头部的参数
@@ -67,6 +67,9 @@ public class RequestBean {
 
     private int count;    // 超时重连次数
     private boolean isNeedReconnection; // 是否需要重连，true需要；
+
+    // true - 忽略错误，不弹窗，也不回调（调用者只关心成功状态的时候）
+    private boolean ignoreError;
 
 
     private Callback.Cancelable cancelable;
@@ -347,5 +350,13 @@ public class RequestBean {
     public RequestBean setParser(Parser parser) {
         this.parser = parser;
         return this;
+    }
+
+    public boolean isIgnoreError() {
+        return ignoreError;
+    }
+
+    public void setIgnoreError(boolean ignoreError) {
+        this.ignoreError = ignoreError;
     }
 }

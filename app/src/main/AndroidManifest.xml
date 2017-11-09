@@ -63,6 +63,9 @@
         <activity android:name=".activity.gesturelock.SetPatternDemoActivity"></activity>
         <activity android:name=".activity.gesturelock.SetPatternDemo2Activity"></activity>
 
+        <activity android:name=".activity.GreenDaoDemoActivity"
+            android:screenOrientation="portrait"></activity>
+
     </application>
 
 </manifest>

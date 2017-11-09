@@ -84,6 +84,7 @@ public class MainActivity extends BaseAutoLayoutCommonActivity {
         viewBeenList.add(new ViewBean(FileUtilsDemoActivity.class, "文件读写工具demo"));
         viewBeenList.add(new ViewBean(QRCodeDemoActivity.class, "二维码demo"));
         viewBeenList.add(new ViewBean(SetPatternDemo2Activity.class, "手势密码demo"));
+        viewBeenList.add(new ViewBean(GreenDaoDemoActivity.class, "greendao demo"));
     }
 
 }

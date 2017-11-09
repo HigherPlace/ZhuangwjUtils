@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入要写的数据id"/>
+
+
+    <Button
+        android:id="@+id/btn_insert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="insert"
+        android:text="插入"/>
+
+    <Button
+        android:id="@+id/btn_get_from_realm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="getFromRealm"
+        android:text="读取"/>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_write_external"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="writeExternal"-->
+        <!--android:text="external模式写入"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_write_sdcard"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="writeSdcard"-->
+        <!--android:text="sdcard模式写入"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_read_internal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="readInternal"-->
+        <!--android:text="internal模式读取"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_read_external"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="readExternal"-->
+        <!--android:text="external模式读取"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_read_sdcard"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="readSdcard"-->
+        <!--android:text="sdcard模式读取"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_copy_from_assets"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="copyFromAssets"-->
+        <!--android:text="copyFromAssets"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_copy"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="copy"-->
+        <!--android:text="copy"/>-->
+
+
+</LinearLayout>

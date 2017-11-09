@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'me.tatarka.retrolambda'
 //apply plugin: 'android-apt'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -38,10 +39,20 @@ dependencies {
     compile libConstraintLaout
 //    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile rootProject.ext.libSupportV4
     testCompile 'junit:junit:4.12'
 
     // 谷歌浏览器调试
 //    compile 'com.facebook.stetho:stetho:1.5.0'
 //    compile 'com.facebook.stetho:stetho-urlconnection:1.5.0'
+
+    compile 'org.greenrobot:greendao:3.2.2'
+    // 数据库加密
+    compile 'net.zetetic:android-database-sqlcipher:3.5.7'
+}
+
+greendao {
+    schemaVersion 3
+    daoPackage 'com.zwj.zhuangwjutils.greendao'
+    targetGenDir 'src/main/java'
 }
