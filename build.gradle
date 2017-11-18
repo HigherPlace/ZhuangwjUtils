@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
+//        classpath 'com.android.tools.build:gradle:2.3.3'
 
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 
@@ -36,6 +37,7 @@ def supportVersion = "26.1.0";
 
 project.ext {
     applicationId = "com.zwj.zhuangwjutils"
+//    buildToolsVersion = "26.0.2"
     compileSdkVersion = 26
     minSdkVersion = 14
     targetSdkVersion = 22
