@@ -1,5 +1,6 @@
 package com.zwj.zhuangwjutils.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,8 +29,6 @@ public class LoadMoreDemoActivity extends BaseAutoLayoutCommonActivity {
     private CommonAdapter<String> adapter;
     private List<String> dataList;
     private int page = 1;
-
-
 
     private Handler mHandler = new Handler() {
         @Override
@@ -95,6 +94,9 @@ public class LoadMoreDemoActivity extends BaseAutoLayoutCommonActivity {
             };
 
             mLoadMoreWrapper = new LoadMoreWrapper(adapter);
+            mLoadMoreWrapper.setLoadMoreViewWithDefalut(R.layout.layout_loading_more);
+            mLoadMoreWrapper.setBgColorId(Color.GREEN);
+
             setLoadStatusOnRefreshUI();
             mLoadMoreWrapper.setOnLoadMoreListener(() -> loadMore());
 

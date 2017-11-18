@@ -24,6 +24,7 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     private boolean isUseDefaultLoading = true;    // 是否是使用默认的加载布局
 
     private LoadStatus loadStatus = LoadStatus.LOAD_NORMAL;
+    private int bgColorId = Color.WHITE;
 
     /**
      * 加载的状态
@@ -92,10 +93,11 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private void setLoadMoreContent(ViewHolder holder) {
         if (isUseDefaultLoading) {
+
             if (loadStatus == LoadStatus.LOAD_ALL) {
                 holder.setVisibility(R.id.progress_wheel, false);
                 holder.setText(R.id.tv, "已经没有数据了！");
-                holder.getConvertView().setBackgroundColor(Color.WHITE);
+                holder.getConvertView().setBackgroundColor(bgColorId);
             } else if (loadStatus == LoadStatus.LOAD_EMPTY) {
                 holder.setVisibility(R.id.progress_wheel, false);
                 holder.setText(R.id.tv, "");
@@ -117,11 +119,11 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
                         }
                     }
                 });
-                holder.getConvertView().setBackgroundColor(Color.WHITE);
+                holder.getConvertView().setBackgroundColor(bgColorId);
             } else {
                 holder.setVisibility(R.id.progress_wheel, true);
                 holder.setText(R.id.tv, "努力加载中...");
-                holder.getConvertView().setBackgroundColor(Color.WHITE);
+                holder.getConvertView().setBackgroundColor(bgColorId);
             }
         }else {
             // TODO 提供回调接口，供使用者自己设置
@@ -267,5 +269,13 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public LoadStatus getLoadStatus() {
         return loadStatus;
+    }
+
+    public int getBgColorId() {
+        return bgColorId;
+    }
+
+    public void setBgColorId(int bgColorId) {
+        this.bgColorId = bgColorId;
     }
 }
