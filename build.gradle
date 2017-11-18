@@ -1,3 +1,64 @@
+//// Top-level build file where you can add configuration options common to all sub-projects/modules.
+//
+//buildscript {
+//    repositories {
+//        jcenter()
+//    }
+//    dependencies {
+//        classpath 'com.android.tools.build:gradle:3.0.0'
+////        classpath 'com.android.tools.build:gradle:2.3.3'
+////                classpath 'me.tatarka:gradle-retrolambda:3.3.0'
+//
+//        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+//
+////        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+//        // NOTE: Do not place your application dependencies here; they belong
+//        // in the individual module build.gradle files
+//
+//        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
+//    }
+//}
+//
+//allprojects {
+//    repositories {
+//        google()
+//        jcenter()
+//        maven { url "https://jitpack.io" }
+//    }
+//}
+//
+//task clean(type: Delete) {
+//    delete rootProject.buildDir
+//}
+//
+//def supportVersion = "26.1.0";
+//
+//project.ext {
+//    applicationId = "com.zwj.zhuangwjutils"
+//    buildToolsVersion = "26.0.2"
+//    compileSdkVersion = 26
+//    minSdkVersion = 14
+//    targetSdkVersion = 22
+//    versionCode = 1
+//    versionName = "v1.0"
+//    abortOnLintError = false
+//    checkLintRelease = false
+//    useJack = false
+//
+//    javaVersion = JavaVersion.VERSION_1_8
+//
+//    // 依赖库
+//    libSupportAppcompat = "com.android.support:appcompat-v7:${supportVersion}"
+//    libSupportV4 = "com.android.support:support-v4:${supportVersion}"
+//    libSupportDesign = "com.android.support:design:${supportVersion}"
+//    libSupportRecyclerview = "com.android.support:recyclerview-v7:${supportVersion}"
+//    libSupportCardview = "com.android.support:cardview-v7:${supportVersion}"
+//    libConstraintLaout = "com.android.support.constraint:constraint-layout:1.0.2"
+//
+//    libJunit = "junit:junit:4.12"
+//    libGlide = "com.github.bumptech.glide:glide:3.7.0"
+//}
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
@@ -5,23 +66,20 @@ buildscript {
         jcenter()
     }
     dependencies {
-//        classpath 'com.android.tools.build:gradle:3.0.0'
         classpath 'com.android.tools.build:gradle:2.3.3'
-                classpath 'me.tatarka:gradle-retrolambda:3.3.0'
 
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 
-//        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'me.tatarka:gradle-retrolambda:3.3.0'
+
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
     }
 }
 
 allprojects {
     repositories {
-//        google()
         jcenter()
         maven { url "https://jitpack.io" }
     }
@@ -31,12 +89,12 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-def supportVersion = "26.1.0";
+def supportVersion = "25.3.1";
 
 project.ext {
     applicationId = "com.zwj.zhuangwjutils"
-    buildToolsVersion = "26.0.2"
-    compileSdkVersion = 26
+    buildToolsVersion = "26.0.0"
+    compileSdkVersion = 25
     minSdkVersion = 14
     targetSdkVersion = 22
     versionCode = 1
@@ -58,3 +116,4 @@ project.ext {
     libJunit = "junit:junit:4.12"
     libGlide = "com.github.bumptech.glide:glide:3.7.0"
 }
+
