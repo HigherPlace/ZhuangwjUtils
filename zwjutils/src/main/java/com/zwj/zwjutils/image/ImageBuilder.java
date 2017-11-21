@@ -87,12 +87,19 @@ public class ImageBuilder {
     private RequestListener<String, GlideDrawable> requestListener = new RequestListener<String, GlideDrawable>() {
         @Override
         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-            LogUtils.e("ImageBuilder onException", e.toString() + "  model:" + model + " isFirstResource: " + isFirstResource);
+
+            if(e != null) {
+                LogUtils.e("ImageBuilder onException", e.toString() + "  model:" + model + " isFirstResource: " + isFirstResource);
+            }else {
+                LogUtils.e("ImageBuilder onException",  "excepiton is null:  model:" + model + " isFirstResource: " + isFirstResource);
+            }
+
             return false;
         }
 
         @Override
         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+
             LogUtils.e("ImageBuilder onResourceReady", "isFromMemoryCache:" + isFromMemoryCache + "  model:" + model + " isFirstResource: " + isFirstResource);
             return false;
         }
@@ -101,7 +108,11 @@ public class ImageBuilder {
     private RequestListener<Integer, GlideDrawable> requestListener2 = new RequestListener<Integer, GlideDrawable>() {
         @Override
         public boolean onException(Exception e, Integer model, Target<GlideDrawable> target, boolean isFirstResource) {
-            LogUtils.e("ImageBuilder onException", e.toString() + "  model:" + model + " isFirstResource: " + isFirstResource);
+            if(e != null) {
+                LogUtils.e("ImageBuilder onException", e.toString() + "  model:" + model + " isFirstResource: " + isFirstResource);
+            }else {
+                LogUtils.e("ImageBuilder onException",  "excepiton is null:  model:" + model + " isFirstResource: " + isFirstResource);
+            }
             return false;
         }
 
