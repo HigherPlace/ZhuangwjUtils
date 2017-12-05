@@ -216,6 +216,12 @@ public class NetManager {
             public void onSuccess(String result) {
                 LogUtils.e(TAG, result);
 
+                // 自定义解析(可参照下面的解析)
+                if (requestBean.getParser() != null) {
+                    requestBean.getParser().parse(result, requestBean);
+                    return;
+                }
+
                 if (!requestBean.isNeedParse()) {
                     if (requestBean.getCallback() != null) {
                         responseBean.setStatus(ResponseStatus.SUCCESS)
@@ -226,72 +232,58 @@ public class NetManager {
                     return;
                 }
 
-                // 自定义解析(可参照下面的解析)
-                if (requestBean.getParser() != null) {
-                    requestBean.getParser().parse(result, requestBean);
-                    return;
-                }
-
                 JSONObject jsonObject;
                 try {
                     jsonObject = new JSONObject(result);
                     int status = jsonObject.optInt(ResponseConstant.TAG_CODE, 1000);
                     String message = jsonObject.optString(ResponseConstant.TAG_MESSAGE);
-                    switch (status) {
-                        case ResponseStatus.SUCCESS:// 成功获取数据
-                            String datas = jsonObject.optString(ResponseConstant.TAG_DATA);
-                            if (requestBean.getCallback() != null) {
-                                responseBean.setStatus(ResponseStatus.SUCCESS)
-                                        .setMessage(message != null ? message : "获取数据成功")
-                                        .setResult(datas);
-                                requestBean.getCallback().onSuccess(responseBean);
-                            }
-                            break;
-                        case ResponseStatus.SUCCESS_ONLY_DATA:// 成功获取数据，没有返回状态字直接返回数据的情况
-                            if (requestBean.getCallback() != null) {
-                                responseBean.setStatus(ResponseStatus.SUCCESS_ONLY_DATA)
-                                        .setMessage(message != null ? message : "获取数据成功")
+
+                    if(status == ResponseConstant.SUCCESS) {
+                        String datas = jsonObject.optString(ResponseConstant.TAG_DATA);
+                        if (requestBean.getCallback() != null) {
+                            responseBean.setStatus(ResponseStatus.SUCCESS)
+                                    .setMessage(message != null ? message : "获取数据成功")
+                                    .setResult(datas);
+                            requestBean.getCallback().onSuccess(responseBean);
+                        }
+                    }else if(status == ResponseConstant.SUCCESS_ONLY_DATA) {
+                        if (requestBean.getCallback() != null) {
+                            responseBean.setStatus(ResponseStatus.SUCCESS_ONLY_DATA)
+                                    .setMessage(message != null ? message : "获取数据成功")
+                                    .setResult(result);
+                            requestBean.getCallback().onSuccess(responseBean);
+                        }
+                    }else if(status == ResponseConstant.UNLOGIN) {
+                        if (requestBean.getCallback() != null) {
+
+                            if (RequestBean.callbackUnlogin && requestBean.getCallback() instanceof RequestCallBack2) {
+                                ((RequestCallBack2) requestBean.getCallback()).onUnlogin(message != null ? message : "未登录");
+                            } else {
+                                responseBean.setStatus(ResponseStatus.UNLOGIN)
+                                        .setMessage(message != null ? message : "未登录")
+                                        .setThrowable(new Throwable("UNLOGIN"))
                                         .setResult(result);
-                                requestBean.getCallback().onSuccess(responseBean);
-                            }
-                            break;
-                        case ResponseStatus.UNLOGIN:// 当前未登录
-                            // TODO
-                            if (requestBean.getCallback() != null) {
-
-                                if (RequestBean.callbackUnlogin && requestBean.getCallback() instanceof RequestCallBack2) {
-                                    ((RequestCallBack2) requestBean.getCallback()).onUnlogin(message != null ? message : "未登录");
-                                } else {
-                                    responseBean.setStatus(ResponseStatus.UNLOGIN)
-                                            .setMessage(message != null ? message : "未登录")
-                                            .setThrowable(new Throwable("UNLOGIN"))
-                                            .setResult(result);
-                                    requestBean.getCallback().onError(responseBean);
-                                }
-                            }
-
-                            break;
-                        case ResponseStatus.FAIL:// 获取数据异常(+已拉去玩全部数据的情况)
-                            if (requestBean.getCallback() != null) {
-                                responseBean.setStatus(ResponseStatus.FAIL)
-                                        .setMessage(message != null ? message : "获取数据失败")
-                                        .setThrowable(new Throwable("fail"))
-                                        .setResult(result);
-
                                 requestBean.getCallback().onError(responseBean);
                             }
-                            break;
+                        }
+                    }else if(status == ResponseConstant.FAIL) {
+                        if (requestBean.getCallback() != null) {
+                            responseBean.setStatus(ResponseStatus.FAIL)
+                                    .setMessage(message != null ? message : "获取数据失败")
+                                    .setThrowable(new Throwable("fail"))
+                                    .setResult(result);
 
-                        default:
-                            if (requestBean.getCallback() != null) {
-                                responseBean.setStatus(status)
-                                        .setMessage(message != null ? message : "访问出错")
-                                        .setThrowable(new Throwable("访问出错"))
-                                        .setResult(result);
+                            requestBean.getCallback().onError(responseBean);
+                        }
+                    }else {
+                        if (requestBean.getCallback() != null) {
+                            responseBean.setStatus(status)
+                                    .setMessage(message != null ? message : "访问出错")
+                                    .setThrowable(new Throwable("访问出错"))
+                                    .setResult(result);
 
-                                requestBean.getCallback().onError(responseBean);
-                            }
-                            break;
+                            requestBean.getCallback().onError(responseBean);
+                        }
                     }
 
                 } catch (JSONException e) {
