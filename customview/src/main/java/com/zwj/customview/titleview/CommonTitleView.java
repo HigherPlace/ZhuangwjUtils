@@ -361,6 +361,12 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
         tvRight.setTextColor(color);
     }
 
+    public void setRightTextColor(int color) {
+        if(tvRight != null) {
+            tvRight.setTextColor(color);
+        }
+    }
+
     /**
      * 将默认的dp改为px
      */
