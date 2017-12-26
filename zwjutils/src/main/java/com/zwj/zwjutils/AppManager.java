@@ -67,21 +67,24 @@ public class AppManager {
      * 结束当前界面下的所有界面
      */
     public void finishPreAllActivity() {
-        Activity firstActivity = null;
-        for (int i = 0, size = activityStack.size(); i < size; i++) {
-            Activity activity = activityStack.get(i);
-            if (null != activity) {
-                if(i == size - 1) {
-                    firstActivity = activity;
-                }else {
-                    activity.finish();
+        int size = activityStack.size();
+        if(size > 1) {
+            Activity firstActivity = null;
+            for (int i = 0; i < size; i++) {
+                Activity activity = activityStack.get(i);
+                if (null != activity) {
+                    if(i == size - 1) {
+                        firstActivity = activity;
+                    }else {
+                        activity.finish();
+                    }
                 }
             }
-        }
 
-        activityStack.clear();
-        if(firstActivity != null) {
-            activityStack.add(firstActivity);
+            activityStack.clear();
+            if(firstActivity != null) {
+                activityStack.add(firstActivity);
+            }
         }
     }
 
