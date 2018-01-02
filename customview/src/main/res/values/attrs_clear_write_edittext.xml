@@ -2,7 +2,8 @@
 <resources>
 
     <declare-styleable name="ClearWriteEditTextAtrr">
-        <attr name="clearIcon" format="reference" />
+        <!--<attr name="clearIcon" format="reference" />-->
+        <attr name="clearIcon" />
     </declare-styleable>
 
 </resources>

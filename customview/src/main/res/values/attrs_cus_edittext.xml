@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="clearIcon" format="reference" />
+
+    <declare-styleable name="CusEditTextAtrr">
+
+        <attr name="clearIcon" />
+        <attr name="clearIconSize" format="dimension" />
+
+        <attr name="showIcon" format="reference" />
+        <attr name="showIconSize" format="dimension" />
+
+        <!--<attr name="cusEditTextHeight" format="dimension" />-->
+
+        <!-- 是否显示清空图标 -->
+        <attr name="useClear" format="boolean" />
+
+        <!-- 是否显示明密文切换图标 -->
+        <attr name="useChangeShowModel" format="boolean" />
+    </declare-styleable>
+
+</resources>

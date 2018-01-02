@@ -145,7 +145,6 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
             ivRight.setLayoutParams(ivRightLp);
         }
 
-
         a.recycle();
     }
 
@@ -177,7 +176,6 @@ public class CommonTitleView extends RelativeLayout implements OnClickListener {
             flRightLp.height = height;
             flRight.setLayoutParams(flRightLp);
         }
-
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }

@@ -66,6 +66,13 @@
         <activity android:name=".activity.GreenDaoDemoActivity"
             android:screenOrientation="portrait"></activity>
 
+        <activity android:name=".activity.appmanager.TestAActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.appmanager.TestBActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.appmanager.TestCActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

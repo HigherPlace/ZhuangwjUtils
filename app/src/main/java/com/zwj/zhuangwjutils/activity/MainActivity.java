@@ -12,6 +12,7 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zwj.zhuangwjutils.R;
 import com.zwj.zhuangwjutils.activity.adapterdemo.CommonAdapterDemoActivity;
+import com.zwj.zhuangwjutils.activity.appmanager.TestAActivity;
 import com.zwj.zhuangwjutils.activity.base.BaseAutoLayoutCommonActivity;
 import com.zwj.zhuangwjutils.activity.customviewdemo.CustomViewDemoActivity;
 import com.zwj.zhuangwjutils.activity.gesturelock.SetPatternDemo2Activity;
@@ -85,6 +86,7 @@ public class MainActivity extends BaseAutoLayoutCommonActivity {
         viewBeenList.add(new ViewBean(QRCodeDemoActivity.class, "二维码demo"));
         viewBeenList.add(new ViewBean(SetPatternDemo2Activity.class, "手势密码demo"));
         viewBeenList.add(new ViewBean(GreenDaoDemoActivity.class, "greendao demo"));
+        viewBeenList.add(new ViewBean(TestAActivity.class, "AppManager demo"));
     }
 
 }
