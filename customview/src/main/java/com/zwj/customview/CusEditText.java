@@ -98,10 +98,10 @@ public class CusEditText extends RelativeLayout implements TextWatcher {
 //    }
 
     private void initView() {
-        et = findViewById(R.id.et);
-        ivClear = findViewById(R.id.iv_clear);
-        ivShow = findViewById(R.id.iv_show);
-        llBtn = findViewById(R.id.ll_btn);
+        et = (EditText) findViewById(R.id.et);
+        ivClear = (ImageView) findViewById(R.id.iv_clear);
+        ivShow = (ImageView) findViewById(R.id.iv_show);
+        llBtn = (LinearLayout) findViewById(R.id.ll_btn);
     }
 
     private void setListener() {
