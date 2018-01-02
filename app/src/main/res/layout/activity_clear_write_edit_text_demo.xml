@@ -31,6 +31,7 @@
         android:id="@+id/cusEditText"
         android:layout_width="match_parent"
         android:layout_height="120px"
+        app:useClear="false"
         android:background="#bbd000ff" />
 
 </LinearLayout>

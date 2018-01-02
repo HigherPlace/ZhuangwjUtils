@@ -71,6 +71,7 @@ public class CusEditText extends RelativeLayout implements TextWatcher {
                 }
             } else if (attr == R.styleable.CusEditTextAtrr_useClear) {
                 useClear = a.getBoolean(attr, true);
+                CommonUtil.showView(ivClear, useClear);
             } else if (attr == R.styleable.CusEditTextAtrr_showIcon) {
                 int showIconId = a.getResourceId(attr, 0);
                 if (showIconId != 0) {
@@ -78,6 +79,7 @@ public class CusEditText extends RelativeLayout implements TextWatcher {
                 }
             } else if (attr == R.styleable.CusEditTextAtrr_useChangeShowModel) {
                 useChangeShowModel = a.getBoolean(attr, true);
+                CommonUtil.showView(ivClear, useChangeShowModel);
             }
 //            else if(attr == R.styleable.CusEditTextAtrr_cusEditTextHeight) {
 //                int etHeight = getSize(a, attr, DEFAULT_CUS_EDITTEXT_HEIGHT, DEFAULT_CUS_EDITTEXT_HEIGHT_AUTO);
@@ -107,12 +109,15 @@ public class CusEditText extends RelativeLayout implements TextWatcher {
         et.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    EditText editText = (EditText) v;
-                    CommonUtil.showView(ivClear, editText.getText().length() > 0);
-                } else {
-                    CommonUtil.showView(ivClear, false);
+                if(useClear) {
+                    if (hasFocus) {
+                        EditText editText = (EditText) v;
+                        CommonUtil.showView(ivClear, editText.getText().length() > 0);
+                    } else {
+                        CommonUtil.showView(ivClear, false);
+                    }
                 }
+
             }
         });
 
@@ -171,7 +176,9 @@ public class CusEditText extends RelativeLayout implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        CommonUtil.showView(ivClear, s.length() > 0);
+        if(useClear) {
+            CommonUtil.showView(ivClear, s.length() > 0);
+        }
     }
 
     @Override
