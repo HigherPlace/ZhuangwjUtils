@@ -73,7 +73,8 @@ public class ProgressUtil {
 
     private static void showLoading(Context context, ProgressBean progressBean) {
         try{
-            dialog = new Dialog(context, R.style.LoadingStyle);
+            dialog = new Dialog(context, progressBean.isBackgroudTransparent() ?
+                    R.style.LoadingStyle2 : R.style.LoadingStyle);
             ProgressView view = new ProgressView(context, progressBean.getLoadingTip(), progressBean.getColor());
 //        view.setTipContent(progressBean.getLoadingTip()).setColor(progressBean.getColor());
             dialog.setContentView(view);

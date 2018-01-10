@@ -15,7 +15,6 @@ import com.zwj.mycustomview.R;
  * Created by bryan on 2016/6/13.
  */
 public class ProgressView extends RelativeLayout {
-
     //提示文字
     TextView tvTip;
     //加载动画

@@ -14,6 +14,8 @@ public class ProgressBean {
     private DialogInterface.OnCancelListener cancelListener;    // 点击回退键取消时调用该监听类
     private DialogInterface.OnDismissListener dismissListener;  // 加载进度条消失时调用该监听类
     private int color;
+    // true - 背景透明
+    private boolean backgroudTransparent;
 
     public String getLoadingTip() {
         return loadingTip;
@@ -62,5 +64,14 @@ public class ProgressBean {
 
     public void startProgress(Context context) {
         ProgressUtil.startProgress(context, this);
+    }
+
+    public boolean isBackgroudTransparent() {
+        return backgroudTransparent;
+    }
+
+    public ProgressBean setBackgroudTransparent(boolean backgroudTransparent) {
+        this.backgroudTransparent = backgroudTransparent;
+        return this;
     }
 }
