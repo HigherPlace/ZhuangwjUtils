@@ -32,7 +32,8 @@ public class ProgressViewDemoActivity extends AppCompatActivity {
 //        ProgressUtil.startProgress(this, "正在加载...");
 
         new ProgressBean().setLoadingTip("正在加载...").setColor(Color.BLUE)
-                .setCancelable(false)
+                .setCancelable(true)
+                .setBackgroudTransparent(true)
                 .setCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {

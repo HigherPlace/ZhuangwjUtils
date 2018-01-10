@@ -528,7 +528,7 @@
         <!-- 边框 -->
         <item name="android:windowIsFloating">false</item>
         <!-- 是否浮现在activity之上 -->
-        <!-- <item name="android:windowIsTranslucent">true</item> -->
+         <!--<item name="android:windowIsTranslucent">true</item>-->
         <!-- 半透明 -->
         <item name="android:windowNoTitle">true</item>
         <!-- 无标题 -->
@@ -541,6 +541,10 @@
 
     <style name="LoadingStyle" parent="BaseDialogStyle">
         <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="LoadingStyle2" parent="BaseDialogStyle">
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 
 
