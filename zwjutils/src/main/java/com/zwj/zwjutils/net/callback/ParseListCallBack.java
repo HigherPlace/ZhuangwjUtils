@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.zwj.zwjutils.JsonUtil;
 import com.zwj.zwjutils.net.bean.ResponseBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,8 @@ public abstract class ParseListCallBack<T> extends SimpleCallBack{
         if (!TextUtils.isEmpty(result)) {
             List<T> list = JsonUtil.getObjects(result, clazz);
             onSuccess(responseBean, list);
+        }else {
+            onSuccess(responseBean, new ArrayList<T>());
         }
     }
 
