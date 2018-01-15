@@ -11,6 +11,7 @@ import android.view.View;
 import com.zwj.customview.progress.ProgressBean;
 import com.zwj.customview.progress.ProgressUtil;
 import com.zwj.zhuangwjutils.R;
+import com.zwj.zwjutils.LogUtils;
 import com.zwj.zwjutils.ToastUtil;
 
 public class ProgressViewDemoActivity extends AppCompatActivity {
@@ -34,10 +35,19 @@ public class ProgressViewDemoActivity extends AppCompatActivity {
         new ProgressBean().setLoadingTip("正在加载...").setColor(Color.BLUE)
                 .setCancelable(true)
                 .setBackgroudTransparent(true)
-                .setCancelListener(new DialogInterface.OnCancelListener() {
+                .setCancelListener(new ProgressUtil.OnCancelListener(){
+
                     @Override
-                    public void onCancel(DialogInterface dialog) {
+                    public void onCancel() {
+                        LogUtils.i("ProgressViewDemoActivity", "onCancel");
                         ToastUtil.toast(ProgressViewDemoActivity.this, "onCancel");
+                    }
+                }).setDismissListener(new DialogInterface.OnDismissListener() {
+
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        LogUtils.i("ProgressViewDemoActivity", "onDismiss");
+                        ToastUtil.toast(ProgressViewDemoActivity.this, "onDismiss");
                     }
                 }).startProgress(this);
         // 3秒后关闭loading

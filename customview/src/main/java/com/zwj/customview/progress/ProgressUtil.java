@@ -3,7 +3,6 @@ package com.zwj.customview.progress;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.view.View;
 
 import com.zwj.mycustomview.R;
@@ -71,7 +70,7 @@ public class ProgressUtil {
         showLoading(context, progressBean);
     }
 
-    private static void showLoading(Context context, ProgressBean progressBean) {
+    private static void showLoading(Context context, final ProgressBean progressBean) {
         try{
             dialog = new Dialog(context, progressBean.isBackgroudTransparent() ?
                     R.style.LoadingStyle2 : R.style.LoadingStyle);
@@ -79,17 +78,20 @@ public class ProgressUtil {
 //        view.setTipContent(progressBean.getLoadingTip()).setColor(progressBean.getColor());
             dialog.setContentView(view);
             dialog.setCancelable(progressBean.isCancelable());
-            dialog.setOnCancelListener(new OnCancelListener() {
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     isLoading = false;
+                    if(progressBean.getCancelListener() != null) {
+                        progressBean.getCancelListener().onCancel();
+                    }
                 }
             });
 
-            if (progressBean.getCancelListener() != null) {
-                dialog.setOnCancelListener(progressBean.getCancelListener());
-            }
+//            if (progressBean.getCancelListener() != null) {
+//                dialog.setOnCancelListener(progressBean.getCancelListener());
+//            }
 
             if (progressBean.getDismissListener() != null) {
                 dialog.setOnDismissListener(progressBean.getDismissListener());
@@ -117,4 +119,9 @@ public class ProgressUtil {
             e.printStackTrace();
         }
     }
+
+    public interface OnCancelListener {
+        void onCancel();
+    }
+
 }
