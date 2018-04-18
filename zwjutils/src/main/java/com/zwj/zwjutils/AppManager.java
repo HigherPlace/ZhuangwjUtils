@@ -59,7 +59,15 @@ public class AppManager {
         if (activity != null) {
             activityStack.remove(activity);
             activity.finish();
-            activity = null;
+        }
+    }
+
+    /**
+     * 结束指定的Activity
+     */
+    public void removeActivity(Activity activity) {
+        if (activity != null) {
+            activityStack.remove(activity);
         }
     }
 
