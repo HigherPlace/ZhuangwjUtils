@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ZwjUtils</string>
+
+    <string name="network_disable">当前网络不可用，请检查网络后再试</string>
+    <string name="cancel_request">取消网络请求</string>
+    <string name="network_error">网络错误</string>
+    <string name="error">出错啦~</string>
+    <string name="request_time_out">网络超时</string>
+    <string name="get_data_success">获取数据成功</string>
+    <string name="unlogin">未登录</string>
+    <string name="get_data_fail">获取数据失败</string>
+    <string name="request_error">访问出错</string>
+    <string name="parse_error">解析出错</string>
+    <string name="can_not_find_download_path">找不到下载路径,请确认是否已安装sdcard</string>
+</resources>

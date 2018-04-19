@@ -7,13 +7,14 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.zwj.zwjutils.LogUtils;
+import com.zwj.zwjutils.R;
 import com.zwj.zwjutils.ToastUtil;
 import com.zwj.zwjutils.net.bean.RequestBean;
 import com.zwj.zwjutils.net.bean.ResponseBean;
 import com.zwj.zwjutils.net.callback.DownloadCallback;
 import com.zwj.zwjutils.net.callback.RequestCallBack2;
-import com.zwj.zwjutils.net.constant.ResponseStatus;
 import com.zwj.zwjutils.net.constant.ResponseConstant;
+import com.zwj.zwjutils.net.constant.ResponseStatus;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,7 +99,7 @@ public class NetManager {
         if (!isNetWorkReachable(context)) {
             if (requestBean.getCallback() != null) {
                 responseBean.setStatus(ResponseStatus.DISABLE_NETWORK)
-                        .setMessage("当前网络不可用，请检查网络后再试")
+                        .setMessage(context.getString(R.string.network_disable))
                         .setThrowable(new Throwable("network disable"));
                 requestBean.getCallback().onError(responseBean);
                 requestBean.getCallback().onFinished(responseBean);
@@ -131,7 +132,7 @@ public class NetManager {
             public void onCancelled(CancelledException cancelledException) {
                 if (requestBean.getCallback() != null) {
                     responseBean.setStatus(ResponseStatus.CANCELLED_EXCEPTION)
-                            .setMessage("取消网络请求")
+                            .setMessage(context.getString(R.string.cancel_request))
                             .setCancelledException(cancelledException);
                     requestBean.getCallback().onCancelled(responseBean);
                 }
@@ -150,7 +151,7 @@ public class NetManager {
 //                    sbResult.append("网络错误: code-->").append(responseCode)
 //                            .append("; message --> ").append(responseMsg);
                     responseBean.setStatus(ResponseStatus.ERROR)
-                            .setMessage("网络错误")
+                            .setMessage(context.getString(R.string.network_error))
                             .setThrowable(ex)
                             .setShowToast(true);
 
@@ -161,7 +162,7 @@ public class NetManager {
 //                                    + "--------->" + ex.toString()); // 把错误上传到友盟
                 } else { // 其他错误
                     responseBean.setStatus(ResponseStatus.ERROR_OTHER)
-                            .setMessage("出错啦~")
+                            .setMessage(context.getString(R.string.error))
                             .setThrowable(ex)
                             .setShowToast(true);
 
@@ -189,7 +190,7 @@ public class NetManager {
 //                }
                 if (ex instanceof SocketTimeoutException || ex instanceof UnknownHostException) {
                     responseBean.setStatus(ResponseStatus.ERROR_OTHER)
-                            .setMessage("网络超时")
+                            .setMessage(context.getString(R.string.request_time_out))
                             .setThrowable(ex);
                 }
 
@@ -225,7 +226,7 @@ public class NetManager {
                 if (!requestBean.isNeedParse()) {
                     if (requestBean.getCallback() != null) {
                         responseBean.setStatus(ResponseStatus.SUCCESS)
-                                .setMessage("获取数据成功")
+                                .setMessage(context.getString(R.string.get_data_success))
                                 .setResult(result);
                         requestBean.getCallback().onSuccess(responseBean);
                     }
@@ -242,14 +243,14 @@ public class NetManager {
                         String datas = jsonObject.optString(ResponseConstant.TAG_DATA);
                         if (requestBean.getCallback() != null) {
                             responseBean.setStatus(ResponseStatus.SUCCESS)
-                                    .setMessage(message != null ? message : "获取数据成功")
+                                    .setMessage(message != null ? message : context.getString(R.string.get_data_success))
                                     .setResult(datas);
                             requestBean.getCallback().onSuccess(responseBean);
                         }
                     }else if(status == ResponseConstant.SUCCESS_ONLY_DATA) {
                         if (requestBean.getCallback() != null) {
                             responseBean.setStatus(ResponseStatus.SUCCESS_ONLY_DATA)
-                                    .setMessage(message != null ? message : "获取数据成功")
+                                    .setMessage(message != null ? message : context.getString(R.string.get_data_success))
                                     .setResult(result);
                             requestBean.getCallback().onSuccess(responseBean);
                         }
@@ -260,7 +261,7 @@ public class NetManager {
                                 ((RequestCallBack2) requestBean.getCallback()).onUnlogin(message != null ? message : "未登录");
                             } else {
                                 responseBean.setStatus(ResponseStatus.UNLOGIN)
-                                        .setMessage(message != null ? message : "未登录")
+                                        .setMessage(message != null ? message : context.getString(R.string.unlogin))
                                         .setThrowable(new Throwable("UNLOGIN"))
                                         .setResult(result);
                                 requestBean.getCallback().onError(responseBean);
@@ -269,7 +270,7 @@ public class NetManager {
                     }else if(status == ResponseConstant.FAIL) {
                         if (requestBean.getCallback() != null) {
                             responseBean.setStatus(ResponseStatus.FAIL)
-                                    .setMessage(message != null ? message : "获取数据失败")
+                                    .setMessage(message != null ? message : context.getString(R.string.get_data_fail))
                                     .setThrowable(new Throwable("fail"))
                                     .setResult(result);
 
@@ -278,8 +279,8 @@ public class NetManager {
                     }else {
                         if (requestBean.getCallback() != null) {
                             responseBean.setStatus(status)
-                                    .setMessage(message != null ? message : "访问出错")
-                                    .setThrowable(new Throwable("访问出错"))
+                                    .setMessage(message != null ? message : context.getString(R.string.request_error))
+                                    .setThrowable(new Throwable(context.getString(R.string.request_error)))
                                     .setResult(result);
 
                             requestBean.getCallback().onError(responseBean);
@@ -292,7 +293,7 @@ public class NetManager {
 
                     if (requestBean.getCancelable() != null) {
                         responseBean.setStatus(ResponseStatus.ERROR_OTHER)
-                                .setMessage("解析出错")
+                                .setMessage(context.getString(R.string.parse_error))
                                 .setThrowable(e);
 
                         requestBean.getCallback().onError(responseBean);
@@ -589,7 +590,7 @@ public class NetManager {
             params.setCancelFast(true);
             x.http().get(params, downloadCallback);
         } else {
-            ToastUtil.toast(context, "找不到下载路径,请确认是否已安装sdcard");
+            ToastUtil.toast(context, R.string.can_not_find_download_path);
         }
     }
 

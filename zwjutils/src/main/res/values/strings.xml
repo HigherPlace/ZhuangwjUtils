@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ZwjUtils</string>
+
+    <string name="network_disable">The current network is unavailable, please check the network and try again.</string>
+    <string name="cancel_request">Cancel web request</string>
+    <string name="network_error">Network Error</string>
+    <string name="error">Error</string>
+    <string name="request_time_out">network timeout</string>
+    <string name="get_data_success">Successful data acquisition</string>
+    <string name="unlogin">Not logged in</string>
+    <string name="get_data_fail">Failed to get data</string>
+    <string name="request_error">Access error</string>
+    <string name="parse_error">Parsing error</string>
+    <string name="can_not_find_download_path">Cannot find the download path, please confirm whether sdcard is installed</string>
 </resources>
