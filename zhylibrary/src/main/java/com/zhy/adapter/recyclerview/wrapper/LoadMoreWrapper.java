@@ -96,7 +96,7 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             if (loadStatus == LoadStatus.LOAD_ALL) {
                 holder.setVisibility(R.id.progress_wheel, false);
-                holder.setText(R.id.tv, "已经没有数据了！");
+                holder.setText(R.id.tv, R.string.there_is_no_data);
                 holder.getConvertView().setBackgroundColor(bgColorId);
             } else if (loadStatus == LoadStatus.LOAD_EMPTY) {
                 holder.setVisibility(R.id.progress_wheel, false);
@@ -105,7 +105,7 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
                 holder.getConvertView().setBackgroundColor(Color.TRANSPARENT);
             } else if (loadStatus == LoadStatus.LOAD_ERROR) {
                 holder.setVisibility(R.id.progress_wheel, false);
-                holder.setText(R.id.tv, "加载失败，点击重新加载");
+                holder.setText(R.id.tv, R.string.failed_to_load);
                 View itemView = holder.getConvertView();
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -122,7 +122,7 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
                 holder.getConvertView().setBackgroundColor(bgColorId);
             } else {
                 holder.setVisibility(R.id.progress_wheel, true);
-                holder.setText(R.id.tv, "努力加载中...");
+                holder.setText(R.id.tv, R.string.loading);
                 holder.getConvertView().setBackgroundColor(bgColorId);
             }
         }else {
