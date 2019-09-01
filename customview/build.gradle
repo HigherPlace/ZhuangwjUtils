@@ -31,8 +31,8 @@ dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 
 
-    api rootProject.ext.libSupportAppcompat
+    implementation rootProject.ext.libSupportAppcompat
     // 各种加载动画
-    api 'com.github.ybq:Android-SpinKit:1.4.0'
-    api project(':zhylibrary')
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+    implementation project(':zhylibrary')
 }

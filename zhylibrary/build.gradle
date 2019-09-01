@@ -26,13 +26,13 @@ android {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 
-    api rootProject.ext.libSupportAppcompat
-    api rootProject.ext.libSupportRecyclerview
-    api rootProject.ext.libSupportDesign
-    api rootProject.ext.libSupportCardview
-    api rootProject.ext.libSupportV4
+    implementation rootProject.ext.libSupportAppcompat
+    implementation rootProject.ext.libSupportRecyclerview
+    implementation rootProject.ext.libSupportDesign
+    implementation rootProject.ext.libSupportCardview
+    implementation rootProject.ext.libSupportV4
 
-    api project(':zwjutils')    // 工具包
-    api project(':progresswheellibrary')
+    implementation project(':zwjutils')    // 工具包
+    implementation project(':progresswheellibrary')
 
 }

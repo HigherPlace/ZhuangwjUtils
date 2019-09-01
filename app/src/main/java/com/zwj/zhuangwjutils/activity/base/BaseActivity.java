@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.zhy.autolayout.AutoLinearLayout;
 import com.zwj.zhuangwjutils.MyApplication;
 import com.zwj.zwjutils.AppManager;
 import com.zwj.zwjutils.LogUtils;
@@ -30,6 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         LogUtils.d(TAG, TAG + " ---> onCreate");
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
