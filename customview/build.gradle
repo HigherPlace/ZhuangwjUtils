@@ -34,5 +34,5 @@ dependencies {
     implementation rootProject.ext.libSupportAppcompat
     // 各种加载动画
     api 'com.github.ybq:Android-SpinKit:1.4.0'
-    implementation project(':zhylibrary')
+    api project(':zhylibrary')
 }
