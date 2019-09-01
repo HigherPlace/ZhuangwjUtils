@@ -32,7 +32,7 @@ dependencies {
     implementation rootProject.ext.libSupportCardview
     implementation rootProject.ext.libSupportV4
 
-    implementation project(':zwjutils')    // 工具包
+    api project(':zwjutils')    // 工具包
     implementation project(':progresswheellibrary')
 
 }
