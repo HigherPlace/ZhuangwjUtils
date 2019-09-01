@@ -14,9 +14,9 @@ public class MyApplication extends Application {
 
 
         gApp = (MyApplication) getApplicationContext();
-        // 初始化Xutils
-        x.Ext.init(this);
-        x.Ext.setDebug(true); // 是否输出debug日志
+//        // 初始化Xutils
+//        x.Ext.init(this);
+//        x.Ext.setDebug(true); // 是否输出debug日志
 
 //        Stetho.initializeWithDefaults(this);
 //        Stetho.initialize(Stetho.newInitializerBuilder(this)

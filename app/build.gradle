@@ -5,6 +5,7 @@ apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId rootProject.ext.applicationId
