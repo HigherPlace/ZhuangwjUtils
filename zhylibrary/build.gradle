@@ -33,6 +33,6 @@ dependencies {
     implementation rootProject.ext.libSupportV4
 
     api project(':zwjutils')    // 工具包
-    implementation project(':progresswheellibrary')
+    api project(':progresswheellibrary')
 
 }
