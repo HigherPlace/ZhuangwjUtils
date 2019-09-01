@@ -63,9 +63,10 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.4.2'
 
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 
@@ -82,6 +83,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
+        google()
     }
 }
 
@@ -89,12 +91,12 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-def supportVersion = "25.3.1";
+def supportVersion = "28.0.0";
 
 project.ext {
     applicationId = "com.zwj.zhuangwjutils"
-    buildToolsVersion = "26.0.0"
-    compileSdkVersion = 25
+    buildToolsVersion = "28.0.3"
+    compileSdkVersion = 28
     minSdkVersion = 14
     targetSdkVersion = 22
     versionCode = 1

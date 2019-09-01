@@ -21,7 +21,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile libJunit
-    compile rootProject.ext.libSupportAppcompat
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api rootProject.ext.libSupportAppcompat
 }
